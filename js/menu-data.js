@@ -47,42 +47,62 @@ const DEFAULT_PREORDER_LEAD_MINUTES = 30;
 
 /* ---------- 3. MENU IMAGES ----------
    Centralized image configuration. Every menu item's `image` field
-   points here instead of a URL scattered inline. For now these are
-   remote, embeddable photos (Wikimedia Commons — reputable, license-
-   permitting external embedding) used as *visually similar stand-ins*,
-   NOT actual photographs of Tambayan Cawag's food.
+   points here instead of a URL scattered inline — no image path is
+   ever written inline in an item or in the HTML.
 
-   TO REPLACE WITH REAL RESTAURANT PHOTOS LATER:
-   Just change the URL string on the right-hand side to a local path,
-   e.g. MENU_IMAGES.sisig = "assets/menu/sisig.jpg". Nothing else in
-   the menu system needs to change — items reference MENU_IMAGES.xxx,
-   never a raw URL, so a swap here updates every card, the lightbox,
-   and the cart automatically.
-
-   Images are served through Wikimedia Commons' own resizing endpoint
-   (Special:FilePath) at a fixed width for fast, optimized loading —
-   no separate image hosting or compression step is required. */
+   These are LOCAL asset paths only (no internet/CDN URLs). Place the
+   restaurant's real food photos at the paths below and they will
+   appear automatically everywhere that item is shown (menu cards,
+   lightbox, cart, product modal) — nothing else in the code needs to
+   change. Until a real photo is placed at a given path, the image
+   fallback system (see main.js) automatically shows
+   assets/menu/placeholder.png instead of a broken image. */
 const MENU_IMAGES = {
-  silog: "https://commons.wikimedia.org/wiki/Special:FilePath/Topsilog.jpg?width=600",
-  friedChicken: "https://commons.wikimedia.org/wiki/Special:FilePath/Fried_Chicken.jpg?width=600",
-  lugaw: "https://commons.wikimedia.org/wiki/Special:FilePath/Arroz_Caldo.jpg?width=600",
-  mami: "https://commons.wikimedia.org/wiki/Special:FilePath/Chicken_Noodle_Soup.jpg?width=600",
-  fries: "https://commons.wikimedia.org/wiki/Special:FilePath/French_Fries.jpg?width=600",
-  nachos: "https://commons.wikimedia.org/wiki/Special:FilePath/Nachos.jpg?width=600",
-  burger: "https://commons.wikimedia.org/wiki/Special:FilePath/Big_Mac_hamburger.jpg?width=600",
-  sandwich: "https://commons.wikimedia.org/wiki/Special:FilePath/Ham_and_cheese_sandwich.jpg?width=600",
-  shanghaiRolls: "https://commons.wikimedia.org/wiki/Special:FilePath/Fried_lumpia.jpg?width=600",
-  tokwatBaboy: "https://commons.wikimedia.org/wiki/Special:FilePath/Tokwat_Baboy.jpg?width=600",
-  chicharon: "https://commons.wikimedia.org/wiki/Special:FilePath/Fried_Chicken.jpg?width=600",
-  sisig: "https://commons.wikimedia.org/wiki/Special:FilePath/Authentic_Kapampangan_Sisig.jpg?width=600",
-  papaitan: "https://commons.wikimedia.org/wiki/Special:FilePath/Chicken_Noodle_Soup.jpg?width=600",
-  pancitBihon: "https://commons.wikimedia.org/wiki/Special:FilePath/Pancit_bihon.jpg?width=600",
-  pancitCanton: "https://commons.wikimedia.org/wiki/Special:FilePath/Pancit_canton.jpg?width=600",
-  bottledWater: "https://commons.wikimedia.org/wiki/Special:FilePath/Bottled_water.jpg?width=600",
-  pineappleJuice: "https://commons.wikimedia.org/wiki/Special:FilePath/Pineapple_juice.jpg?width=600",
-  icedTea: "https://commons.wikimedia.org/wiki/Special:FilePath/Iced_tea.jpg?width=600",
-  softdrinks: "https://commons.wikimedia.org/wiki/Special:FilePath/Soft_drink.jpg?width=600"
+  bangsilog: "assets/menu/bangsilog.png",
+  chicksilog: "assets/menu/chicksilog.png",
+  tapsilog: "assets/menu/tapsilog.png",
+  tosilog: "assets/menu/tosilog.png",
+  hotsilog: "assets/menu/hotsilog.png",
+  cornsilog: "assets/menu/cornsilog.png",
+  longsilog: "assets/menu/longsilog.png",
+  hamsilog: "assets/menu/hamsilog.png",
+
+  friedChicken: "assets/menu/fried-chicken.png",
+  familyBundle: "assets/menu/family-bundle.png",
+
+  plainLugaw: "assets/menu/plain-lugaw.png",
+  eggCaldo: "assets/menu/egg-caldo.png",
+  arrozcaldo: "assets/menu/arrozcaldo.png",
+  goto: "assets/menu/goto.png",
+  overload: "assets/menu/overload.png",
+
+  beefMami: "assets/menu/beef-mami.png",
+
+  fries: "assets/menu/fries.png",
+  nachos: "assets/menu/nachos.png",
+  burger: "assets/menu/burger.png",
+  sandwich: "assets/menu/sandwich.png",
+
+  shanghaiRolls: "assets/menu/shanghai-rolls.png",
+  tokwaBaboy: "assets/menu/tokwa-baboy.png",
+  chicharonBulaklak: "assets/menu/chicharon-bulaklak.png",
+  sisig: "assets/menu/sisig.png",
+  beefPapaitan: "assets/menu/beef-papaitan.png",
+
+  bihon: "assets/menu/bihon.png",
+  canton: "assets/menu/canton.png",
+  mixCantonBihon: "assets/menu/mix-canton-bihon.png",
+
+  bottledWater: "assets/menu/bottled-water.png",
+  c2: "assets/menu/c2.png",
+  pineappleJuice: "assets/menu/pineapple-juice.png",
+  icedTea: "assets/menu/iced-tea.png",
+  softdrinks: "assets/menu/softdrinks.png"
 };
+
+/* Fallback shown whenever a local menu image above doesn't exist yet
+   or fails to load. See imgAttrs()'s onerror handler in main.js. */
+const MENU_IMAGE_PLACEHOLDER = "assets/menu/placeholder.png";
 
 /* ---------- 4. MENU CATEGORIES & ITEMS ---------- */
 const DEFAULT_MENU = [
@@ -93,14 +113,14 @@ const DEFAULT_MENU = [
     icon: "\uD83C\uDF73",
     description: "Filipino breakfast-style rice meals, served all day.",
     items: [
-      { id: "silog-bang", name: "Bangsilog", description: "Marinated milkfish, garlic fried rice & egg.", price: 125, image: MENU_IMAGES.silog, available: true },
-      { id: "silog-chick", name: "Chicksilog", description: "Fried chicken, garlic fried rice & egg.", price: 125, image: MENU_IMAGES.friedChicken, available: true },
-      { id: "silog-tap", name: "Tapsilog", description: "Beef tapa, garlic fried rice & egg.", price: 110, image: MENU_IMAGES.silog, available: true },
-      { id: "silog-tosi", name: "Tosilog", description: "Sweet cured pork tocino, garlic fried rice & egg.", price: 100, image: MENU_IMAGES.silog, available: true },
-      { id: "silog-hot", name: "Hotsilog", description: "Hotdog, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.silog, available: true },
-      { id: "silog-corn", name: "Cornsilog", description: "Corned beef, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.silog, available: true },
-      { id: "silog-long", name: "Longsilog", description: "Filipino sweet longganisa, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.silog, available: true },
-      { id: "silog-ham", name: "Hamsilog", description: "Ham, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.silog, available: true }
+      { id: "silog-bang", name: "Bangsilog", description: "Marinated milkfish, garlic fried rice & egg.", price: 125, image: MENU_IMAGES.bangsilog, available: true },
+      { id: "silog-chick", name: "Chicksilog", description: "Fried chicken, garlic fried rice & egg.", price: 125, image: MENU_IMAGES.chicksilog, available: true },
+      { id: "silog-tap", name: "Tapsilog", description: "Beef tapa, garlic fried rice & egg.", price: 110, image: MENU_IMAGES.tapsilog, available: true },
+      { id: "silog-tosi", name: "Tosilog", description: "Sweet cured pork tocino, garlic fried rice & egg.", price: 100, image: MENU_IMAGES.tosilog, available: true },
+      { id: "silog-hot", name: "Hotsilog", description: "Hotdog, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.hotsilog, available: true },
+      { id: "silog-corn", name: "Cornsilog", description: "Corned beef, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.cornsilog, available: true },
+      { id: "silog-long", name: "Longsilog", description: "Filipino sweet longganisa, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.longsilog, available: true },
+      { id: "silog-ham", name: "Hamsilog", description: "Ham, garlic fried rice & egg.", price: 90, image: MENU_IMAGES.hamsilog, available: true }
     ]
   },
   {
@@ -117,7 +137,7 @@ const DEFAULT_MENU = [
         bundleContents: ["5 pcs Fried Chicken"]
       },
       {
-        id: "fc-family", name: "Family Bundle", description: "Good for 4\u20136 people.", price: 599, image: MENU_IMAGES.friedChicken, available: true,
+        id: "fc-family", name: "Family Bundle", description: "Good for 4\u20136 people.", price: 599, image: MENU_IMAGES.familyBundle, available: true,
         bundleContents: ["6 pcs Fried Chicken", "6 Plain Rice", "15 pcs Shanghai Rolls", "1 Softdrinks 1.5L", "Soup"]
       }
     ]
@@ -129,11 +149,11 @@ const DEFAULT_MENU = [
     icon: "\uD83C\uDF5A",
     description: "Warm Filipino rice porridge, from plain to fully loaded.",
     items: [
-      { id: "lugaw-plain", name: "Plain Lugaw", description: "", price: 35, image: MENU_IMAGES.lugaw, available: true },
-      { id: "lugaw-egg", name: "Egg Caldo", description: "", price: 50, image: MENU_IMAGES.lugaw, available: true },
-      { id: "lugaw-arroz", name: "Arrozcaldo", description: "", price: 60, image: MENU_IMAGES.lugaw, available: true },
-      { id: "lugaw-goto", name: "Goto", description: "", price: 65, image: MENU_IMAGES.lugaw, available: true },
-      { id: "lugaw-overload", name: "Overload", description: "Chicken, beef & egg toppings.", price: 95, image: MENU_IMAGES.lugaw, available: true }
+      { id: "lugaw-plain", name: "Plain Lugaw", description: "", price: 35, image: MENU_IMAGES.plainLugaw, available: true },
+      { id: "lugaw-egg", name: "Egg Caldo", description: "", price: 50, image: MENU_IMAGES.eggCaldo, available: true },
+      { id: "lugaw-arroz", name: "Arrozcaldo", description: "", price: 60, image: MENU_IMAGES.arrozcaldo, available: true },
+      { id: "lugaw-goto", name: "Goto", description: "", price: 65, image: MENU_IMAGES.goto, available: true },
+      { id: "lugaw-overload", name: "Overload", description: "Chicken, beef & egg toppings.", price: 95, image: MENU_IMAGES.overload, available: true }
     ],
     addOns: [
       { id: "addon-boiledegg", name: "Boiled Egg", price: 20 },
@@ -149,8 +169,8 @@ const DEFAULT_MENU = [
     icon: "\uD83C\uDF5C",
     description: "Beef noodle soup, with or without egg.",
     items: [
-      { id: "mami-noegg", name: "Beef Mami without Egg", description: "", price: 60, image: MENU_IMAGES.mami, available: true },
-      { id: "mami-egg", name: "Beef Mami with Egg", description: "", price: 75, image: MENU_IMAGES.mami, available: true }
+      { id: "mami-noegg", name: "Beef Mami without Egg", description: "", price: 60, image: MENU_IMAGES.beefMami, available: true },
+      { id: "mami-egg", name: "Beef Mami with Egg", description: "", price: 75, image: MENU_IMAGES.beefMami, available: true }
     ],
     addOns: [
       { id: "addon-chicharon-mami", name: "Chicharon Bulaklak", price: 30 },
@@ -192,10 +212,10 @@ const DEFAULT_MENU = [
     description: "Pulutan and sharing plates for the barkada.",
     items: [
       { id: "special-shanghai", name: "Shanghai Rolls (25 pieces)", description: "", price: 100, image: MENU_IMAGES.shanghaiRolls, available: true },
-      { id: "special-tokwatbaboy", name: "Tokwa't Baboy", description: "", price: 130, image: MENU_IMAGES.tokwatBaboy, available: true },
-      { id: "special-chicharon", name: "Chicharon Bulaklak", description: "", price: 150, image: MENU_IMAGES.chicharon, available: true },
+      { id: "special-tokwatbaboy", name: "Tokwa't Baboy", description: "", price: 130, image: MENU_IMAGES.tokwaBaboy, available: true },
+      { id: "special-chicharon", name: "Chicharon Bulaklak", description: "", price: 150, image: MENU_IMAGES.chicharonBulaklak, available: true },
       { id: "special-sisig", name: "Sisig", description: "", price: 150, image: MENU_IMAGES.sisig, available: true },
-      { id: "special-papaitan", name: "Beef Papaitan", description: "", price: 130, image: MENU_IMAGES.papaitan, available: true }
+      { id: "special-papaitan", name: "Beef Papaitan", description: "", price: 130, image: MENU_IMAGES.beefPapaitan, available: true }
     ]
   },
   {
@@ -206,9 +226,9 @@ const DEFAULT_MENU = [
     description: "Good for 2\u20133 pax.",
     servingNote: "Good for 2\u20133 people",
     items: [
-      { id: "pancit-bihon", name: "Bihon", description: "Good for 2\u20133 pax.", price: 179, image: MENU_IMAGES.pancitBihon, available: true },
-      { id: "pancit-canton", name: "Canton", description: "Good for 2\u20133 pax.", price: 189, image: MENU_IMAGES.pancitCanton, available: true },
-      { id: "pancit-mix", name: "Mix Canton Bihon", description: "Good for 2\u20133 pax.", price: 199, image: MENU_IMAGES.pancitCanton, available: true }
+      { id: "pancit-bihon", name: "Bihon", description: "Good for 2\u20133 pax.", price: 179, image: MENU_IMAGES.bihon, available: true },
+      { id: "pancit-canton", name: "Canton", description: "Good for 2\u20133 pax.", price: 189, image: MENU_IMAGES.canton, available: true },
+      { id: "pancit-mix", name: "Mix Canton Bihon", description: "Good for 2\u20133 pax.", price: 199, image: MENU_IMAGES.mixCantonBihon, available: true }
     ]
   },
   {
@@ -220,8 +240,8 @@ const DEFAULT_MENU = [
     items: [
       { id: "drink-water350", name: "Bottled Water 350ml", description: "", price: 20, image: MENU_IMAGES.bottledWater, available: true },
       { id: "drink-water500", name: "Bottled Water 500ml", description: "", price: 25, image: MENU_IMAGES.bottledWater, available: true },
-      { id: "drink-c2solo", name: "C2 Solo", description: "", price: 25, image: MENU_IMAGES.pineappleJuice, available: true },
-      { id: "drink-c2-1.5l", name: "C2 1.5L", description: "", price: 40, image: MENU_IMAGES.pineappleJuice, available: true },
+      { id: "drink-c2solo", name: "C2 Solo", description: "", price: 25, image: MENU_IMAGES.c2, available: true },
+      { id: "drink-c2-1.5l", name: "C2 1.5L", description: "", price: 40, image: MENU_IMAGES.c2, available: true },
       { id: "drink-pineapple", name: "Pineapple Juice", description: "", price: 50, image: MENU_IMAGES.pineappleJuice, available: true },
       { id: "drink-icedtea-glass", name: "Iced Tea Glass", description: "", price: 40, image: MENU_IMAGES.icedTea, available: true },
       { id: "drink-icedtea-pitcher", name: "Iced Tea Pitcher", description: "", price: 120, image: MENU_IMAGES.icedTea, available: true },
@@ -238,6 +258,7 @@ const DEFAULT_MENU = [
 ];
 
 window.MENU_IMAGES = MENU_IMAGES;
+window.MENU_IMAGE_PLACEHOLDER = MENU_IMAGE_PLACEHOLDER;
 
 /* Exposed globally so other scripts (storage.js, admin.js, main.js) can use it */
 window.DEFAULT_SERVICE_SCHEDULE = DEFAULT_SERVICE_SCHEDULE;

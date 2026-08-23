@@ -133,14 +133,24 @@
   }
 
   /* ---------------- IMAGE LOADING HELPERS ----------------
-     Every menu image goes through this so a failed remote fetch (slow
-     connection, image taken down, etc.) always degrades to a clean,
-     on-brand placeholder instead of a broken-image icon. */
+     Every menu image goes through this so a missing/failed local file
+     (real photo not placed yet, typo in filename, etc.) always
+     degrades to the clean branded placeholder instead of a broken-
+     image icon. */
   function imgAttrs(url, alt) {
     const safeAlt = (alt || "Tambayan Cawag menu item").replace(/"/g, "&quot;");
-    return `src="${url}" alt="${safeAlt}" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-fallback');this.closest('[data-img-wrap]') && (this.closest('[data-img-wrap]').innerHTML='<div class=&quot;card-img card-img--placeholder&quot;>\uD83C\uDF7D\uFE0F<span>Tambayan Cawag</span></div>')"`;
+    return `src="${url}" alt="${safeAlt}" loading="lazy" decoding="async" onerror="window.handleMenuImageError(this)"`;
   }
 
+  // Exposed on window so it can be called from inline onerror= attributes
+  // (menu cards, lightbox) without inline arrow-function/string juggling.
+  window.handleMenuImageError = function (img) {
+    if (img.dataset.fallbackApplied === "true") return; // avoid loop if placeholder itself is missing
+    img.dataset.fallbackApplied = "true";
+    img.onerror = null;
+    img.src = window.MENU_IMAGE_PLACEHOLDER || "assets/menu/placeholder.png";
+    img.classList.add("img-fallback");
+  };
   /* ---------------- LIGHTBOX ---------------- */
   function bindLightbox() {
     const modal = document.getElementById("image-lightbox");
@@ -149,8 +159,11 @@
   }
   function openLightbox(url, name, price) {
     if (!url) return;
-    document.getElementById("lightbox-img").src = url;
-    document.getElementById("lightbox-img").alt = name;
+    const lightboxImg = document.getElementById("lightbox-img");
+    lightboxImg.dataset.fallbackApplied = "false";
+    lightboxImg.onerror = () => window.handleMenuImageError(lightboxImg);
+    lightboxImg.src = url;
+    lightboxImg.alt = name;
     document.getElementById("lightbox-name").textContent = name;
     document.getElementById("lightbox-price").textContent = price;
     document.getElementById("image-lightbox").classList.add("is-open");
