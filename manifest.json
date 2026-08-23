@@ -1,0 +1,19 @@
+{
+  "name": "Tambayan Cawag",
+  "short_name": "Tambayan Cawag",
+  "description": "Cafe \u2022 Grill \u2022 Resto \u2022 Bar \u2014 Filipino favorites, silog meals, snacks, drinks & cafe in Cawag, Subic, Zambales. Order ahead for dine-in.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FBF2DC",
+  "theme_color": "#2B1810",
+  "icons": [
+    {
+      "src": "assets/logo.jpg",
+      "sizes": "1080x1080",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

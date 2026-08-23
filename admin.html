@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Tambayan Cawag</title>
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<header class="admin-topbar">
+  <div class="container admin-topbar-brand">
+    <img src="assets/logo.jpg" alt="Tambayan Cawag logo">
+    <span>
+      <small>Admin Dashboard</small>
+      Tambayan Cawag
+    </span>
+    <span style="margin-left:auto;"><a href="index.html" class="btn btn--outline btn--small" style="width:auto;">← Back to Site</a></span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="admin-tabs">
+    <button class="admin-tab is-active" data-panel="panel-dashboard">Dashboard</button>
+    <button class="admin-tab" data-panel="panel-reservations">Reservations</button>
+    <button class="admin-tab" data-panel="panel-menu">Menu Management</button>
+    <button class="admin-tab" data-panel="panel-schedule">Service Schedule</button>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <section class="admin-panel" id="panel-dashboard">
+    <h2 class="admin-section-title">Dashboard Statistics</h2>
+    <div class="stat-grid">
+      <div class="stat-card"><strong id="stat-today">0</strong><span>Today's Reservations</span></div>
+      <div class="stat-card"><strong id="stat-pending">0</strong><span>Pending Orders</span></div>
+      <div class="stat-card"><strong id="stat-confirmed">0</strong><span>Confirmed Orders</span></div>
+      <div class="stat-card"><strong id="stat-completed">0</strong><span>Completed Orders</span></div>
+      <div class="stat-card"><strong id="stat-sales">₱0</strong><span>Estimated Sales</span></div>
+    </div>
+    <h2 class="admin-section-title">Recent Reservations</h2>
+    <div class="table-wrap">
+      <table class="admin-table" id="dashboard-preview-table">
+        <thead>
+          <tr><th>Reservation #</th><th>Customer</th><th>Date</th><th>Time</th><th>Guests</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="reservations-tbody"><!-- shared with panel-reservations via JS --></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== RESERVATIONS ===== -->
+  <section class="admin-panel" id="panel-reservations" hidden>
+    <h2 class="admin-section-title">All Reservations</h2>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Reservation #</th><th>Customer</th><th>Date</th><th>Time</th><th>Guests</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="reservations-tbody-2"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== MENU MANAGEMENT ===== -->
+  <section class="admin-panel" id="panel-menu" hidden>
+    <div class="admin-toolbar">
+      <button class="btn btn--primary btn--small" style="width:auto;" id="add-item-btn">+ Add Menu Item</button>
+      <button class="btn btn--ghost btn--small" style="width:auto;" id="reset-menu-btn">Reset to Default Menu</button>
+    </div>
+    <div id="menu-admin-list"></div>
+  </section>
+
+  <!-- ===== SERVICE SCHEDULE ===== -->
+  <section class="admin-panel" id="panel-schedule" hidden>
+    <h2 class="admin-section-title">Service Schedule</h2>
+    <div class="schedule-form">
+      <div class="schedule-block">
+        <h4>Go-To • Snacks • Silog</h4>
+        <div class="form-two-col">
+          <div class="form-row"><label for="goto-open">Opening</label><input type="time" id="goto-open"></div>
+          <div class="form-row"><label for="goto-close">Closing</label><input type="time" id="goto-close"></div>
+        </div>
+      </div>
+      <div class="schedule-block">
+        <h4>Cafe</h4>
+        <div class="form-two-col">
+          <div class="form-row"><label for="cafe-open">Opening</label><input type="time" id="cafe-open"></div>
+          <div class="form-row"><label for="cafe-close">Closing</label><input type="time" id="cafe-close"></div>
+        </div>
+      </div>
+      <div class="schedule-block">
+        <h4>Pre-Order Lead Time</h4>
+        <div class="form-row">
+          <label for="lead-minutes-input">Minimum minutes before dine-in time</label>
+          <input type="number" id="lead-minutes-input" min="0" step="5">
+        </div>
+      </div>
+      <button class="btn btn--primary" id="schedule-save-btn">Save Schedule</button>
+      <p class="muted" style="margin-top:10px;">Note: closing times of 11:59 PM are treated as 12:00 midnight sitewide.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ===== RESERVATION DETAIL MODAL ===== -->
+<div class="modal" id="res-detail-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel">
+    <button class="modal-close" aria-label="Close">✕</button>
+    <div id="res-detail-body"></div>
+  </div>
+</div>
+
+<!-- ===== MENU ITEM MODAL ===== -->
+<div class="modal" id="item-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel">
+    <button class="modal-close" aria-label="Close">✕</button>
+    <h3 id="item-modal-title">Add Menu Item</h3>
+    <div class="form-row">
+      <label for="item-category-select">Category</label>
+      <select id="item-category-select"></select>
+    </div>
+    <div class="form-row">
+      <label for="item-name-input">Item Name</label>
+      <input type="text" id="item-name-input">
+    </div>
+    <div class="form-row">
+      <label for="item-desc-input">Description</label>
+      <textarea id="item-desc-input"></textarea>
+    </div>
+    <div class="form-row">
+      <label for="item-price-input">Price (₱)</label>
+      <input type="number" id="item-price-input" min="1">
+    </div>
+    <div class="wizard-actions">
+      <button class="btn btn--ghost" id="item-cancel-btn">Cancel</button>
+      <button class="btn btn--primary btn--block" id="item-save-btn">Save Item</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer" style="margin-top:40px;">
+  <div class="container footer-bottom">
+    <span>© <span id="admin-footer-year"></span> Tambayan Cawag — Admin Dashboard (Demo)</span>
+  </div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

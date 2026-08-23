@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tambayan Cawag — Cafe • Grill • Resto • Bar</title>
+<meta name="description" content="Tambayan Cawag in Cawag, Subic, Zambales. Filipino silog meals, fried chicken, lugaw, mami, snacks, pancit, drinks & cafe. Order ahead for dine-in.">
+<meta name="theme-color" content="#2B1810">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tambayan Cawag">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+<link rel="apple-touch-icon" href="assets/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ========== NAV ========== -->
+<header class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#home">
+      <img class="nav-logo" src="assets/logo.jpg" alt="Tambayan Cawag logo">
+      <span class="nav-brand__text">
+        <span class="nav-brand__name">Tambayan Cawag</span>
+        <span class="nav-brand__tag">Cafe • Grill • Resto • Bar</span>
+      </span>
+    </a>
+    <nav>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#dinein">Dine-In</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="nav-menu-mobile-only"><button class="btn btn--primary btn--block" data-open-wizard>Pre-Order Dine-In</button></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a href="#" class="nav-cart-btn" id="cart-open-nav" aria-label="View order">
+        🛒 <span class="cart-count" id="nav-cart-count" hidden>0</span>
+      </a>
+      <button class="btn btn--primary" data-open-wizard>Pre-Order Dine-In</button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="home">
+    <div class="container hero-inner">
+      <div>
+        <img class="hero-logo" src="assets/logo.jpg" alt="Tambayan Cawag logo">
+        <span class="hero-eyebrow">Welcome to your tambayan</span>
+        <h1>Good Food. Good Vibes. Your Tambayan.</h1>
+        <p class="hero-sub">Enjoy Filipino favorites, snacks, silog meals, coffee, refreshing drinks, and good moments at Tambayan Cawag.</p>
+        <div class="hero-actions">
+          <a href="#menu" class="btn btn--primary">View Menu</a>
+          <button class="btn btn--outline" data-open-wizard>Pre-Order Dine-In</button>
+        </div>
+        <div class="hero-hours">
+          <div class="hours-pill" data-hours-block="goto">
+            <span class="hours-pill__label">Go-To • Snacks • Silog</span>
+            <span class="hours-range">10:00 AM – 12:00 MN</span>
+            <span class="status-pill">— —</span>
+          </div>
+          <div class="hours-pill" data-hours-block="cafe">
+            <span class="hours-pill__label">Cafe</span>
+            <span class="hours-range">1:00 PM – 12:00 MN</span>
+            <span class="status-pill">— —</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/logo.jpg" alt="Tambayan Cawag">
+      </div>
+    </div>
+  </section>
+
+  <div class="sunset-divider" aria-hidden="true"></div>
+
+  <!-- ========== ABOUT ========== -->
+  <section class="section weave-bg" id="about">
+    <div class="container about-grid">
+      <div class="about-card">
+        <h3>Your Local Tambayan</h3>
+        <p>Tambayan Cawag is a casual restaurant and gathering place in Cawag, Subic, Zambales — the kind of spot where the barkada meets up for silog meals, snacks, cold drinks, and coffee. Whether you're grabbing a quick solo meal or bringing the whole crew for a family bundle, Tambayan Cawag is built to be your go-to hangout.</p>
+        <p>From hearty rice meals to pulutan for sharing, our menu covers breakfast-to-midnight cravings — cafe, grill, resto, and bar, all under one roof.</p>
+      </div>
+      <div class="about-stats">
+        <div class="about-stat"><strong>2026</strong><span>Established</span></div>
+        <div class="about-stat"><strong>2</strong><span>Service Schedules</span></div>
+        <div class="about-stat"><strong>8+</strong><span>Menu Categories</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HOURS ========== -->
+  <section class="section hours-section" id="hours">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">When we're open</span>
+        <h2 class="section-title">Opening Hours</h2>
+        <p class="section-sub">Two service schedules, one tambayan. Availability updates automatically based on the current time.</p>
+      </div>
+      <div class="hours-cards">
+        <div class="hours-card" data-hours-block="goto">
+          <h4>Go-To • Snacks • Silog</h4>
+          <span class="hours-range">10:00 AM – 12:00 MN</span>
+          <span class="status-pill">— —</span>
+          <p class="hours-note">Silog meals, fried chicken, lugaw, mami, snacks, pancit, specials & drinks.</p>
+        </div>
+        <div class="hours-card" data-hours-block="cafe">
+          <h4>Cafe</h4>
+          <span class="hours-range">1:00 PM – 12:00 MN</span>
+          <span class="status-pill">— —</span>
+          <p class="hours-note">Cafe items open later — perfect for afternoon and evening tambayan sessions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MENU ========== -->
+  <section class="section menu-section" id="menu">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Straight from our printed menu</span>
+        <h2 class="section-title">Our Menu</h2>
+        <p class="section-sub">Browse by category or search for a craving. Items outside their service hours are marked as currently unavailable.</p>
+      </div>
+      <div class="menu-toolbar">
+        <div class="menu-search">
+          <input type="text" id="menu-search" placeholder="Search the menu...">
+        </div>
+        <div class="menu-filters" id="menu-filters"></div>
+      </div>
+      <div id="menu-categories"><!-- rendered by main.js --></div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section class="section gallery-section" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">A peek inside</span>
+        <h2 class="section-title">Gallery</h2>
+        <p class="section-sub">Placeholder tiles for now — swap these for real photos any time by replacing the images in <code>assets/gallery/</code>.</p>
+      </div>
+      <div class="gallery-grid" id="gallery-grid">
+        <div class="gallery-item">🍽️ Food<br><small>[Add photo]</small></div>
+        <div class="gallery-item">🏠 Restaurant<br><small>[Add photo]</small></div>
+        <div class="gallery-item">📍 Location<br><small>[Add photo]</small></div>
+        <div class="gallery-item">☕ Cafe<br><small>[Add photo]</small></div>
+        <div class="gallery-item">🎤 Events<br><small>[Add photo]</small></div>
+        <div class="gallery-item">🍗 Food<br><small>[Add photo]</small></div>
+        <div class="gallery-item">🌇 Location<br><small>[Add photo]</small></div>
+        <div class="gallery-item">🎶 Events<br><small>[Add photo]</small></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sunset-divider" aria-hidden="true"></div>
+
+  <!-- ========== DINE-IN / ORDER LOOKUP ========== -->
+  <section class="section dinein-section" id="dinein">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Reserve a spot & pre-order</span>
+        <h2 class="section-title">Dine-In Pre-Order</h2>
+        <p class="section-sub">Add items to your cart, then start a pre-order so your table and food are ready when you arrive.</p>
+      </div>
+      <div class="dinein-grid">
+        <div class="dinein-card">
+          <h3>Start a Pre-Order</h3>
+          <p>Build your order from the menu above, then reserve your dine-in time. We'll validate your chosen time against our service hours automatically.</p>
+          <button class="btn btn--primary btn--block" data-open-wizard>Pre-Order Dine-In</button>
+        </div>
+        <div class="dinein-card">
+          <h3>Check My Order</h3>
+          <p>Enter your reservation number to see its current status.</p>
+          <div class="lookup-field">
+            <input type="text" id="lookup-input" placeholder="e.g. TC-2026-00001">
+            <button class="btn btn--dark" id="lookup-btn">Check</button>
+          </div>
+          <div id="lookup-result"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section class="section weave-bg" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Find us</span>
+        <h2 class="section-title">Contact Tambayan Cawag</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h4>📍 Location</h4>
+          <p data-info="location">Cawag, Subic, Zambales</p>
+        </div>
+        <div class="contact-card">
+          <h4>🗺️ Google Maps</h4>
+          <p data-info="maps">[Exact Location / Google Maps Link]</p>
+        </div>
+        <div class="contact-card">
+          <h4>📞 Phone</h4>
+          <p data-info="phone">[Restaurant Phone Number]</p>
+        </div>
+        <div class="contact-card">
+          <h4>✉️ Email</h4>
+          <p data-info="email">[Restaurant Email]</p>
+        </div>
+        <div class="contact-card">
+          <h4>📘 Facebook</h4>
+          <p data-info="facebook">[Facebook Page]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img class="footer-logo" src="assets/logo.jpg" alt="Tambayan Cawag logo">
+      <div>
+        <div class="footer-brand__name">Tambayan Cawag</div>
+        <div class="footer-brand__tag">Cafe • Grill • Resto • Bar</div>
+        <p class="footer-brand__motto">Good Food. Good Vibes. Your Tambayan.</p>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#dinein">Dine-In</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Follow Us</h5>
+      <ul>
+        <li><a href="#" data-info="facebook">[Facebook Page]</a></li>
+        <li><a href="#" data-info="phone">[Restaurant Phone Number]</a></li>
+        <li><a href="#" data-info="email">[Restaurant Email]</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="footer-year"></span> Tambayan Cawag</span>
+    <a href="admin.html">Admin</a>
+  </div>
+</footer>
+
+<!-- ========== FLOATING CART BUTTON ========== -->
+<button class="cart-fab" id="cart-fab">🛒 View Order <span class="cart-count" id="fab-cart-count" hidden>0</span></button>
+
+<!-- ========== PRODUCT MODAL ========== -->
+<div class="modal" id="product-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+    <button class="modal-close" aria-label="Close">✕</button>
+    <h3 id="product-modal-title">Item Name</h3>
+    <p id="product-modal-desc" class="muted"></p>
+    <div id="product-serving-note" hidden></div>
+    <div id="product-bundle" hidden></div>
+    <div id="product-variants" hidden></div>
+    <div id="product-addons" hidden></div>
+    <div class="product-notes-field">
+      <h5>Special Instructions</h5>
+      <textarea id="product-notes" placeholder="e.g. Less sauce, no onions, etc."></textarea>
+    </div>
+    <div class="product-modal-footer">
+      <div class="qty-stepper">
+        <button class="qty-btn" id="product-qty-minus" aria-label="Decrease quantity">−</button>
+        <span id="product-qty-value">1</span>
+        <button class="qty-btn" id="product-qty-plus" aria-label="Increase quantity">+</button>
+      </div>
+      <strong id="product-modal-price">₱0</strong>
+    </div>
+    <button class="btn btn--primary btn--block" id="product-add-btn" style="margin-top:16px;">Add to Order</button>
+  </div>
+</div>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="drawer" id="cart-drawer">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel">
+    <div class="cart-header">
+      <h3>Your Order</h3>
+      <button class="modal-close" id="cart-close" aria-label="Close" style="position:static;">✕</button>
+    </div>
+    <div class="cart-lines" id="cart-lines"></div>
+    <div class="cart-footer">
+      <div class="cart-subtotal-row"><span>Subtotal</span><span class="cart-subtotal-value">₱0</span></div>
+      <div class="cart-actions">
+        <button class="btn btn--ghost" id="cart-clear">Clear</button>
+        <button class="btn btn--primary btn--block" id="cart-checkout-btn">Pre-Order Dine-In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PRE-ORDER WIZARD MODAL ========== -->
+<div class="modal" id="wizard-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="wizard-title">
+    <button class="modal-close" aria-label="Close">✕</button>
+    <h3 id="wizard-title">Dine-In Pre-Order</h3>
+    <div class="wizard-progress">
+      <div class="wizard-progress__dot is-active" data-step="1">Dine-In</div>
+      <div class="wizard-progress__dot" data-step="2">Your Details</div>
+      <div class="wizard-progress__dot" data-step="3">Review</div>
+      <div class="wizard-progress__dot" data-step="4">Done</div>
+    </div>
+
+    <!-- STEP 1: Dine-In Details -->
+    <form class="wizard-step" id="wizard-step1" data-step="1" onsubmit="return false;">
+      <p class="muted">When are you dining with us?</p>
+      <div class="form-two-col">
+        <div class="form-row">
+          <label for="wizard-date">Date</label>
+          <input type="date" id="wizard-date" required>
+          <span class="field-error" data-error-for="date"></span>
+        </div>
+        <div class="form-row">
+          <label for="wizard-time">Time</label>
+          <input type="time" id="wizard-time" required>
+          <span class="field-error" data-error-for="time"></span>
+        </div>
+      </div>
+      <div class="form-two-col">
+        <div class="form-row">
+          <label for="wizard-guests">Guests</label>
+          <input type="number" id="wizard-guests" min="1" value="2" required>
+          <span class="field-error" data-error-for="guests"></span>
+        </div>
+        <div class="form-row">
+          <label for="wizard-seating">Seating Preference</label>
+          <select id="wizard-seating">
+            <option>Indoor</option>
+            <option>Outdoor</option>
+            <option>Group Table Preferred</option>
+            <option>Available Table</option>
+          </select>
+        </div>
+      </div>
+      <p class="muted" style="font-size:0.78rem;">We can't guarantee a specific table — seating is subject to availability on arrival.</p>
+      <div class="wizard-actions">
+        <button type="button" class="btn btn--primary btn--block" id="wizard-step1-next">Continue</button>
+      </div>
+    </form>
+
+    <!-- STEP 2: Customer Details -->
+    <form class="wizard-step" id="wizard-step2" data-step="2" hidden onsubmit="return false;">
+      <div class="form-row">
+        <label for="wizard-name">Full Name</label>
+        <input type="text" id="wizard-name" required>
+        <span class="field-error" data-error-for="fullName"></span>
+      </div>
+      <div class="form-two-col">
+        <div class="form-row">
+          <label for="wizard-phone">Contact Number</label>
+          <input type="tel" id="wizard-phone" placeholder="09171234567" required>
+          <span class="field-error" data-error-for="phone"></span>
+        </div>
+        <div class="form-row">
+          <label for="wizard-email">Email Address</label>
+          <input type="email" id="wizard-email" placeholder="optional">
+          <span class="field-error" data-error-for="email"></span>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="wizard-request">Special Request</label>
+        <textarea id="wizard-request" placeholder="Optional — birthday setup, allergies, etc."></textarea>
+      </div>
+      <div class="wizard-actions">
+        <button type="button" class="btn btn--ghost" id="wizard-step2-back">Back</button>
+        <button type="button" class="btn btn--primary btn--block" id="wizard-step2-next">Continue</button>
+      </div>
+    </form>
+
+    <!-- STEP 3: Review -->
+    <div class="wizard-step" id="wizard-step3" data-step="3" hidden>
+      <div class="review-block">
+        <h4>TAMBAYAN CAWAG — DINE-IN PRE-ORDER</h4>
+        <div class="review-row"><span>Customer</span><strong id="review-name"></strong></div>
+        <div class="review-row"><span>Date</span><strong id="review-date"></strong></div>
+        <div class="review-row"><span>Time</span><strong id="review-time"></strong></div>
+        <div class="review-row"><span>Guests</span><strong id="review-guests"></strong></div>
+        <div class="review-row"><span>Seating</span><strong id="review-seating"></strong></div>
+      </div>
+      <div class="review-block">
+        <h4>Order</h4>
+        <ul class="review-items" id="review-items"></ul>
+        <div class="review-total"><span>Subtotal</span><span id="review-subtotal"></span></div>
+      </div>
+      <div class="wizard-actions">
+        <button type="button" class="btn btn--ghost" id="wizard-step3-back">Edit Order</button>
+        <button type="button" class="btn btn--primary btn--block" id="wizard-step3-confirm">Confirm Pre-Order</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Confirmation -->
+    <div class="wizard-step" id="wizard-step4" data-step="4" hidden>
+      <div class="confirm-box">
+        <div class="confirm-icon">🎉</div>
+        <h3>Your Dine-In Pre-Order Has Been Received!</h3>
+        <div class="confirm-number" id="confirm-number">TC-2026-00000</div>
+        <div class="confirm-status">🟡 Pending Confirmation</div>
+      </div>
+      <div class="review-block">
+        <div class="review-row"><span>Name</span><strong id="confirm-name"></strong></div>
+        <div class="review-row"><span>Date</span><strong id="confirm-date"></strong></div>
+        <div class="review-row"><span>Time</span><strong id="confirm-time"></strong></div>
+        <div class="review-row"><span>Guests</span><strong id="confirm-guests"></strong></div>
+        <div class="review-row"><span>Seating</span><strong id="confirm-seating"></strong></div>
+      </div>
+      <div class="review-block">
+        <h4>Order</h4>
+        <ul class="review-items" id="confirm-items"></ul>
+        <div class="review-total"><span>Total</span><span id="confirm-total"></span></div>
+      </div>
+      <p class="muted" style="font-size:0.8rem;">Save your reservation number — you can check its status anytime using "Check My Order."</p>
+      <div class="wizard-actions">
+        <button type="button" class="btn btn--ghost" id="wizard-print-btn">Print Confirmation</button>
+        <button type="button" class="btn btn--primary btn--block" id="wizard-done-btn">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== IMAGE LIGHTBOX ========== -->
+<div class="modal" id="image-lightbox">
+  <div class="modal-backdrop"></div>
+  <div class="modal-panel lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-name">
+    <button class="modal-close" aria-label="Close image">✕</button>
+    <img id="lightbox-img" src="" alt="" class="lightbox-img">
+    <div class="lightbox-caption">
+      <strong id="lightbox-name"></strong>
+      <span id="lightbox-price"></span>
+    </div>
+  </div>
+</div>
+
+<script src="js/menu-data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/reservation.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
