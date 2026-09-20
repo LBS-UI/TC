@@ -17,16 +17,49 @@
       <small>Admin Dashboard</small>
       Tambayan Cawag
     </span>
-    <span style="margin-left:auto;"><a href="index.html" class="btn btn--outline btn--small" style="width:auto;">← Back to Site</a></span>
+    <span id="admin-whoami-wrap" style="margin-left:auto; display:flex; align-items:center; gap:12px;">
+      <span id="admin-whoami" class="muted" style="color:var(--cream);"></span>
+      <button id="admin-logout-btn" class="btn btn--outline btn--small" style="width:auto;">Sign Out</button>
+      <a href="index.html" class="btn btn--outline btn--small" style="width:auto;">← Back to Site</a>
+    </span>
   </div>
 </header>
 
+<!-- ===== LOGIN GATE ===== -->
+<div class="container" id="admin-login-screen">
+  <div class="login-card">
+    <h2>Admin Sign In</h2>
+    <p class="muted">This dashboard is protected by Supabase Authentication. Sign in with an authorized admin account.</p>
+    <p id="admin-login-error" class="form-banner" hidden></p>
+    <form id="admin-login-form">
+      <div class="form-row">
+        <label for="admin-email">Email</label>
+        <input type="email" id="admin-email" required autocomplete="username">
+      </div>
+      <div class="form-row">
+        <label for="admin-password">Password</label>
+        <input type="password" id="admin-password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn--primary btn--block" id="admin-login-btn">Sign In</button>
+    </form>
+    <p class="muted" style="margin-top:14px; font-size:0.8rem;">
+      Not configured yet, or don't have an account? See <code>SUPABASE_SETUP.md</code> for how to enable
+      Supabase Authentication and create the first admin account.
+    </p>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD (hidden until signed in as an authorized admin) ===== -->
+<div id="admin-dashboard" hidden>
 <div class="container">
+  <p id="admin-error-banner" class="status-banner" role="alert" hidden></p>
+
   <div class="admin-tabs">
     <button class="admin-tab is-active" data-panel="panel-dashboard">Dashboard</button>
     <button class="admin-tab" data-panel="panel-reservations">Reservations</button>
     <button class="admin-tab" data-panel="panel-menu">Menu Management</button>
     <button class="admin-tab" data-panel="panel-schedule">Service Schedule</button>
+    <button class="admin-tab" data-panel="panel-setup">Setup</button>
   </div>
 
   <!-- ===== DASHBOARD ===== -->
@@ -40,6 +73,7 @@
       <div class="stat-card"><strong id="stat-sales">₱0</strong><span>Estimated Sales</span></div>
     </div>
     <h2 class="admin-section-title">Recent Reservations</h2>
+    <p class="muted" style="margin:-8px 0 14px;">Updates automatically in real time — no need to refresh.</p>
     <div class="table-wrap">
       <table class="admin-table" id="dashboard-preview-table">
         <thead>
@@ -67,7 +101,6 @@
   <section class="admin-panel" id="panel-menu" hidden>
     <div class="admin-toolbar">
       <button class="btn btn--primary btn--small" style="width:auto;" id="add-item-btn">+ Add Menu Item</button>
-      <button class="btn btn--ghost btn--small" style="width:auto;" id="reset-menu-btn">Reset to Default Menu</button>
     </div>
     <div id="menu-admin-list"></div>
   </section>
@@ -101,6 +134,22 @@
       <p class="muted" style="margin-top:10px;">Note: closing times of 11:59 PM are treated as 12:00 midnight sitewide.</p>
     </div>
   </section>
+
+  <!-- ===== SETUP ===== -->
+  <section class="admin-panel" id="panel-setup" hidden>
+    <h2 class="admin-section-title">Setup</h2>
+    <div class="schedule-form">
+      <h4>Seed Initial Menu Data</h4>
+      <p class="muted">
+        Populates Firestore with the restaurant's starting menu, service hours, lead time, and contact info
+        from <code>js/menu-data.js</code>. Safe to click more than once — it checks Firestore first and
+        skips seeding if menu data already exists, so it will never create duplicates.
+      </p>
+      <button class="btn btn--primary" id="seed-data-btn" style="width:auto;">Seed Initial Menu Data</button>
+      <p id="seed-result" hidden></p>
+    </div>
+  </section>
+</div>
 </div>
 
 <!-- ===== RESERVATION DETAIL MODAL ===== -->
@@ -134,6 +183,11 @@
       <label for="item-price-input">Price (₱)</label>
       <input type="number" id="item-price-input" min="1">
     </div>
+    <div class="form-row">
+      <label for="item-image-input">Image URL or local path</label>
+      <input type="text" id="item-image-input" placeholder="https://... or assets/menu/sisig.png">
+      <span class="muted" style="font-size:0.78rem;">Accepts an online image URL, a local asset path, or a Supabase Storage download URL.</span>
+    </div>
     <div class="wizard-actions">
       <button class="btn btn--ghost" id="item-cancel-btn">Cancel</button>
       <button class="btn btn--primary btn--block" id="item-save-btn">Save Item</button>
@@ -143,13 +197,19 @@
 
 <footer class="site-footer" style="margin-top:40px;">
   <div class="container footer-bottom">
-    <span>© <span id="admin-footer-year"></span> Tambayan Cawag — Admin Dashboard (Demo)</span>
+    <span>© <span id="admin-footer-year"></span> Tambayan Cawag — Admin Dashboard</span>
   </div>
 </footer>
 
 <script src="js/menu-data.js"></script>
-<script src="js/storage.js"></script>
 <script src="js/schedule.js"></script>
+<script type="module" src="js/supabase-config.js"></script>
+<script type="module" src="js/supabase-auth.js"></script>
+<script type="module" src="js/supabase-settings.js"></script>
+<script type="module" src="js/supabase-menu.js"></script>
+<script type="module" src="js/supabase-orders.js"></script>
+<script type="module" src="js/supabase-seed.js"></script>
+<script src="js/reservation.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>
