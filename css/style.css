@@ -20,10 +20,12 @@
   --paper: #FBF2DC;
 
   /* ---- Location background system ----
-     Replace the url() below with a real photo later, e.g.:
-     --location-background: url('../assets/location-background.jpg');
-     Layout does not need to change — the overlay keeps text readable. */
-  --location-background: none;
+     Points at the restaurant's own location photo. If that file isn't
+     present, the browser simply skips this failed layer and the
+     brown/gold gradient beneath it (see .hero background-image) shows
+     through instead — nothing breaks either way. To change the photo,
+     replace assets/cawag.bg.jpeg; nothing else needs to change. */
+  --location-background: url('../assets/cawag.bg.jpeg');
   --location-overlay: linear-gradient(180deg, rgba(24, 14, 8, 0.82), rgba(24, 14, 8, 0.7));
 
   /* ---- Type scale ---- */
@@ -460,6 +462,29 @@ p { margin: 0; }
 }
 .menu-card .btn { margin-top: auto; }
 .menu-empty { text-align: center; padding: 40px 0; color: var(--brown-warm); }
+.menu-empty--error { color: #A33; }
+
+/* ---------- Notices & status banners ---------- */
+.image-notice, .kitchen-notice {
+  font-size: 0.82rem;
+  color: var(--brown-warm);
+  background: rgba(107, 62, 30, 0.07);
+  border: 1px solid var(--beige);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: -14px 0 22px;
+  max-width: 720px;
+}
+.kitchen-notice { color: var(--brown-med); background: rgba(232, 169, 59, 0.12); border-color: var(--gold); margin: 0 0 22px; }
+.dinein-section .kitchen-notice { color: var(--cream); background: rgba(251, 242, 220, 0.08); border-color: rgba(251, 242, 220, 0.25); }
+.kitchen-notice--compact { margin: 0 0 16px; font-size: 0.78rem; }
+.image-notice strong, .kitchen-notice strong { color: inherit; }
+
+.status-banner {
+  background: #FBEAEA; color: #A33; border-bottom: 2px solid #f0c2c2;
+  text-align: center; font-size: 0.88rem; padding: 10px 16px;
+}
+.lookup-loading { color: var(--beige); font-size: 0.9rem; }
 
 /* =============== GALLERY =============== */
 .gallery-section { background: var(--cream); }
