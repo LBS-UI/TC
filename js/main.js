@@ -1,3 +1,8 @@
+import "./supabase-config.js";
+import "./supabase-settings.js";
+import "./supabase-menu.js";
+import "./supabase-orders.js";
+
 /* ===================================================================
    TAMBAYAN CAWAG — MAIN SITE LOGIC
 =================================================================== */
