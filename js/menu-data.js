@@ -17,10 +17,26 @@
      controls the "Currently Unavailable" logic sitewide.
    - Anything wrapped in [ ] is a placeholder meant to be replaced.
 
-   Everything here is also mirrored into localStorage on first load
-   (see storage.js) so admin edits persist across sessions without
-   touching this file. This file only supplies the ORIGINAL DEFAULTS.
+   Everything here is now seeded into Supabase on first setup
+   (see js/supabase-seed.js) so admin edits persist across every device
+   and session without touching this file. This file only supplies the
+   ORIGINAL SEED DEFAULTS — the live source of truth once Supabase is
+   configured is Firestore, not this file.
 =================================================================== */
+
+/* ---------- 0. RESTAURANT INFO (seed default) ----------
+   Seeded into Firestore at settings/restaurant on first setup. Edit
+   the live values later from the Admin dashboard, not here. */
+const DEFAULT_RESTAURANT_INFO = {
+  name: "Tambayan Cawag",
+  tagline: "Cafe \u2022 Grill \u2022 Resto \u2022 Bar",
+  established: "2026",
+  location: "Cawag, Subic, Zambales",
+  phone: "[Restaurant Phone Number]",
+  email: "[Restaurant Email]",
+  facebook: "[Facebook Page]",
+  mapsLink: "[Exact Location / Google Maps Link]"
+};
 
 /* ---------- 1. SERVICE SCHEDULE ----------
    Two independent services. A menu category belongs to one service.
@@ -260,7 +276,8 @@ const DEFAULT_MENU = [
 window.MENU_IMAGES = MENU_IMAGES;
 window.MENU_IMAGE_PLACEHOLDER = MENU_IMAGE_PLACEHOLDER;
 
-/* Exposed globally so other scripts (storage.js, admin.js, main.js) can use it */
+/* Exposed globally so other scripts (supabase-seed.js, admin.js, main.js) can use it */
 window.DEFAULT_SERVICE_SCHEDULE = DEFAULT_SERVICE_SCHEDULE;
 window.DEFAULT_PREORDER_LEAD_MINUTES = DEFAULT_PREORDER_LEAD_MINUTES;
 window.DEFAULT_MENU = DEFAULT_MENU;
+window.DEFAULT_RESTAURANT_INFO = DEFAULT_RESTAURANT_INFO;

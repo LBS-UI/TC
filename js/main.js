@@ -7,20 +7,18 @@
 
   const peso = (n) => "\u20B1" + Number(n).toLocaleString("en-PH", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-  let MENU = window.TCStorage.getMenu();
+  let MENU = [];
+  let menuReady = false;
+  let backendOk = true;
   let activeFilter = "all";
   let searchTerm = "";
   let currentModalItem = null; // { category, item }
   let wizardStep = 1;
   let wizardData = { date: "", time: "", guests: 2, seating: "Indoor", fullName: "", phone: "", email: "", specialRequest: "" };
+  let submitting = false;
 
   /* ---------------- INIT ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
-    renderRestaurantInfo();
-    renderHoursEverywhere();
-    renderMenuFilters();
-    renderMenu();
-    renderCart();
     bindNav();
     bindSearch();
     bindCartDrawer();
@@ -29,15 +27,40 @@
     bindOrderLookup();
     bindLightbox();
     bindGlobalEscape();
-    setInterval(() => { renderHoursEverywhere(); renderMenu(); }, 60000);
+    renderCart();
     document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+    // Firestore-backed data: subscribe once; every callback re-renders
+    // the parts of the page that depend on it, so updates from the
+    // admin dashboard (or another device) appear live, with no reload.
+    window.TCSettings.subscribeSettings(() => {
+      renderRestaurantInfo();
+      renderHoursEverywhere();
+    }, onBackendError);
+
+    window.TCMenu.subscribeMenu((menu) => {
+      MENU = menu;
+      menuReady = window.TCMenu.isMenuReady();
+      renderMenuFilters();
+      renderMenu();
+    }, onBackendError);
+
+    setInterval(() => { renderHoursEverywhere(); renderMenu(); }, 60000);
   });
+
+  function onBackendError(err) {
+    backendOk = false;
+    console.error("Backend error:", err);
+    const banner = document.getElementById("backend-status-banner");
+    if (banner) banner.hidden = false;
+    renderMenu();
+  }
 
   document.addEventListener("tc:cart-changed", renderCart);
 
   /* ---------------- RESTAURANT INFO ---------------- */
   function renderRestaurantInfo() {
-    const info = window.TCStorage.getRestaurantInfo();
+    const info = window.TCSettings.getCachedRestaurantInfo();
     document.querySelectorAll("[data-info='location']").forEach((el) => (el.textContent = info.location));
     document.querySelectorAll("[data-info='phone']").forEach((el) => (el.textContent = info.phone));
     document.querySelectorAll("[data-info='email']").forEach((el) => (el.textContent = info.email));
@@ -47,7 +70,7 @@
 
   /* ---------------- HOURS / LIVE STATUS ---------------- */
   function renderHoursEverywhere() {
-    const schedule = window.TCStorage.getSchedule();
+    const schedule = window.TCSettings.getCachedSchedule();
     document.querySelectorAll("[data-hours-block]").forEach((block) => {
       const key = block.getAttribute("data-hours-block");
       const hours = schedule[key];
@@ -148,7 +171,7 @@
     if (img.dataset.fallbackApplied === "true") return; // avoid loop if placeholder itself is missing
     img.dataset.fallbackApplied = "true";
     img.onerror = null;
-    img.src = window.MENU_IMAGE_PLACEHOLDER || "assets/menu/placeholder.png";
+    img.src = "assets/menu/placeholder.png";
     img.classList.add("img-fallback");
   };
   /* ---------------- LIGHTBOX ---------------- */
@@ -206,9 +229,20 @@
   }
 
   function renderMenu() {
-    MENU = window.TCStorage.getMenu();
     const container = document.getElementById("menu-categories");
-    const schedule = window.TCStorage.getSchedule();
+
+    if (!backendOk) {
+      container.innerHTML = `<div class="menu-empty menu-empty--error">
+        We're currently unable to load the menu. Please check your connection and try again.
+      </div>`;
+      return;
+    }
+    if (!menuReady) {
+      container.innerHTML = `<div class="menu-empty">Loading menu\u2026</div>`;
+      return;
+    }
+
+    const schedule = window.TCSettings.getCachedSchedule();
     let categories = activeFilter === "all" ? MENU : MENU.filter((c) => c.id === activeFilter);
 
     let html = "";
@@ -679,34 +713,71 @@
       .join("");
   }
 
-  function handleConfirm() {
-    const subtotal = window.TCCart.subtotal();
-    const reservation = window.TCReservation.buildReservation({
+  async function handleConfirm() {
+    if (submitting) return; // guard against duplicate taps
+    const form = document.getElementById("wizard-step3");
+    hideFormBanner(form);
+
+    // Price security: re-derive every line from the live Firestore menu
+    // cache, never trust prices already sitting in the client cart.
+    const cartLines = window.TCCart.getLines();
+    const verification = window.TCReservation.reverifyCartAgainstMenu(cartLines, MENU);
+
+    if (!verification.ok) {
+      const names = verification.removed.map((l) => l.name).join(", ");
+      showFormBanner(
+        form,
+        `Some items in your cart are no longer available and were removed: ${names}. Please review your order before continuing.`
+      );
+      verification.removed.forEach((l) => window.TCCart.removeLine(l.lineId));
+      renderReview();
+      return;
+    }
+
+    const payload = window.TCReservation.buildOrderPayload({
       customer: wizardData,
       dineIn: wizardData,
-      cartLines: window.TCCart.getLines(),
-      subtotal
+      verifiedLines: verification.verifiedLines,
+      subtotal: verification.subtotal
     });
-    window.TCStorage.addReservation(reservation);
-    window.TCCart.clear();
 
-    showConfirmation(reservation);
+    setSubmitting(true);
+    try {
+      const result = await window.TCOrders.createOrder(payload);
+      window.TCCart.clear();
+      showConfirmation(Object.assign({}, payload, result));
+    } catch (err) {
+      console.error("Order submission failed:", err);
+      showFormBanner(
+        form,
+        "We're currently unable to submit your pre-order. Please check your connection and try again."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
-  function showConfirmation(reservation) {
+  function setSubmitting(isSubmitting) {
+    submitting = isSubmitting;
+    const btn = document.getElementById("wizard-step3-confirm");
+    btn.disabled = isSubmitting;
+    btn.textContent = isSubmitting ? "Submitting your order\u2026" : "Confirm Pre-Order";
+  }
+
+  function showConfirmation(order) {
     goToStep(4);
-    const dateObj = new Date(`${reservation.dineIn.date}T${reservation.dineIn.time}:00`);
+    const dateObj = new Date(`${order.date}T${order.time}:00`);
     const dateStr = dateObj.toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" });
     const timeStr = dateObj.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit" });
 
-    document.getElementById("confirm-number").textContent = reservation.reservationNumber;
-    document.getElementById("confirm-name").textContent = reservation.customer.fullName;
+    document.getElementById("confirm-number").textContent = order.reservationNumber;
+    document.getElementById("confirm-name").textContent = order.customerName;
     document.getElementById("confirm-date").textContent = dateStr;
     document.getElementById("confirm-time").textContent = timeStr;
-    document.getElementById("confirm-guests").textContent = reservation.dineIn.guests;
-    document.getElementById("confirm-seating").textContent = reservation.dineIn.seating;
-    document.getElementById("confirm-total").textContent = peso(reservation.subtotal);
-    document.getElementById("confirm-items").innerHTML = reservation.items
+    document.getElementById("confirm-guests").textContent = order.guests;
+    document.getElementById("confirm-seating").textContent = order.seating;
+    document.getElementById("confirm-total").textContent = peso(order.subtotal);
+    document.getElementById("confirm-items").innerHTML = order.items
       .map((line) => `<li>${line.qty} \u00D7 ${line.name}</li>`)
       .join("");
   }
@@ -722,32 +793,41 @@
       if (e.key === "Enter") doLookup();
     });
 
-    function doLookup() {
+    async function doLookup() {
       const value = input.value.trim().toUpperCase();
       if (!value) {
         resultEl.innerHTML = `<p class="lookup-error">Please enter a reservation number.</p>`;
         return;
       }
-      const reservation = window.TCStorage.findReservation(value);
-      if (!reservation) {
+
+      btn.disabled = true;
+      resultEl.innerHTML = `<p class="lookup-loading">Checking\u2026</p>`;
+
+      let order;
+      try {
+        order = await window.TCOrders.getOrderByReservationNumber(value);
+      } catch (err) {
+        console.error("Order lookup failed:", err);
+        resultEl.innerHTML = `<p class="lookup-error">We're currently unable to check your order. Please check your connection and try again.</p>`;
+        btn.disabled = false;
+        return;
+      }
+      btn.disabled = false;
+
+      if (!order) {
         resultEl.innerHTML = `<p class="lookup-error">No reservation found for "${value}". Please check the number and try again.</p>`;
         return;
       }
-      const statusIcons = {
-        "Pending Confirmation": "\uD83D\uDFE1",
-        Confirmed: "\uD83D\uDFE2",
-        Preparing: "\uD83D\uDD35",
-        Completed: "\u26AA",
-        Cancelled: "\uD83D\uDD34"
-      };
-      const dateObj = new Date(`${reservation.dineIn.date}T${reservation.dineIn.time}:00`);
+
+      const label = window.TCReservation.STATUS_LABELS[order.status] || order.status;
+      const icon = window.TCReservation.STATUS_ICONS[order.status] || "";
+      const dateObj = new Date(`${order.date}T${order.time}:00`);
       resultEl.innerHTML = `<div class="lookup-card">
-        <div class="lookup-card__status">${statusIcons[reservation.status] || ""} ${reservation.status}</div>
-        <div class="lookup-card__row"><span>Reservation</span><strong>${reservation.reservationNumber}</strong></div>
-        <div class="lookup-card__row"><span>Name</span><strong>${reservation.customer.fullName}</strong></div>
+        <div class="lookup-card__status">${icon} ${label}</div>
+        <div class="lookup-card__row"><span>Reservation</span><strong>${order.reservationNumber}</strong></div>
         <div class="lookup-card__row"><span>Date & Time</span><strong>${dateObj.toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" })}, ${dateObj.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit" })}</strong></div>
-        <div class="lookup-card__row"><span>Guests</span><strong>${reservation.dineIn.guests}</strong></div>
-        <div class="lookup-card__row"><span>Total</span><strong>${peso(reservation.subtotal)}</strong></div>
+        <div class="lookup-card__row"><span>Guests</span><strong>${order.guests}</strong></div>
+        <div class="lookup-card__row"><span>Total</span><strong>${peso(order.subtotal)}</strong></div>
       </div>`;
     }
   }

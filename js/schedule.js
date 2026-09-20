@@ -2,8 +2,9 @@
    TAMBAYAN CAWAG — SCHEDULE LOGIC
    -------------------------------------------------------------------
    Pure functions for figuring out whether a service (Go-To or Cafe)
-   is open, given the current time or a candidate dine-in time.
-   Hours come from TCStorage so admin edits apply everywhere.
+   is open, given the current time or a candidate dine-in time. Hours
+   come from the live Supabase cache (js/supabase-settings.js) so
+   admin edits apply everywhere immediately.
 =================================================================== */
 
 const TCSchedule = (function () {
@@ -30,7 +31,7 @@ const TCSchedule = (function () {
   }
 
   function getServiceHours(serviceKey) {
-    const schedule = window.TCStorage.getSchedule();
+    const schedule = window.TCSettings.getCachedSchedule();
     return schedule[serviceKey] || null;
   }
 
