@@ -1,3 +1,10 @@
+import "./supabase-config.js";
+import "./supabase-auth.js";
+import "./supabase-menu.js";
+import "./supabase-orders.js";
+import "./supabase-settings.js";
+import "./supabase-seed.js";
+
 /* ===================================================================
    TAMBAYAN CAWAG — ADMIN DASHBOARD LOGIC
    -------------------------------------------------------------------
@@ -89,7 +96,7 @@
       renderReservationsTable(isFirstLoad ? [] : addedIds);
     }, (err) => {
       console.error("orders subscription error:", err);
-      showAdminError("Unable to load orders from Firestore. Check your connection and Firestore rules.");
+      showAdminError("Unable to load orders from Supabase. Check your connection and Supabase security policies.");
     });
 
     window.TCMenu.subscribeMenu((menu) => {
@@ -97,14 +104,14 @@
       renderMenuAdmin();
     }, (err) => {
       console.error("menu subscription error:", err);
-      showAdminError("Unable to load the menu from Firestore.");
+      showAdminError("Unable to load the menu from Supabase.");
     });
 
     window.TCSettings.subscribeSettings(() => {
       renderScheduleForm();
     }, (err) => {
       console.error("settings subscription error:", err);
-      showAdminError("Unable to load restaurant settings from Firestore.");
+      showAdminError("Unable to load restaurant settings from Supabase.");
     });
   }
 
@@ -251,7 +258,7 @@
     const container = document.getElementById("menu-admin-list");
 
     if (!currentMenu.length) {
-      container.innerHTML = `<div class="admin-empty">No menu data yet. Use the Setup tab to seed the initial menu into Firestore.</div>`;
+      container.innerHTML = `<div class="admin-empty">No menu data yet. Use the Setup tab to seed the initial menu into Supabase.</div>`;
       document.getElementById("item-category-select").innerHTML = "";
       return;
     }
@@ -465,7 +472,7 @@
         resultEl.hidden = false;
       } catch (err) {
         console.error("Seeding failed:", err);
-        resultEl.textContent = "Seeding failed. Check your connection and Firestore rules, then try again.";
+        resultEl.textContent = "Seeding failed. Check your connection and Supabase security policies, then try again.";
         resultEl.className = "seed-result seed-result--error";
         resultEl.hidden = false;
       } finally {

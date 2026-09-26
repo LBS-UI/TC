@@ -21,11 +21,11 @@
    (see js/supabase-seed.js) so admin edits persist across every device
    and session without touching this file. This file only supplies the
    ORIGINAL SEED DEFAULTS — the live source of truth once Supabase is
-   configured is Firestore, not this file.
+   configured is Supabase, not this file.
 =================================================================== */
 
 /* ---------- 0. RESTAURANT INFO (seed default) ----------
-   Seeded into Firestore at settings/restaurant on first setup. Edit
+   Seeded into Supabase at settings/restaurant on first setup. Edit
    the live values later from the Admin dashboard, not here. */
 const DEFAULT_RESTAURANT_INFO = {
   name: "Tambayan Cawag",

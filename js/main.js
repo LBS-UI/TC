@@ -35,7 +35,7 @@ import "./supabase-orders.js";
     renderCart();
     document.getElementById("footer-year").textContent = new Date().getFullYear();
 
-    // Firestore-backed data: subscribe once; every callback re-renders
+    // Supabase-backed data: subscribe once; every callback re-renders
     // the parts of the page that depend on it, so updates from the
     // admin dashboard (or another device) appear live, with no reload.
     window.TCSettings.subscribeSettings(() => {
@@ -723,7 +723,7 @@ import "./supabase-orders.js";
     const form = document.getElementById("wizard-step3");
     hideFormBanner(form);
 
-    // Price security: re-derive every line from the live Firestore menu
+    // Price security: re-derive every line from the live Supabase menu
     // cache, never trust prices already sitting in the client cart.
     const cartLines = window.TCCart.getLines();
     const verification = window.TCReservation.reverifyCartAgainstMenu(cartLines, MENU);

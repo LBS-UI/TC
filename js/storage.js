@@ -5,7 +5,7 @@
    cart — genuinely temporary, single-device, client-side state that
    doesn't belong in a shared database. Everything that used to live
    here (menu, schedules, reservations, restaurant info) is now real
-   Firestore data:
+   Supabase data:
      - menu / categories        -> js/supabase-menu.js
      - service hours / settings -> js/supabase-settings.js
      - orders / reservations    -> js/supabase-orders.js

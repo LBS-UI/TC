@@ -141,8 +141,8 @@
     <div class="schedule-form">
       <h4>Seed Initial Menu Data</h4>
       <p class="muted">
-        Populates Firestore with the restaurant's starting menu, service hours, lead time, and contact info
-        from <code>js/menu-data.js</code>. Safe to click more than once — it checks Firestore first and
+        Populates Supabase with the restaurant's starting menu, service hours, lead time, and contact info
+        from <code>js/menu-data.js</code>. Safe to click more than once — it checks Supabase first and
         skips seeding if menu data already exists, so it will never create duplicates.
       </p>
       <button class="btn btn--primary" id="seed-data-btn" style="width:auto;">Seed Initial Menu Data</button>
@@ -203,13 +203,7 @@
 
 <script src="js/menu-data.js"></script>
 <script src="js/schedule.js"></script>
-<script type="module" src="js/supabase-config.js"></script>
-<script type="module" src="js/supabase-auth.js"></script>
-<script type="module" src="js/supabase-settings.js"></script>
-<script type="module" src="js/supabase-menu.js"></script>
-<script type="module" src="js/supabase-orders.js"></script>
-<script type="module" src="js/supabase-seed.js"></script>
 <script src="js/reservation.js"></script>
-<script src="js/admin.js"></script>
+<script type="module" src="js/admin.js"></script>
 </body>
 </html>

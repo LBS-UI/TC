@@ -13,7 +13,7 @@ const TCReservation = (function () {
   const PH_PHONE_RE = /^(09\d{9}|\+639\d{9})$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Firestore stores machine-readable lowercase statuses; the UI shows
+  // Supabase stores machine-readable lowercase statuses; the UI shows
   // friendlier labels. This is the single place that mapping lives.
   const STATUS_LABELS = {
     pending: "Pending Confirmation",
@@ -111,7 +111,7 @@ const TCReservation = (function () {
   /**
    * PRICE SECURITY: never trust the price/qty math already sitting in
    * the client-side cart. Re-derive every line's unit price and
-   * add-on prices from the live Firestore-backed menu cache right
+   * add-on prices from the live Supabase-backed menu cache right
    * before submission. Items that no longer exist or are no longer
    * available are dropped and reported back so the UI can warn the
    * customer instead of silently submitting a wrong total.
@@ -154,7 +154,7 @@ const TCReservation = (function () {
     return { ok: removed.length === 0, verifiedLines, removed, subtotal };
   }
 
-  /** Shapes wizard state + verified cart lines into the Firestore order payload. */
+  /** Shapes wizard state + verified cart lines into the Supabase order payload. */
   function buildOrderPayload({ customer, dineIn, verifiedLines, subtotal }) {
     return {
       customerName: customer.fullName.trim(),
