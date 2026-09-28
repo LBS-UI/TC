@@ -1,0 +1,13 @@
+body[data-page="cafe"] {
+  --terracotta: #4f6f66;
+  --terracotta-deep: #2f4c45;
+}
+
+body[data-page="cafe"] .brand-mark { background: var(--cafe); }
+body[data-page="cafe"] .btn-terracotta { background: var(--cafe); }
+
+.cafe-note {
+  background: #e7eeeb;
+  border-radius: 22px;
+  padding: 18px;
+}

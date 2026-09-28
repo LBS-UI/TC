@@ -1,0 +1,35 @@
+.menu-hero {
+  padding: 28px 0 8px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0 20px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.chip.is-active {
+  background: var(--ink);
+  color: #fffaf4;
+  border-color: var(--ink);
+}
+
+.menu-card { overflow: hidden; display: flex; flex-direction: column; }
+.menu-card-media { height: 180px; overflow: hidden; }
+.menu-card-media img { width: 100%; height: 180px; object-fit: cover; }
+.menu-card-body { padding: 16px; display: grid; gap: 8px; }
+.menu-card-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.menu-card-top h3 { font-size: 1.2rem; }
+.price { font-weight: 700; white-space: nowrap; }
+.menu-card-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.menu-card.is-unavailable { opacity: 0.7; }

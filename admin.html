@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Tambayan Cawag V2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body" data-page="admin">
+  <section data-admin-screen="login">
+    <article class="login-card panel">
+      <p class="kicker">Staff only</p>
+      <h1>Admin login</h1>
+      <p class="muted">Sign in with your Supabase Auth account. Access is granted only if your user ID is in the admins table.</p>
+      <div data-login-notice></div>
+      <form class="form-grid" data-login-form>
+        <label>Email <input type="email" name="email" required autocomplete="username"></label>
+        <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
+        <button class="btn btn-terracotta" type="submit">Sign in</button>
+      </form>
+    </article>
+  </section>
+
+  <section data-admin-screen="unauthorized" hidden>
+    <article class="login-card panel">
+      <h1>Signed in, not authorized</h1>
+      <p>This account can sign in, but it is not listed as an admin.</p>
+      <p>Email: <strong data-unauth-email></strong></p>
+      <p>UID: <code data-unauth-uid></code></p>
+      <p class="muted" data-unauth-extra></p>
+      <p>Ask an existing admin to add this UID to the <code>admins</code> table, then sign in again.</p>
+      <button class="btn btn-ghost" type="button" data-unauth-logout>Sign out</button>
+    </article>
+  </section>
+
+  <section data-admin-screen="app" hidden>
+    <div class="admin-shell">
+      <aside class="admin-side">
+        <p><strong>Tambayan Cawag</strong><br><span class="small">Admin V2</span></p>
+        <button type="button" class="is-active" data-nav-panel-btn="dashboard">Dashboard</button>
+        <button type="button" data-nav-panel-btn="restaurant">Restaurant menu</button>
+        <button type="button" data-nav-panel-btn="cafe">Cafe menu</button>
+        <button type="button" data-nav-panel-btn="categories">Categories</button>
+        <button type="button" data-nav-panel-btn="orders">Orders</button>
+        <button type="button" data-nav-panel-btn="schedule">Schedule</button>
+        <button type="button" data-nav-panel-btn="settings">Settings</button>
+        <button type="button" data-logout>Log out</button>
+      </aside>
+      <div class="admin-main">
+        <div class="admin-top">
+          <div>
+            <p class="muted small" data-admin-email></p>
+            <div data-admin-notice></div>
+          </div>
+          <a class="btn btn-ghost" href="index.html">View site</a>
+        </div>
+
+        <section data-panel="dashboard">
+          <h1>Dashboard</h1>
+          <div class="stat-grid">
+            <article class="stat"><span>Restaurant items</span><strong data-stat-restaurant>0</strong></article>
+            <article class="stat"><span>Cafe items</span><strong data-stat-cafe>0</strong></article>
+            <article class="stat"><span>Open orders</span><strong data-stat-orders>0</strong></article>
+          </div>
+        </section>
+
+        <section data-panel="restaurant" hidden>
+          <div class="admin-top">
+            <h1>Restaurant menu</h1>
+            <button class="btn btn-terracotta" type="button" data-add-restaurant>Add item</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Status</th><th>Featured</th><th></th></tr></thead>
+              <tbody data-restaurant-table></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section data-panel="cafe" hidden>
+          <div class="admin-top">
+            <h1>Cafe menu</h1>
+            <button class="btn btn-terracotta" type="button" data-add-cafe>Add cafe item</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Status</th><th>Featured</th><th></th></tr></thead>
+              <tbody data-cafe-table></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section data-panel="categories" hidden>
+          <h1>Categories</h1>
+          <form class="form-grid" data-category-form>
+            <label>Name <input name="cat_name" required></label>
+            <label>Type
+              <select name="cat_type">
+                <option value="restaurant">Restaurant</option>
+                <option value="cafe">Cafe</option>
+              </select>
+            </label>
+            <label>Sort order <input name="cat_sort" type="number" value="10"></label>
+            <button class="btn" type="submit">Add category</button>
+          </form>
+          <div class="table-wrap" style="margin-top:16px">
+            <table>
+              <thead><tr><th>Name</th><th>Type</th><th>Sort</th><th></th></tr></thead>
+              <tbody data-category-table></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section data-panel="orders" hidden>
+          <h1>Orders</h1>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Customer</th><th>Items</th><th>Total</th><th>Type</th><th>Status</th><th>When</th></tr></thead>
+              <tbody data-orders-table></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section data-panel="schedule" hidden>
+          <h1>Schedule</h1>
+          <p class="muted">Use 24-hour time. Midnight closing is 24:00.</p>
+          <form class="form-grid" data-hours-form>
+            <label>Restaurant open <input id="rest_open" placeholder="10:00" required></label>
+            <label>Restaurant close <input id="rest_close" placeholder="24:00" required></label>
+            <label>Cafe open <input id="cafe_open" placeholder="13:00" required></label>
+            <label>Cafe close <input id="cafe_close" placeholder="24:00" required></label>
+            <button class="btn btn-terracotta" type="submit">Save hours</button>
+          </form>
+        </section>
+
+        <section data-panel="settings" hidden>
+          <h1>Settings</h1>
+          <form class="form-grid" data-settings-form>
+            <label>Restaurant name <input id="set_name"></label>
+            <label>Tagline <input id="set_tagline"></label>
+            <label>Short description <textarea id="set_short" rows="3"></textarea></label>
+            <label>About <textarea id="set_about" rows="5"></textarea></label>
+            <label>Address <input id="set_address"></label>
+            <label>Phone <input id="set_phone"></label>
+            <label>Email <input id="set_email"></label>
+            <button class="btn btn-terracotta" type="submit">Save settings</button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="item-dialog">
+    <form class="form-grid" data-item-form>
+      <h2>Item</h2>
+      <input type="hidden" id="item_id">
+      <label>Name <input id="item_name" required></label>
+      <label>Description <textarea id="item_description" rows="3"></textarea></label>
+      <label>Price <input id="item_price" type="number" min="0" step="0.01" required></label>
+      <label>Image URL <input id="item_image" placeholder="https://..."></label>
+      <label>Menu
+        <select id="item_menu_type">
+          <option value="restaurant">Restaurant</option>
+          <option value="cafe">Cafe</option>
+        </select>
+      </label>
+      <label>Category <select id="item_category"></select></label>
+      <label><input id="item_available" type="checkbox" checked> Available</label>
+      <label><input id="item_featured" type="checkbox"> Featured on homepage</label>
+      <div class="hero-actions">
+        <button class="btn btn-terracotta" type="submit">Save</button>
+        <button class="btn btn-ghost" type="button" data-item-cancel>Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

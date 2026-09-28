@@ -1,0 +1,60 @@
+.admin-body { background: #efe8de; }
+
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+
+.admin-side {
+  background: #241c17;
+  color: #f6efe6;
+  padding: 22px 16px;
+}
+
+.admin-side button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.admin-side button.is-active { background: rgba(255,250,244,0.12); }
+
+.admin-main { padding: 22px; }
+.admin-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat { padding: 18px; background: var(--surface); border-radius: 18px; border: 1px solid var(--line); }
+.stat strong { display: block; font-size: 2rem; font-family: var(--display); }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 16px; overflow: hidden; }
+th, td { padding: 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.row-actions { display: flex; gap: 8px; }
+
+.login-card {
+  width: min(420px, calc(100% - 32px));
+  margin: 12vh auto;
+  padding: 28px;
+}
+
+dialog { border: 0; border-radius: 20px; padding: 0; width: min(520px, 92vw); }
+dialog form { padding: 20px; }
+
+@media (max-width: 900px) {
+  .admin-shell { grid-template-columns: 1fr; }
+  .admin-side { display: flex; gap: 8px; overflow-x: auto; }
+  .admin-side button { width: auto; white-space: nowrap; }
+  .stat-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order — Tambayan Cawag</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/order.css">
+</head>
+<body data-page="order">
+  <div class="config-banner" data-config-banner hidden></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">T</span>
+        <span>Tambayan Cawag<small>Order</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="index.html" data-nav-link="home">Home</a>
+        <a href="menu.html" data-nav-link="menu">Menu</a>
+        <a href="cafe.html" data-nav-link="cafe">Cafe</a>
+        <a href="about.html" data-nav-link="about">About</a>
+        <a href="contact.html" data-nav-link="contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-terracotta order-btn" href="order.html">Order <span class="cart-count" data-cart-count hidden>0</span></a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu"><span></span></button>
+      </div>
+    </div>
+    <nav class="nav-panel" data-nav-panel>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cafe.html">Cafe</a>
+      <a href="order.html" data-nav-link="order">Order</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container section">
+    <p class="kicker">Order</p>
+    <h1>Review and send</h1>
+    <p class="muted">Restaurant and cafe items can go in the same order.</p>
+    <div data-order-confirm></div>
+    <div class="order-layout">
+      <section class="panel" style="padding:18px">
+        <h2>Your items</h2>
+        <div data-cart-empty class="state">
+          <strong>Your order is empty.</strong>
+          <p><a href="menu.html">Browse the kitchen menu</a> or <a href="cafe.html">the cafe</a>.</p>
+        </div>
+        <div data-cart-list></div>
+      </section>
+      <aside class="panel" style="padding:18px" data-cart-summary hidden>
+        <h2>Details</h2>
+        <p>Subtotal: <strong data-subtotal>₱0.00</strong></p>
+        <div data-order-notice></div>
+        <form class="form-grid" data-order-form>
+          <label>Name
+            <input name="customer_name" required autocomplete="name">
+          </label>
+          <label>Phone
+            <input name="customer_phone" required autocomplete="tel">
+          </label>
+          <label>Pickup or dine-in
+            <select name="fulfillment">
+              <option value="pickup">Pickup</option>
+              <option value="dine-in">Dine-in</option>
+            </select>
+          </label>
+          <label>Notes
+            <textarea name="customer_notes" rows="3" placeholder="Allergies, table number, timing"></textarea>
+          </label>
+          <button class="btn btn-terracotta" type="submit">Place order</button>
+        </form>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container legal">Tambayan Cawag V2 · Orders</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/orders.js"></script>
+</body>
+</html>

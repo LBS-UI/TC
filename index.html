@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambayan Cawag — Hang out in Cawag</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body data-page="home">
+  <div class="config-banner" data-config-banner hidden></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">T</span>
+        <span>Tambayan Cawag<small>V2</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="index.html" data-nav-link="home">Home</a>
+        <a href="menu.html" data-nav-link="menu">Menu</a>
+        <a href="cafe.html" data-nav-link="cafe">Cafe</a>
+        <a href="about.html" data-nav-link="about">About</a>
+        <a href="contact.html" data-nav-link="contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="cafe.html">Cafe</a>
+        <a class="btn btn-terracotta order-btn" href="order.html">Order <span class="cart-count" data-cart-count hidden>0</span></a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu"><span></span></button>
+      </div>
+    </div>
+    <nav class="nav-panel" data-nav-panel>
+      <a href="index.html" data-nav-link="home">Home</a>
+      <a href="menu.html" data-nav-link="menu">Menu</a>
+      <a href="cafe.html" data-nav-link="cafe">Cafe</a>
+      <a href="order.html" data-nav-link="order">Order</a>
+      <a href="about.html" data-nav-link="about">About</a>
+      <a href="contact.html" data-nav-link="contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <img class="hero-photo" src="assets/images/hero-restaurant.jpg" alt="Warm outdoor seating at Tambayan Cawag">
+      <div class="hero-copy">
+        <p class="kicker">Cawag, Subic, Zambales</p>
+        <h1>Tambayan Cawag</h1>
+        <p data-setting="tagline">A place to hang out in Cawag.</p>
+        <p data-setting="short_description">Tambayan Cawag is a neighborhood restaurant and cafe in Cawag, Subic, Zambales. Come for silog, snacks, and a seat that feels like home.</p>
+        <div class="hero-actions">
+          <a class="btn btn-terracotta" href="menu.html">View menu</a>
+          <a class="btn btn-ghost" href="cafe.html" style="color:#fffaf4;border-color:rgba(255,250,244,.35)">Visit cafe</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="intro-grid">
+        <div>
+          <p class="kicker">The hangout</p>
+          <h2>Eat, stay, tambay.</h2>
+          <p data-setting="about">Tambayan means hangout. Tambayan Cawag is a local spot in Cawag, Subic where you can eat, drink coffee, and stay a while. The kitchen serves go-to plates, snacks, and silog. In the afternoon the cafe opens for coffee and a quieter table.</p>
+        </div>
+        <aside class="info-card">
+          <p class="kicker">Kitchen hours</p>
+          <p data-hours-label="restaurant">10:00 AM – 12:00 AM</p>
+          <span class="status-chip" data-status="restaurant">Checking hours...</span>
+          <p class="muted small">Go-To / Snacks / Silog</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <p class="kicker">From the kitchen</p>
+          <h2>Featured food</h2>
+        </div>
+        <a class="btn btn-ghost" href="menu.html">Full menu</a>
+      </div>
+      <div class="card-grid" data-featured-grid>
+        <article class="feature-card panel">
+          <img src="assets/images/featured-silog.jpg" alt="Silog plate">
+          <div class="pad">
+            <p class="kicker">Silog</p>
+            <h3>Morning plates</h3>
+            <p class="muted">Garlic rice and silog-style meals from the kitchen.</p>
+          </div>
+        </article>
+        <article class="feature-card panel">
+          <img src="assets/images/featured-snacks.jpg" alt="Snacks">
+          <div class="pad">
+            <p class="kicker">Snacks</p>
+            <h3>Something to share</h3>
+            <p class="muted">Snacks and go-to orders while you hang out.</p>
+          </div>
+        </article>
+        <article class="feature-card panel">
+          <img src="assets/images/hero-cafe.jpg" alt="Cafe table">
+          <div class="pad">
+            <p class="kicker">Cafe</p>
+            <h3>Coffee after lunch</h3>
+            <p class="muted">The cafe opens at 1:00 PM.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="cafe-promo panel">
+        <div class="copy">
+          <p class="kicker">Cafe</p>
+          <h2>Looking for coffee and a place to relax?</h2>
+          <p>The cafe is its own room in the same house. Different hours. Different menu. Same Tambayan Cawag welcome.</p>
+          <p data-hours-label="cafe">1:00 PM – 12:00 AM</p>
+          <span class="status-chip" data-status="cafe">Checking hours...</span>
+          <p><a class="btn btn-green" href="cafe.html">Explore the cafe</a></p>
+        </div>
+        <img src="assets/images/hero-cafe.jpg" alt="Coffee and pastry at the cafe">
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Today</p>
+          <h2>Opening hours</h2>
+        </div>
+      </div>
+      <div class="hours-grid">
+        <article class="info-card">
+          <h3>Restaurant</h3>
+          <p>Go-To / Snacks / Silog</p>
+          <p data-hours-label="restaurant">10:00 AM – 12:00 AM</p>
+          <span class="status-chip" data-status="restaurant">Checking hours...</span>
+        </article>
+        <article class="info-card">
+          <h3>Cafe</h3>
+          <p>Coffee, drinks, and a slower table</p>
+          <p data-hours-label="cafe">1:00 PM – 12:00 AM</p>
+          <span class="status-chip" data-status="cafe">Checking hours...</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="split-about">
+        <article class="info-card">
+          <p class="kicker">About</p>
+          <h2>About Tambayan Cawag</h2>
+          <p data-setting="about">Tambayan means hangout. Tambayan Cawag is a local spot in Cawag, Subic where you can eat, drink coffee, and stay a while.</p>
+          <a class="btn btn-ghost" href="about.html">Read more</a>
+        </article>
+        <article class="info-card">
+          <p class="kicker">Find us</p>
+          <h2>Location</h2>
+          <p data-setting="address">Cawag, Subic, Zambales</p>
+          <p><a data-setting="phone" href="#"></a></p>
+          <a class="btn btn-terracotta" href="contact.html">Contact</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>Tambayan Cawag</strong>
+        <p data-setting="tagline">A place to hang out in Cawag.</p>
+      </div>
+      <div>
+        <p>Home<br>Menu<br>Cafe<br>Order</p>
+      </div>
+      <div>
+        <p data-setting="address">Cawag, Subic, Zambales</p>
+        <p>Restaurant: <span data-hours-label="restaurant">10:00 AM – 12:00 AM</span></p>
+        <p>Cafe: <span data-hours-label="cafe">1:00 PM – 12:00 AM</span></p>
+      </div>
+    </div>
+    <div class="container legal">Tambayan Cawag V2</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
