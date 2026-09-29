@@ -13,7 +13,7 @@ export const CONFIG = {
 };
 
 export function isSupabaseConfigured() {
-  return Boolean(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
+  return Boolean(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
 }
 
 export const DEFAULT_SETTINGS = {
