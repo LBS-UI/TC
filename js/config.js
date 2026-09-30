@@ -4,16 +4,21 @@
  * Paste your Supabase project URL and anon (public) key below.
  * Never put the service-role key in this file.
  */
+
+// Public Supabase configuration.
+// NEVER put the service-role/secret key here.
+
+export const SUPABASE_URL = "https://qyndceqcmnnzozjsqzrh.supabase.co";
+export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5bmRjZXFjbW5uem96anNxenJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTI5MjEsImV4cCI6MjEwNjE2ODkyMX0.wRTVcuURS8TBjZXa2ZfZd1b9txTg30gbOgCP01AOChI";
+
 export const CONFIG = {
-  SUPABASE_URL: "https://qyndceqcmnnzozjsqzrh.supabase.co",
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5bmRjZXFjbW5uem96anNxenJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTI5MjEsImV4cCI6MjEwNjE2ODkyMX0.wRTVcuURS8TBjZXa2ZfZd1b9txTg30gbOgCP01AOChI",
   timezone: "Asia/Manila",
   currency: "PHP",
   restaurantName: "Tambayan Cawag",
 };
 
 export function isSupabaseConfigured() {
-  return Boolean(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
+  return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 }
 
 export const DEFAULT_SETTINGS = {
