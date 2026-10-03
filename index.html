@@ -44,7 +44,7 @@
 
   <main>
     <section class="hero container">
-      <img class="hero-photo" src="assets/images/hero-restaurant.jpg" alt="Warm outdoor seating at Tambayan Cawag">
+      <img class="hero-photo" src="assets/images/cawag.bg.jpeg" alt="Warm outdoor seating at Tambayan Cawag">
       <div class="hero-copy">
         <p class="kicker">Cawag, Subic, Zambales</p>
         <h1>Tambayan Cawag</h1>
@@ -81,6 +81,33 @@
         </div>
         <a class="btn btn-ghost" href="menu.html">Full menu</a>
       </div>
+      <div class="tc-home-notices">
+        <aside class="tc-notice tc-notice-info" data-tc-notice="images">
+          <div class="tc-notice-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="8" r="0.9" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <p class="tc-notice-title">Please note</p>
+            <p>Some menu images are for illustration purposes only and may not exactly represent the actual appearance, portion, or presentation of the food and beverages served. Thank you for your understanding!</p>
+          </div>
+          <button class="tc-notice-dismiss" type="button" data-tc-dismiss="images" aria-label="Hide image note for this visit">Hide</button>
+        </aside>
+        <aside class="tc-notice tc-notice-order" data-tc-notice="wait">
+          <div class="tc-notice-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <p class="tc-notice-title">Ordering for a group?</p>
+            <p>Planning to dine with a group or party? We recommend ordering in advance! Food preparation may take up to approximately 30 minutes, especially for larger orders. Ordering early helps us prepare your meals and serve you better.</p>
+            <p class="tc-notice-fine">About 30 minutes is an approximate preparation time, not a guaranteed ready time.</p>
+            <a class="btn btn-small btn-terracotta" href="order.html">Order ahead</a>
+          </div>
+          <button class="tc-notice-dismiss" type="button" data-tc-dismiss="wait" aria-label="Hide ordering note for this visit">Hide</button>
+        </aside>
+      </div>
+      <p class="tc-notice-restore" hidden>
+        <button type="button" data-tc-restore>Show menu and ordering notes</button>
+      </p>
       <div class="card-grid" data-featured-grid>
         <article class="feature-card panel">
           <img src="assets/images/featured-silog.jpg" alt="Silog plate">
@@ -185,5 +212,35 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module" src="js/app.js"></script>
+  <script>
+    (function () {
+      var key = "tc-home-notices";
+      var hidden = {};
+      try { hidden = JSON.parse(sessionStorage.getItem(key) || "{}"); } catch (e) { hidden = {}; }
+      function paint() {
+        document.querySelectorAll("[data-tc-notice]").forEach(function (node) {
+          node.hidden = Boolean(hidden[node.getAttribute("data-tc-notice")]);
+        });
+        var restore = document.querySelector("[data-tc-restore]");
+        if (restore) restore.parentElement.hidden = !hidden.images && !hidden.wait;
+      }
+      document.querySelectorAll("[data-tc-dismiss]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          hidden[button.getAttribute("data-tc-dismiss")] = true;
+          sessionStorage.setItem(key, JSON.stringify(hidden));
+          paint();
+        });
+      });
+      var restore = document.querySelector("[data-tc-restore]");
+      if (restore) {
+        restore.addEventListener("click", function () {
+          hidden = {};
+          sessionStorage.removeItem(key);
+          paint();
+        });
+      }
+      paint();
+    })();
+  </script>
 </body>
 </html>
