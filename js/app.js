@@ -90,11 +90,21 @@ export function setNotice(container, type, message) {
   container.innerHTML = `<div class="notice notice-${type}">${escapeHtml(message)}</div>`;
 }
 
+function isAllowedImageUrl(url) {
+  if (!url) return false;
+  if (url.startsWith("assets/") || url.startsWith("./assets/") || url.startsWith("/assets/")) return true;
+  if (!url.startsWith("https://")) return false;
+  const blocked = ["google.com/imgres", "encrypted-tbn"];
+  return !blocked.some((part) => url.includes(part));
+}
+
 export function imageOrPlaceholder(url, label) {
-  if (url) {
-    return `<img src="${escapeHtml(url)}" alt="${escapeHtml(label)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;photo-fallback&quot;>T</div>'">`;
-  }
-  return `<div class="photo-fallback" aria-hidden="true">${escapeHtml((label || "T").slice(0, 1))}</div>`;
+  const name = label || "Menu item";
+  const safeLabel = escapeHtml(name);
+  const fallback = `<div class="photo-fallback" role="img" aria-label="${safeLabel}">${escapeHtml(name.slice(0, 1))}</div>`;
+  const src = String(url || "").trim();
+  if (!isAllowedImageUrl(src)) return fallback;
+  return `<img src="${escapeHtml(src)}" alt="${safeLabel}" width="640" height="480" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-fallback',role:'img',ariaLabel:this.alt,textContent:(this.alt||'T').slice(0,1)}))">`;
 }
 
 async function loadFeatured() {
@@ -121,7 +131,7 @@ async function loadFeatured() {
     .map(
       (item) => `
       <article class="feature-card panel">
-        ${item.image_url ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.name)}" onerror="this.style.display='none'">` : `<div class="photo-fallback">${escapeHtml(item.name.slice(0, 1))}</div>`}
+        ${imageOrPlaceholder(item.image_url, item.name)}
         <div class="pad">
           <p class="kicker">${item.menu_type === "cafe" ? "Cafe" : "Restaurant"}</p>
           <h3>${escapeHtml(item.name)}</h3>
