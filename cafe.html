@@ -49,8 +49,7 @@
       --cafe-accent:      #4f6f66;
       --cafe-accent-deep: #2f4c45;
 
-      /* Coffee is now pushed DOWN to 68vh so the button has
-         clear space between the sign and the cup. */
+      /* Coffee is pushed DOWN to 68vh so the button has clear space */
       --floor: 68vh;
       --cup-size: clamp(140px, 30vw, 190px);
       --intro-speed: 1.4;
@@ -272,7 +271,7 @@
     }
 
     /* ============================================================
-       ENTER BUTTON — now has clear space above the coffee
+       ENTER BUTTON — pointer-events FIXED to auto so it works
        ============================================================ */
     .intro__cta {
       position: absolute;
@@ -303,7 +302,7 @@
 
       transform: translate(-50%, 0) scale(0.7);
       opacity: 0;
-      pointer-events: none;
+      pointer-events: auto;   /* ← FIX: was `none`, now `auto` */
 
       transition:
         transform .35s cubic-bezier(.22, 1.3, .4, 1),
@@ -589,8 +588,7 @@
     }
 
     /* ============================================================
-       STEAM — anchored to the coffee surface
-       Auto-follows --floor (now 68vh).
+       STEAM — anchored to the coffee surface (auto-follows --floor)
        ============================================================ */
     .intro__steam {
       position: absolute;
@@ -735,7 +733,8 @@
       </p>
     </div>
 
-    <button type="button" class="intro__cta" id="ctaButton" aria-label="Pumasok sa cafe">
+    <!-- Button: pointer-events fixed, aria-label matches visible text -->
+    <button type="button" class="intro__cta" id="ctaButton" aria-label="Enter the cafe">
       <span>Enter</span>
       <span class="intro__cta-arrow" aria-hidden="true">→</span>
     </button>
@@ -985,14 +984,12 @@
       steamLayer.appendChild(frag);
     }
 
-    /* Aroma motes cluster around the cup in the lower half now
-       (since the cup moved down). */
     function makeAroma(count) {
       if (!aromaLayer) return;
       var frag = document.createDocumentFragment();
 
-      var cupCX   = 50;                 // % from left
-      var baseY   = 22;                 // % from bottom — matches lower cup position
+      var cupCX   = 50;
+      var baseY   = 22;
 
       for (var i = 0; i < count; i++) {
         var a = document.createElement('span');

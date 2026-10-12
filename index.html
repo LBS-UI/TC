@@ -1161,9 +1161,32 @@ html.intro-lock body { overflow: hidden; }
   .intro__sign > h1 { transform: none; }
 }
 
+  
+.music-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+  border: 1px solid rgba(36,28,23,.15);
+  background: #fffaf4;
+  color: #241c17;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(36,28,23,.12);
+}
+.music-toggle.is-on { background: #3f6b4e; color: #fffaf4; }
+
   </style>
 </head>
+
+
 <body data-page="home">
+  <audio id="bgMusic" src="assets/music/tambayan-bg.mp3" loop preload="auto"></audio>
+  <button type="button" class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Play background music">Music</button>
+
 
   <!-- ============================================================
        INTRO OVERLAY — Tambayan Cawag (improved)
@@ -1732,6 +1755,35 @@ html.intro-lock body { overflow: hidden; }
         exitIntro();
       });
     })();
+  
+    (function () {
+      var audio = document.getElementById("bgMusic");
+      var button = document.getElementById("musicToggle");
+      if (!audio || !button) return;
+      audio.volume = 0.35;
+      function setState(on) {
+        button.classList.toggle("is-on", on);
+        button.setAttribute("aria-pressed", on ? "true" : "false");
+        button.textContent = on ? "Music on" : "Music";
+        localStorage.setItem("tc-music", on ? "on" : "off");
+      }
+      function play() {
+        audio.play().then(function () { setState(true); }).catch(function () { setState(false); });
+      }
+      function pause() {
+        audio.pause();
+        setState(false);
+      }
+      button.addEventListener("click", function () {
+        if (audio.paused) play(); else pause();
+      });
+      var enter = document.getElementById("ctaButton") || document.getElementById("cafeEnter");
+      if (enter && localStorage.getItem("tc-music") !== "off") {
+        enter.addEventListener("click", function () { play(); }, { once: true });
+      }
+      if (localStorage.getItem("tc-music") === "on") play();
+    })();
+
   </script>
 </body>
 </html>
