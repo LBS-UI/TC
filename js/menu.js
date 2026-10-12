@@ -90,16 +90,18 @@ function renderSingleCard(item) {
   const available = item.available !== false;
   return `
     <article class="menu-card ${available ? "" : "is-unavailable"}">
-      <div class="menu-card-media">${imageOrPlaceholder(item.image_url, item.name)}</div>
-      <div class="menu-card-body">
-        <div class="menu-card-top">
-          <h3>${escapeHtml(item.name)}</h3>
-          <p class="price">${formatPeso(item.price)}</p>
-        </div>
-        <p class="muted">${escapeHtml(item.description || "")}</p>
-        <div class="menu-card-actions">
-          <span class="pill ${available ? "pill-ok" : "pill-off"}">${available ? "Available" : "Unavailable"}</span>
-          <button class="btn btn-small" type="button" data-add-item="${escapeHtml(item.id)}" ${available ? "" : "disabled"}>Add to order</button>
+      <div class="single-card">
+        <div class="menu-card-media">${imageOrPlaceholder(item.image_url, item.name)}</div>
+        <div class="menu-card-body">
+          <div class="menu-card-top">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p class="price">${formatPeso(item.price)}</p>
+          </div>
+          <p class="muted">${escapeHtml(item.description || "")}</p>
+          <div class="menu-card-actions">
+            <span class="pill ${available ? "pill-ok" : "pill-off"}">${available ? "Available" : "Unavailable"}</span>
+            <button class="btn btn-small" type="button" data-add-item="${escapeHtml(item.id)}" ${available ? "" : "disabled"}>Add</button>
+          </div>
         </div>
       </div>
     </article>
