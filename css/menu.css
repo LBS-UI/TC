@@ -1,6 +1,30 @@
-.menu-hero {
-  padding: 28px 0 8px;
+.menu-notice-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(36, 28, 23, 0.55);
 }
+.menu-notice-modal[hidden] { display: none; }
+.menu-notice-card {
+  width: min(560px, 100%);
+  background: #fffaf4;
+  color: #241c17;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(36, 28, 23, 0.28);
+}
+.menu-notice-item {
+  background: #f8f1e6;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin: 0 0 12px;
+}
+.menu-notice-item p { margin: 6px 0 0; }
+.menu-notice-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+
 
 .filters {
   display: flex;
