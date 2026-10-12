@@ -7,10 +7,1349 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/home.css">
+  <style>
+/* ===== SITE STYLES ===== */
+:root {
+  --bg: #f6efe6;
+  --bg-deep: #2b211b;
+  --surface: #fffaf4;
+  --surface-2: #efe4d6;
+  --ink: #241c17;
+  --muted: #6d5e52;
+  --line: #e3d4c4;
+  --terracotta: #c45c32;
+  --terracotta-deep: #9b3f1d;
+  --gold: #d7a15a;
+  --green: #3f6b4e;
+  --green-soft: #e7f0e8;
+  --cafe: #4f6f66;
+  --ok: #2f6f4e;
+  --danger: #9b2c2c;
+  --warn: #8a5a12;
+  --shadow: 0 18px 40px rgba(36, 28, 23, 0.1);
+  --radius: 22px;
+  --header: 74px;
+  --font: "Sora", "Segoe UI", sans-serif;
+  --display: "Fraunces", Georgia, serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; }
+
+h1, h2, h3, .display {
+  font-family: var(--display);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 0.4em;
+}
+
+p { margin: 0 0 1em; }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.82rem; }
+
+.container {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(246, 239, 230, 0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+}
+
+.site-header.is-scrolled { border-bottom-color: var(--line); }
+
+.nav-wrap {
+  min-height: var(--header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  background: transparent;
+  flex: 0 0 auto;
+}
+
+.brand-mark[hidden] { display: none; }
+
+.brand small {
+  display: block;
+  font-weight: 500;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-links, .nav-cta { display: flex; align-items: center; gap: 8px; }
+
+.nav-links a,
+.nav-panel a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+}
+
+.nav-links a.is-active,
+.nav-panel a.is-active { background: var(--surface-2); }
+
+.btn,
+button.btn {
+  border: 0;
+  background: var(--ink);
+  color: #fffaf4;
+  padding: 12px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover { transform: translateY(-1px); }
+
+.btn-terracotta { background: var(--terracotta); }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-green { background: var(--green); }
+.btn-small { padding: 8px 12px; font-size: 0.86rem; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.order-btn { position: relative; }
+.cart-count {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background: var(--gold);
+  color: var(--ink);
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  display: grid;
+  place-items: center;
+}
+
+.nav-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+}
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  position: relative;
+}
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  width: 100%;
+  position: absolute;
+  left: 0;
+}
+.nav-toggle span::before { top: -7px; }
+.nav-toggle span::after { top: 7px; }
+
+.nav-panel { display: none; }
+
+.hero {
+  position: relative;
+  min-height: min(78vh, 720px);
+  border-radius: 32px;
+  overflow: hidden;
+  color: #fffaf4;
+  display: grid;
+  align-items: end;
+  margin: 12px auto 48px;
+}
+
+.hero img.hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(36,28,23,0.1), rgba(36,28,23,0.78));
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  padding: 36px 28px 40px;
+  max-width: 680px;
+}
+
+.kicker {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.hero h1 { font-size: clamp(2.4rem, 7vw, 5rem); }
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,250,244,0.16);
+  font-size: 0.8rem;
+}
+.status-chip[data-status="open"] { background: #2f6f4e; }
+.status-chip[data-status="soon"] { background: #8a5a12; }
+.status-chip[data-status="closed"],
+.status-chip[data-status="unknown"] { background: rgba(0,0,0,0.45); }
+
+.section { padding: 28px 0 12px; }
+.section-head { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-bottom: 20px; }
+
+.card-grid, .menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.panel, .menu-card, .info-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.info-card { padding: 22px; }
+
+.feature-card { overflow: hidden; }
+.feature-card img { height: 210px; width: 100%; object-fit: cover; }
+.feature-card .pad { padding: 18px; }
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.site-footer {
+  margin-top: 56px;
+  background: var(--bg-deep);
+  color: #f6efe6;
+  padding: 42px 0 24px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 24px;
+}
+.site-footer a { color: #f6efe6; text-decoration: none; }
+.legal { opacity: 0.7; font-size: 0.85rem; margin-top: 24px; }
+
+.notice {
+  padding: 14px 16px;
+  border-radius: 16px;
+  margin: 12px 0;
+}
+.notice-error { background: #f8e8e6; color: var(--danger); }
+.notice-success { background: var(--green-soft); color: var(--ok); }
+.notice-warn { background: #f8edd9; color: var(--warn); }
+
+.state {
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 36px 20px;
+  text-align: center;
+}
+.state-error { border-color: #e3b8b4; }
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  color: #fffaf4;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 600;
+}
+
+.photo-fallback {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #efe1d2, #c45c32);
+  color: #fffaf4;
+  font-family: var(--display);
+  font-size: 2rem;
+}
+
+.pill {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+.pill-ok { background: var(--green-soft); color: var(--ok); }
+.pill-off { background: #f3e3e1; color: var(--danger); }
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 16px);
+  background: var(--ink);
+  color: #fffaf4;
+  padding: 10px 14px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s ease;
+  z-index: 80;
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+.config-banner {
+  background: #f8edd9;
+  color: var(--warn);
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+}
+
+.form-grid { display: grid; gap: 12px; }
+label { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 600; }
+input, textarea, select {
+  font: inherit;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+  width: 100%;
+}
+
+.text-btn {
+  border: 0;
+  background: none;
+  color: var(--terracotta-deep);
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+.text-btn.danger { color: var(--danger); }
+
+@media (max-width: 900px) {
+  .card-grid, .menu-grid, .hours-grid, .footer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .nav-panel {
+    display: none;
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: calc(var(--header) + 6px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+    flex-direction: column;
+  }
+  .nav-panel.is-open { display: flex; }
+  .nav-panel a { padding: 12px; }
+}
+
+@media (max-width: 640px) {
+  .card-grid, .menu-grid, .hours-grid, .footer-grid { grid-template-columns: 1fr; }
+  .hero { min-height: 72vh; border-radius: 22px; }
+  .nav-cta .btn-ghost { display: none; }
+}
+
+
+/* ===== HOMEPAGE STYLES ===== */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.cafe-promo {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 0;
+  overflow: hidden;
+  background: #22342f;
+  color: #f3efe6;
+}
+
+.cafe-promo .copy { padding: 32px; }
+.cafe-promo img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; }
+
+.split-about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.tc-home-notices {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 18px;
+}
+
+.tc-notice {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid #ead9c6;
+  background: #fff8f1;
+  color: #3d3128;
+}
+
+.tc-notice p { margin: 0 0 8px; font-size: 0.92rem; }
+.tc-notice-title { font-weight: 700; margin-bottom: 4px; }
+.tc-notice-fine { color: #6d5e52; font-size: 0.82rem; }
+.tc-notice-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #f3e4d4;
+  color: #9b3f1d;
+}
+.tc-notice-order { background: #f8f1e6; }
+.tc-notice-order .tc-notice-icon { background: #efe0cc; color: #8a5a12; }
+.tc-notice-dismiss {
+  border: 0;
+  background: transparent;
+  color: #6d5e52;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 4px;
+}
+.tc-notice-restore { margin: -6px 0 16px; }
+.tc-notice-restore button {
+  border: 0;
+  background: none;
+  color: #9b3f1d;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 640px) {
+  .tc-notice { grid-template-columns: auto 1fr; }
+  .tc-notice-dismiss { grid-column: 2; justify-self: start; }
+}
+
+
+/* ============================================================
+   INTRO STYLES — Tambayan Cawag (improved visuals)
+   ============================================================ */
+.intro {
+  /* Warm kitchen palette */
+  --cream:      #fffaf4;
+  --cream-2:    #f8ebd8;
+  --cream-3:    #efe0c6;
+  --wood-dark:  #3a2820;
+  --wood-mid:   #6b4226;
+  --wood-light: #8b5a2b;
+  --terracotta: #c45c32;
+  --terra-deep: #9b3f1d;
+  --gold:       #d7a15a;
+  --gold-glow:  #f0c98a;
+  --green:      #3f6b4e;
+  --ink:        #2d1f16;
+  --muted:      #6d5e52;
+
+  --floor: 68vh;
+  --bowl-size: clamp(150px, 34vw, 210px);
+  --intro-speed: 1.4;
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background:
+    radial-gradient(130% 95% at 50% 20%,
+      #fffaf4 0%, #f8ebd8 32%, #f0dcc0 65%, #d9ae7f 100%);
+  transition:
+    opacity .8s ease,
+    transform .9s cubic-bezier(.4, 0, .2, 1),
+    filter .8s ease;
+}
+
+.intro.intro--exit {
+  opacity: 0;
+  transform: scale(1.04);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+html.intro-lock,
+html.intro-lock body { overflow: hidden; }
+
+.intro__glow,
+.intro__texture,
+.intro__vignette,
+.intro__mist,
+.intro__table,
+.intro__table-shadow,
+.intro__bowl,
+.intro__steam,
+.intro__aroma,
+.intro__sign,
+.intro__cta,
+.intro__saucer,
+.intro__ripple {
+  position: absolute;
+}
+
+/* ---- Layered warm glow behind the bowl ---- */
+.intro__glow {
+  left: 50%;
+  top: calc(var(--floor) - 12vh);
+  width: min(780px, 100vw);
+  height: min(780px, 100vw);
+  transform: translate(-50%, -50%) scale(.6);
+  background: radial-gradient(circle,
+    rgba(240, 201, 138, 0.42) 0%,
+    rgba(215, 161, 90, 0.24) 30%,
+    rgba(196, 92, 50, 0.12) 55%,
+    transparent 72%);
+  filter: blur(58px);
+  opacity: 0;
+  pointer-events: none;
+  animation: tc-glow-in 3.4s ease-out .35s both;
+}
+@keyframes tc-glow-in {
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---- Warm paper grain ---- */
+.intro__texture {
+  inset: 0;
+  pointer-events: none;
+  opacity: .55;
+  mix-blend-mode: multiply;
+  background-image:
+    radial-gradient(circle at 22% 18%, rgba(139, 69, 19, .10), transparent 42%),
+    radial-gradient(circle at 80% 78%, rgba(139, 69, 19, .08), transparent 45%),
+    radial-gradient(circle at 48% 52%, rgba(120, 60, 20, .06), transparent 55%);
+}
+
+/* ---- Warm vignette (focuses the composition) ---- */
+.intro__vignette {
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(ellipse 130% 90% at 50% 42%,
+    transparent 45%,
+    rgba(60, 30, 10, 0.42) 100%);
+}
+
+/* ---- Ambient warm mist ---- */
+.intro__mist {
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: .48;
+}
+.mist {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 250, 244, .85) 0%,
+    rgba(255, 250, 244, .35) 45%,
+    transparent 72%);
+  filter: blur(9px);
+  animation: tc-mist-drift linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes tc-mist-drift {
+  0%   { opacity: 0;                    transform: translate3d(0, 0, 0) scale(.7); }
+  20%  { opacity: var(--m-opacity, .5); }
+  80%  { opacity: var(--m-opacity, .5); }
+  100% { opacity: 0;                    transform: translate3d(var(--m-drift, 30px), -60vh, 0) scale(1.35); }
+}
+
+/* ============================================================
+   THE HAND-PAINTED WOODEN SIGN — richer frame and depth
+   ============================================================ */
+.intro__sign {
+  left: 50%;
+  top: 4vh;
+  width: min(92vw, 560px);
+  padding: clamp(24px, 5vw, 34px) clamp(28px, 6vw, 50px);
+
+  background:
+    radial-gradient(circle at 25% 20%, rgba(215, 161, 90, .12), transparent 55%),
+    linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
+
+  /* Deep walnut frame with a warmer inner rim */
+  border: 8px solid var(--wood-mid);
+  border-radius: 5px;
+
+  box-shadow:
+    0 4px 0 var(--wood-dark),
+    0 22px 48px rgba(58, 40, 32, .40),
+    inset 0 0 0 2px rgba(215, 161, 90, .45),
+    inset 0 0 0 4px rgba(255, 250, 244, .7),
+    inset 0 0 50px rgba(215, 161, 90, .10),
+    0 0 50px rgba(240, 201, 138, .12);
+
+  text-align: center;
+  z-index: 4;
+  pointer-events: none;
+  transform: translateX(-50%) rotate(-1.2deg);
+  opacity: 0;
+  animation: tc-sign-drop 1.2s cubic-bezier(.22, 1.15, .36, 1)
+             calc(2.2s * var(--intro-speed)) both;
+}
+@keyframes tc-sign-drop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) rotate(-6deg) translateY(-34px) scale(.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) rotate(-1.2deg) translateY(0) scale(1);
+  }
+}
+
+/* Wood grain lines */
+.intro__sign::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 5px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(0, 0, 0, .07) 0px,
+      rgba(0, 0, 0, .07) 2px,
+      transparent 2px,
+      transparent 9px);
+  opacity: .55;
+}
+
+.intro__sign-nail {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%,
+    #f0cd8e 0%, #d7a15a 45%, #6b4226 100%);
+  box-shadow:
+    inset 0 -1px 1px rgba(0, 0, 0, .45),
+    0 1px 3px rgba(74, 54, 38, .55);
+  z-index: 2;
+}
+.intro__sign-nail--tl { top: 9px;    left: 9px;  }
+.intro__sign-nail--tr { top: 9px;    right: 9px; }
+.intro__sign-nail--bl { bottom: 9px; left: 9px;  }
+.intro__sign-nail--br { bottom: 9px; right: 9px; }
+
+.intro__sign > p,
+.intro__sign > h1 {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: tc-text-in .9s cubic-bezier(.22, 1, .36, 1) both;
+}
+.intro__eyebrow {
+  margin: 0 0 .6em;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(.62rem, 1.9vw, .74rem);
+  font-weight: 700;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation-delay: calc(2.7s * var(--intro-speed));
+}
+.intro__title {
+  margin: 0 0 .5em;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.65rem, 6vw, 2.45rem);
+  letter-spacing: -.015em;
+  line-height: 1.08;
+  color: var(--terra-deep);
+  text-shadow:
+    0 1px 0 rgba(255, 250, 244, .9),
+    0 2px 12px rgba(155, 63, 29, .12);
+  animation-delay: calc(2.9s * var(--intro-speed));
+}
+.intro__tagline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: .7em;
+  margin: 0;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(.62rem, 1.9vw, .74rem);
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: .85;
+  animation-delay: calc(3.1s * var(--intro-speed));
+}
+.intro__tagline i {
+  font-style: normal;
+  color: var(--terracotta);
+  opacity: .95;
+}
+@keyframes tc-text-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ENTER BUTTON — refined terracotta pill
+   ============================================================ */
+.intro__cta {
+  left: 50%;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 34px;
+  border: 1.5px solid rgba(240, 201, 138, .55);
+  border-radius: 999px;
+  font: inherit;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(.78rem, 2.2vw, .92rem);
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #fffaf4;
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--terracotta) 0%, var(--terra-deep) 100%);
+  box-shadow:
+    0 2px 0 rgba(74, 54, 38, .55),
+    0 18px 36px rgba(155, 63, 29, .35),
+    0 0 40px rgba(196, 92, 50, .22),
+    inset 0 1px 0 rgba(255, 255, 255, .3);
+  text-shadow: 0 1px 0 rgba(74, 20, 5, .4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 0) scale(.7);
+  transition:
+    transform .35s cubic-bezier(.22, 1.3, .4, 1),
+    box-shadow .35s ease,
+    filter .35s ease;
+  animation: tc-cta-in .9s cubic-bezier(.22, 1.4, .4, 1)
+             calc(3.6s * var(--intro-speed)) both;
+}
+@keyframes tc-cta-in {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(.5); }
+  60%  { opacity: 1; transform: translate(-50%, 0) scale(1.08); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); pointer-events: auto; }
+}
+
+.intro__cta::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 2px solid rgba(196, 92, 50, .6);
+  opacity: 0;
+  animation: tc-cta-pulse 2.8s ease-out infinite;
+  animation-delay: calc(4.6s * var(--intro-speed));
+  pointer-events: none;
+}
+@keyframes tc-cta-pulse {
+  0%   { opacity: .8; transform: scale(1);    }
+  100% { opacity: 0;  transform: scale(1.4);  }
+}
+
+.intro__cta:hover,
+.intro__cta:focus-visible {
+  transform: translate(-50%, -3px) scale(1.05);
+  box-shadow:
+    0 4px 0 rgba(74, 54, 38, .55),
+    0 24px 46px rgba(155, 63, 29, .42),
+    0 0 60px rgba(196, 92, 50, .32),
+    inset 0 1px 0 rgba(255, 255, 255, .35);
+  filter: brightness(1.08);
+  outline: none;
+}
+.intro__cta:active {
+  transform: translate(-50%, 1px) scale(.99);
+  box-shadow:
+    0 1px 0 rgba(74, 54, 38, .55),
+    0 8px 16px rgba(155, 63, 29, .35);
+}
+
+.intro__cta-arrow {
+  display: inline-block;
+  transition: transform .3s ease;
+}
+.intro__cta:hover .intro__cta-arrow,
+.intro__cta:focus-visible .intro__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ============================================================
+   THE WOODEN TABLE — deeper tones, richer grain
+   ============================================================ */
+.intro__table {
+  left: -2px;
+  right: -2px;
+  top: calc(var(--floor) - 1.5vh);
+  bottom: -2px;
+  z-index: 1;
+  background:
+    repeating-linear-gradient(92deg,
+      rgba(0, 0, 0, .16) 0px,
+      rgba(0, 0, 0, .16) 2px,
+      transparent 2px,
+      transparent 15px),
+    repeating-linear-gradient(88deg,
+      rgba(240, 201, 138, .07) 0px,
+      rgba(240, 201, 138, .07) 1px,
+      transparent 1px,
+      transparent 24px),
+    linear-gradient(180deg, #6b4226 0%, #3d2314 32%, #1d1510 100%);
+  box-shadow:
+    inset 0 18px 36px -12px rgba(0, 0, 0, .78),
+    inset 0 -2px 8px rgba(0, 0, 0, .55),
+    0 -10px 32px -8px rgba(0, 0, 0, .4);
+}
+.intro__table::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -2px;
+  height: 3px;
+  background: linear-gradient(to bottom,
+    rgba(240, 201, 138, .75),
+    rgba(240, 201, 138, 0));
+  pointer-events: none;
+}
+.intro__table::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 6px;
+  background: linear-gradient(to bottom,
+    rgba(0, 0, 0, .4),
+    transparent);
+  pointer-events: none;
+}
+
+/* ---- Saucer under the bowl ---- */
+.intro__saucer {
+  left: 50%;
+  top: var(--floor);
+  width: calc(var(--bowl-size) * 1.5);
+  height: calc(var(--bowl-size) * .2);
+  transform: translate(-50%, -50%) scale(.4);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at center,
+      #fffaf4 0%,
+      #f5e6d3 55%,
+      #e0c4a8 82%,
+      rgba(139, 90, 43, .55) 100%);
+  box-shadow:
+    inset 0 4px 10px rgba(255, 255, 255, .6),
+    inset 0 -5px 12px rgba(107, 66, 38, .5),
+    0 10px 24px rgba(0, 0, 0, .6);
+  z-index: 1;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: tc-saucer-in 1.9s cubic-bezier(.3, 1.2, .42, 1)
+             calc(0.3s * var(--intro-speed)) both;
+}
+@keyframes tc-saucer-in {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+  65%  { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+  75%  { opacity: 1; transform: translate(-50%, -50%) scale(1.14, .9); }
+  88%  { opacity: 1; transform: translate(-50%, -50%) scale(.96, 1.04); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---- Contact shadow ---- */
+.intro__table-shadow {
+  left: 50%;
+  top: calc(var(--floor) + 5px);
+  width: calc(var(--bowl-size) * 1.8);
+  height: calc(var(--bowl-size) * .22);
+  transform: translate(-50%, -50%) scale(.4);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(0, 0, 0, .78) 0%,
+    rgba(0, 0, 0, .32) 45%,
+    transparent 75%);
+  filter: blur(8px);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: tc-shadow-in 1.9s cubic-bezier(.3, 1.2, .42, 1)
+             calc(0.3s * var(--intro-speed)) both;
+}
+@keyframes tc-shadow-in {
+  0%   { opacity: 0;    transform: translate(-50%, -50%) scale(.4); }
+  65%  { opacity: 0;    transform: translate(-50%, -50%) scale(.4); }
+  75%  { opacity: .95;  transform: translate(-50%, -50%) scale(1.2, .9); }
+  88%  { opacity: .78;  transform: translate(-50%, -50%) scale(.95, 1.05); }
+  100% { opacity: .85;  transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---- Impact ripple ---- */
+.intro__ripple {
+  left: 50%;
+  top: var(--floor);
+  width: calc(var(--bowl-size) * 1.6);
+  height: calc(var(--bowl-size) * .3);
+  border-radius: 50%;
+  border: 1.5px solid rgba(240, 201, 138, .6);
+  box-shadow:
+    0 0 28px rgba(240, 201, 138, .35),
+    inset 0 0 20px rgba(240, 201, 138, .22);
+  transform: translate(-50%, -50%) scale(.3);
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+  animation: tc-ripple 1.2s cubic-bezier(.15, .75, .3, 1)
+             calc((0.3s + 1.3s) * var(--intro-speed)) both;
+}
+@keyframes tc-ripple {
+  0%   { transform: translate(-50%, -50%) scale(.35); opacity: 0; }
+  15%  { opacity: .95; }
+  100% { transform: translate(-50%, -50%) scale(2.6);  opacity: 0; }
+}
+
+/* ============================================================
+   THE BOWL OF SILOG — drop, bounce, settle
+   ============================================================ */
+.intro__bowl {
+  left: 50%;
+  top: var(--floor);
+  width: var(--bowl-size);
+  height: calc(var(--bowl-size) * .66);
+  transform: translate(-50%, -100%) translateY(calc(-100vh - 100px));
+  transform-origin: 50% 100%;
+  z-index: 2;
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 22px 28px rgba(58, 40, 32, .5));
+  animation: tc-bowl-drop 1.9s cubic-bezier(.55, .1, .35, 1)
+             calc(0.3s * var(--intro-speed)) both;
+  pointer-events: none;
+}
+.intro__bowl svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes tc-bowl-drop {
+  0% {
+    transform: translate(-50%, -100%) translateY(calc(-100vh - 100px)) rotate(-6deg) scale(1, 1);
+    opacity: 0;
+  }
+  5% { opacity: 1; }
+  62% {
+    transform: translate(-50%, -100%) translateY(-6px) rotate(-2deg) scale(.97, 1.05);
+    animation-timing-function: cubic-bezier(.4, 0, .9, .5);
+  }
+  70% {
+    transform: translate(-50%, -100%) translateY(0) rotate(0deg) scale(1.14, .86);
+    animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+  }
+  79% {
+    transform: translate(-50%, -100%) translateY(-12px) rotate(0deg) scale(.97, 1.04);
+    animation-timing-function: cubic-bezier(.5, 0, .9, .6);
+  }
+  87% {
+    transform: translate(-50%, -100%) translateY(0) rotate(0deg) scale(1.05, .95);
+    animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+  }
+  94% {
+    transform: translate(-50%, -100%) translateY(-3px) rotate(0deg) scale(.99, 1.01);
+    animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+  }
+  100% {
+    transform: translate(-50%, -100%) translateY(0) rotate(0deg) scale(1, 1);
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   STEAM — anchored to the rice surface inside the bowl
+   ============================================================ */
+.intro__steam {
+  left: 50%;
+  bottom: calc(100vh - var(--floor) + var(--bowl-size) * 0.447);
+  width: calc(var(--bowl-size) * 1.2);
+  height: 42vh;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
+.wisp {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 9px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(to top,
+    rgba(255, 250, 244, 0) 0%,
+    rgba(255, 250, 244, .75) 42%,
+    rgba(255, 250, 244, 0) 100%);
+  filter: blur(5px);
+  opacity: 0;
+  transform-origin: 50% 100%;
+  animation: tc-steam-rise 3.4s ease-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes tc-steam-rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(.55, .6) rotate(0deg);
+  }
+  18% { opacity: .9; }
+  60% {
+    opacity: .55;
+    transform: translate(calc(-50% + var(--sway, 20px)), -55%)
+               scale(1.0, 1.25)
+               rotate(var(--tilt, 6deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--sway, 20px) * 1.8), -110%)
+               scale(1.3, 1.6)
+               rotate(calc(var(--tilt, 6deg) * 1.6));
+  }
+}
+
+/* ============================================================
+   AROMA MOTES — tiny golden glows rising from the bowl
+   ============================================================ */
+.intro__aroma {
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+.aroma {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 230, 170, .95) 0%,
+    rgba(240, 201, 138, .5) 35%,
+    transparent 70%);
+  filter: blur(1.2px);
+  opacity: 0;
+  animation: tc-aroma-rise linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes tc-aroma-rise {
+  0%   { opacity: 0; transform: translate3d(0, 0, 0) scale(.5); }
+  20%  { opacity: var(--a-opacity, .75); }
+  75%  { opacity: var(--a-opacity, .75); }
+  100% { opacity: 0; transform: translate3d(var(--a-drift, 12px), -50vh, 0) scale(1.2); }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .intro__glow,
+  .intro__bowl,
+  .intro__saucer,
+  .intro__table-shadow,
+  .intro__ripple,
+  .aroma,
+  .intro__sign,
+  .intro__cta,
+  .intro__cta::after,
+  .intro__sign > p,
+  .intro__sign > h1,
+  .mist,
+  .wisp {
+    animation: none !important;
+  }
+  .intro__glow,
+  .intro__bowl,
+  .intro__saucer,
+  .intro__table-shadow,
+  .intro__sign,
+  .intro__sign > p,
+  .intro__sign > h1,
+  .intro__cta {
+    opacity: 1;
+  }
+  .intro__bowl { transform: translate(-50%, -100%); }
+  .intro__saucer,
+  .intro__table-shadow { transform: translate(-50%, -50%) scale(1); }
+  .intro__ripple { display: none; }
+  .intro__cta { transform: translate(-50%, 0); pointer-events: auto; }
+  .intro__sign { transform: translateX(-50%) rotate(-1.2deg); }
+  .intro__sign > p,
+  .intro__sign > h1 { transform: none; }
+}
+
+  </style>
 </head>
 <body data-page="home">
+
+  <!-- ============================================================
+       INTRO OVERLAY — Tambayan Cawag (improved)
+       ============================================================ -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro__texture"></div>
+    <div class="intro__mist" id="mistLayer"></div>
+    <div class="intro__glow"></div>
+    <div class="intro__aroma" id="aromaLayer"></div>
+
+    <div class="intro__sign" id="sign">
+      <span class="intro__sign-nail intro__sign-nail--tl"></span>
+      <span class="intro__sign-nail intro__sign-nail--tr"></span>
+      <span class="intro__sign-nail intro__sign-nail--bl"></span>
+      <span class="intro__sign-nail intro__sign-nail--br"></span>
+
+      <p class="intro__eyebrow">Cawag, Subic, Zambales</p>
+      <h1 class="intro__title">Tambayan Cawag</h1>
+      <p class="intro__tagline">
+        <span>Restaurant</span><i>•</i><span>Cafe</span><i>•</i><span>Hangout</span>
+      </p>
+    </div>
+
+    <button type="button" class="intro__cta" id="ctaButton">
+      <span>Enter</span>
+      <span class="intro__cta-arrow" aria-hidden="true">→</span>
+    </button>
+
+    <div class="intro__table"></div>
+    <div class="intro__table-shadow"></div>
+    <div class="intro__saucer"></div>
+    <div class="intro__ripple"></div>
+
+    <div class="intro__steam" id="steamLayer"></div>
+
+    <div class="intro__bowl" aria-hidden="true">
+      <!-- Bowl of silog — richer detail: garlic rice texture,
+           sunny-side-up egg with glossy yolk, scallions, tocino bits,
+           and a warm ceramic glaze. -->
+      <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Warm ceramic bowl gradient with a subtle glaze -->
+          <linearGradient id="tcBowlGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#fffaf4" />
+            <stop offset="45%"  stop-color="#f7e8d3" />
+            <stop offset="100%" stop-color="#d4b48c" />
+          </linearGradient>
+
+          <!-- Terracotta rim with warm deep shading -->
+          <linearGradient id="tcRimGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#e07a48" />
+            <stop offset="60%"  stop-color="#c45c32" />
+            <stop offset="100%" stop-color="#8f3417" />
+          </linearGradient>
+
+          <!-- Deep inner rim shadow -->
+          <radialGradient id="tcRimShade" cx="0.5" cy="0.2" r="0.9">
+            <stop offset="0%"   stop-color="rgba(0,0,0,0)" />
+            <stop offset="100%" stop-color="rgba(60, 20, 5, 0.55)" />
+          </radialGradient>
+
+          <!-- Garlic rice surface with a warm speckle -->
+          <radialGradient id="tcRiceGrad" cx="0.4" cy="0.32" r="0.9">
+            <stop offset="0%"   stop-color="#fffdf4" />
+            <stop offset="55%"  stop-color="#f5e9d1" />
+            <stop offset="100%" stop-color="#e0c79e" />
+          </radialGradient>
+
+          <!-- Egg white gradient -->
+          <radialGradient id="tcEggWhite" cx="0.4" cy="0.35" r="0.9">
+            <stop offset="0%"   stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#f0e0c0" />
+          </radialGradient>
+
+          <!-- Egg yolk gloss -->
+          <radialGradient id="tcYolkGrad" cx="0.35" cy="0.32" r="0.75">
+            <stop offset="0%"   stop-color="#ffd45c" />
+            <stop offset="55%"  stop-color="#f2a71e" />
+            <stop offset="100%" stop-color="#c47a0a" />
+          </radialGradient>
+        </defs>
+
+        <!-- Bowl shadow on the surface it's resting on -->
+        <ellipse cx="100" cy="122" rx="78" ry="6" fill="rgba(58, 30, 10, 0.35)" />
+
+        <!-- Bowl body -->
+        <path d="M 15 40 Q 15 126 100 126 Q 185 126 185 40 Z"
+              fill="url(#tcBowlGrad)" />
+
+        <!-- Left ceramic highlight (glaze shine) -->
+        <path d="M 27 45 Q 27 118 68 122 Q 58 118 54 45 Z"
+              fill="rgba(255, 255, 255, .6)" />
+
+        <!-- Narrow inner vertical highlight -->
+        <path d="M 38 48 Q 38 108 58 118 Q 52 112 48 48 Z"
+              fill="rgba(255, 255, 255, .35)" />
+
+        <!-- Right inner shadow -->
+        <path d="M 172 45 Q 172 118 135 122 Q 152 118 156 45 Z"
+              fill="rgba(107, 66, 38, 0.22)" />
+
+        <!-- Rim base -->
+        <ellipse cx="100" cy="40" rx="86" ry="14" fill="url(#tcRimGrad)" />
+        <ellipse cx="100" cy="41" rx="78" ry="11" fill="#7a3016" />
+        <ellipse cx="100" cy="40" rx="86" ry="14" fill="url(#tcRimShade)" opacity="0.5" />
+
+        <!-- Garlic rice surface -->
+        <ellipse cx="100" cy="42" rx="72" ry="10" fill="url(#tcRiceGrad)" />
+
+        <!-- Rice grain texture — many small specks -->
+        <g opacity="0.55" stroke="#c9b48f" stroke-width="0.5" fill="none" stroke-linecap="round">
+          <path d="M 42 44 q 3 -1 6 0" />
+          <path d="M 128 42 q 3 -1 6 0" />
+          <path d="M 143 45 q 3 -1 6 0" />
+          <path d="M 52 47 q 3 -1 6 0" />
+          <path d="M 88 47 q 3 -1 6 0" />
+          <path d="M 116 43 q 3 -1 6 0" />
+          <path d="M 66 41 q 3 -1 6 0" />
+          <path d="M 148 43 q 3 -1 6 0" />
+        </g>
+        <!-- Small golden garlic bits scattered through the rice -->
+        <g opacity="0.7">
+          <circle cx="46" cy="43" r="0.9" fill="#e0b878" />
+          <circle cx="58" cy="45" r="0.8" fill="#e0b878" />
+          <circle cx="140" cy="43" r="0.9" fill="#e0b878" />
+          <circle cx="152" cy="44" r="0.7" fill="#e0b878" />
+          <circle cx="90" cy="44" r="0.8" fill="#e0b878" />
+          <circle cx="104" cy="42" r="0.7" fill="#e0b878" />
+          <circle cx="126" cy="45" r="0.8" fill="#e0b878" />
+        </g>
+
+        <!-- Sunny-side-up egg white (irregular) -->
+        <path d="M 58 42
+                 Q 50 36 62 33
+                 Q 76 30 90 34
+                 Q 100 38 96 43
+                 Q 88 48 72 47
+                 Q 58 47 58 42 Z"
+              fill="url(#tcEggWhite)" />
+        <!-- Egg white top highlight -->
+        <ellipse cx="66" cy="37" rx="4" ry="1.4" fill="rgba(255, 255, 255, .9)" />
+        <!-- Egg white edge shadow -->
+        <path d="M 58 42 Q 50 36 62 33 Q 76 30 90 34 Q 100 38 96 43"
+              fill="none" stroke="rgba(180, 130, 70, .35)" stroke-width="0.7" />
+
+        <!-- Fried egg yolk -->
+        <circle cx="77" cy="40" r="6"   fill="rgba(140, 80, 10, .35)" />
+        <circle cx="77" cy="40" r="5.5" fill="url(#tcYolkGrad)" />
+        <!-- Yolk gloss -->
+        <ellipse cx="75" cy="38" rx="1.8" ry="1" fill="rgba(255, 250, 230, .85)" />
+        <ellipse cx="79" cy="42" rx="1" ry="0.6" fill="rgba(255, 210, 130, .55)" />
+
+        <!-- Green scallions / garnish -->
+        <ellipse cx="120" cy="43"   rx="3.2" ry="1.5" fill="#5b8a3e" />
+        <ellipse cx="128" cy="45"   rx="2.6" ry="1.2" fill="#6b9a4e" />
+        <ellipse cx="109" cy="45"   rx="2.2" ry="1.1" fill="#5b8a3e" />
+        <ellipse cx="140" cy="42.5" rx="2.3" ry="1.2" fill="#6b9a4e" />
+        <ellipse cx="133" cy="42"   rx="1.8" ry="0.9" fill="#7baa58" />
+
+        <!-- Small protein bits (tocino-red) -->
+        <ellipse cx="98"  cy="46" rx="3.2" ry="1.5" fill="#a63d1e" />
+        <ellipse cx="110" cy="46" rx="2.2" ry="1.1" fill="#b04a24" />
+        <ellipse cx="104" cy="47" rx="2"   ry="1"   fill="#8e2f10" />
+
+        <!-- Rim highlight (front edge) -->
+        <ellipse cx="100" cy="40" rx="86" ry="14"
+                 fill="none" stroke="rgba(255, 255, 255, .65)" stroke-width="1.2" />
+
+        <!-- Inner rim depth -->
+        <ellipse cx="100" cy="41" rx="78" ry="11"
+                 fill="none" stroke="rgba(60, 20, 5, .4)" stroke-width="1.4" />
+
+        <!-- Front rim bottom highlight (ceramic shine) -->
+        <path d="M 18 42 Q 100 58 182 42"
+              fill="none" stroke="rgba(255, 255, 255, .35)" stroke-width="1.2" />
+      </svg>
+    </div>
+
+    <!-- Warm vignette on top of everything -->
+    <div class="intro__vignette"></div>
+  </div>
+  <noscript><style>.intro{display:none!important}</style></noscript>
+
+  <!-- ============================================================
+       YOUR EXISTING SITE CONTENT
+       ============================================================ -->
   <div class="config-banner" data-config-banner hidden></div>
   <header class="site-header">
     <div class="container nav-wrap">
@@ -44,7 +1383,7 @@
 
   <main>
     <section class="hero container">
-      <img class="hero-photo" src="assets/images/cawag.bg.jpeg" alt="Warm outdoor seating at Tambayan Cawag">
+      <img class="hero-photo" src="assets/images/hero-restaurant.jpg" alt="Warm outdoor seating at Tambayan Cawag">
       <div class="hero-copy">
         <p class="kicker">Cawag, Subic, Zambales</p>
         <h1>Tambayan Cawag</h1>
@@ -213,6 +1552,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module" src="js/app.js"></script>
   <script>
+    /* Homepage notices */
     (function () {
       var key = "tc-home-notices";
       var hidden = {};
@@ -240,6 +1580,157 @@
         });
       }
       paint();
+    })();
+
+    /* Mobile navigation */
+    (function () {
+      var toggle = document.querySelector("[data-nav-toggle]");
+      var panel = document.querySelector("[data-nav-panel]");
+      if (!toggle || !panel) return;
+      toggle.addEventListener("click", function () {
+        panel.classList.toggle("is-open");
+      });
+    })();
+
+    /* ===== INTRO SCRIPT — Tambayan Cawag (improved) ===== */
+    (function () {
+      var root       = document.getElementById("intro");
+      var cta        = document.getElementById("ctaButton");
+      var sign       = document.getElementById("sign");
+      var mistLayer  = document.getElementById("mistLayer");
+      var steamLayer = document.getElementById("steamLayer");
+      var aromaLayer = document.getElementById("aromaLayer");
+      if (!root || !cta) return;
+
+      document.documentElement.classList.add("intro-lock");
+
+      function readSpeed() {
+        var v = parseFloat(getComputedStyle(root).getPropertyValue("--intro-speed"));
+        return isNaN(v) ? 1 : v;
+      }
+      var SPEED = readSpeed();
+
+      var BOWL_LAND_MS   = (0.3 + 1.85) * 1000 * SPEED;
+      var AROMA_START_MS = (0.3 + 2.2) * 1000 * SPEED;
+      var EXIT_START_MS  = 8000 * SPEED;
+      var EXIT_REMOVE_MS = 9000 * SPEED;
+
+      var reduced = window.matchMedia &&
+                    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ---- Position the CTA directly under the sign ---- */
+      function place() {
+        if (!sign || !cta) return;
+        var rect = sign.getBoundingClientRect();
+        cta.style.top = (rect.bottom + 20) + "px";
+      }
+
+      /* ---- Exit ---- */
+      function exitIntro() {
+        if (root.classList.contains("intro--exit")) return;
+        root.classList.add("intro--exit");
+        document.documentElement.classList.remove("intro-lock");
+        setTimeout(function () {
+          if (root.parentNode) root.remove();
+        }, EXIT_REMOVE_MS - EXIT_START_MS + 400);
+      }
+
+      /* ---- Warm background mist ---- */
+      function makeMist(count) {
+        if (!mistLayer) return;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < count; i++) {
+          var m = document.createElement("span");
+          m.className = "mist";
+          var size = 40 + Math.random() * 90;
+          m.style.width  = size + "px";
+          m.style.height = size + "px";
+          m.style.left   = (Math.random() * 100) + "%";
+          m.style.bottom = "-25vh";
+          m.style.animationDuration = (14 + Math.random() * 10) + "s";
+          m.style.animationDelay    = "-" + (Math.random() * 8) + "s";
+          m.style.setProperty("--m-drift",   ((Math.random() - 0.5) * 160) + "px");
+          m.style.setProperty("--m-opacity", (0.25 + Math.random() * 0.35).toFixed(2));
+          frag.appendChild(m);
+        }
+        mistLayer.appendChild(frag);
+      }
+
+      /* ---- Steam wisps rising from the rice surface ---- */
+      function makeSteam(count) {
+        if (!steamLayer) return;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < count; i++) {
+          var w = document.createElement("span");
+          w.className = "wisp";
+          w.style.left   = (20 + Math.random() * 60) + "%";
+          w.style.width  = (7 + Math.random() * 8) + "px";
+          w.style.height = (48 + Math.random() * 58) + "px";
+          w.style.animationDuration = (3.2 + Math.random() * 1.8) + "s";
+          w.style.animationDelay    = (Math.random() * 2.0) + "s";
+          w.style.setProperty("--sway", ((Math.random() - 0.5) * 44) + "px");
+          w.style.setProperty("--tilt", ((Math.random() - 0.5) * 16) + "deg");
+          frag.appendChild(w);
+        }
+        steamLayer.appendChild(frag);
+      }
+
+      /* ---- Golden aroma motes rising from the bowl ---- */
+      function makeAroma(count) {
+        if (!aromaLayer) return;
+        var frag = document.createDocumentFragment();
+
+        var bowlCX = 50;                 // % from left
+        var baseY  = 26;                 // % from bottom — near the bowl surface
+
+        for (var i = 0; i < count; i++) {
+          var a = document.createElement("span");
+          a.className = "aroma";
+
+          var size    = 3 + Math.random() * 5;
+          var spread  = 16 + Math.random() * 10;
+          var left    = bowlCX + (Math.random() - 0.5) * spread * 2;
+          var bottom  = baseY + (Math.random() - 0.5) * 6;
+          var dur     = 6 + Math.random() * 5;
+          var delay   = Math.random() * dur;
+          var drift   = (Math.random() - 0.5) * 50;
+          var opacity = 0.4 + Math.random() * 0.45;
+
+          a.style.width  = size + "px";
+          a.style.height = size + "px";
+          a.style.left   = left + "%";
+          a.style.bottom = bottom + "%";
+          a.style.animationDuration = dur + "s";
+          a.style.animationDelay    = "-" + delay + "s";
+          a.style.setProperty("--a-drift", drift + "px");
+          a.style.setProperty("--a-opacity", opacity.toFixed(2));
+
+          frag.appendChild(a);
+        }
+
+        aromaLayer.appendChild(frag);
+      }
+
+      /* ---- Boot ---- */
+      if (reduced) {
+        place();
+        window.addEventListener("resize", place);
+        setTimeout(exitIntro, 2000);
+      } else {
+        place();
+        window.addEventListener("resize", place);
+
+        makeMist(18);
+        setTimeout(function () { makeSteam(14); }, BOWL_LAND_MS);
+        setTimeout(function () { makeAroma(20); }, AROMA_START_MS);
+        setTimeout(exitIntro, EXIT_START_MS);
+      }
+
+      cta.addEventListener("click", function (e) {
+        e.preventDefault();
+        cta.blur();
+        exitIntro();
+      });
     })();
   </script>
 </body>
