@@ -344,7 +344,23 @@ button.btn {
 .pill-ok { background: var(--green-soft); color: var(--ok); }
 .pill-off { background: #f3e3e1; color: var(--danger); }
 
-.toast {
+.music-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 90;
+  border: 1px solid rgba(36, 28, 23, 0.15);
+  background: #fffaf4;
+  color: #241c17;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(36, 28, 23, 0.12);
+}
+.music-toggle.is-on { background: #3f6b4e; color: #fffaf4; }
+
   position: fixed;
   bottom: 20px;
   left: 50%;
