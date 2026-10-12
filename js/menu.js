@@ -36,12 +36,61 @@ export async function fetchMenu(menuType) {
   };
 }
 
-export function renderMenuCard(item, options = {}) {
+function familyKey(item) {
+  const name = String(item.name || "");
+  if (name.includes(" — ")) return name.split(" — ")[0].trim();
+  if (/nachos/i.test(name)) return "Nachos";
+  if (/burger/i.test(name)) return "Burger";
+  if (/sandwich/i.test(name)) return "Sandwich";
+  if (/pancit/i.test(name)) return "Pancit";
+  if (/bottled water/i.test(name)) return "Bottled Water";
+  if (/iced tea/i.test(name)) return "Iced Tea";
+  if (/^coke/i.test(name)) return "Coke";
+  if (/^sprite/i.test(name)) return "Sprite";
+  if (/^royal/i.test(name)) return "Royal";
+  if (/mountain dew/i.test(name)) return "Mountain Dew";
+  return null;
+}
+
+function flavorLabel(item, family) {
+  const name = String(item.name || "");
+  if (name.includes(" — ")) return name.split(" — ").slice(1).join(" — ").trim();
+  return name.replace(new RegExp(family, "i"), "").replace(/^[\s\-–]+/, "").trim() || name;
+}
+
+function groupItems(items) {
+  const groups = [];
+  const index = new Map();
+  items.forEach((item) => {
+    const key = familyKey(item);
+    if (!key) {
+      groups.push({ type: "single", item });
+      return;
+    }
+    const mapKey = `${item.category_id || "none"}:${key}`;
+    if (!index.has(mapKey)) {
+      const group = { type: "group", key, items: [] };
+      index.set(mapKey, group);
+      groups.push(group);
+    }
+    index.get(mapKey).items.push(item);
+  });
+  return groups.map((group) => (group.type === "group" && group.items.length === 1 ? { type: "single", item: group.items[0] } : group));
+}
+
+function priceLabel(items) {
+  const prices = items.map((item) => Number(item.price)).filter((price) => !Number.isNaN(price));
+  if (!prices.length) return "";
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  return min === max ? formatPeso(min) : `${formatPeso(min)} – ${formatPeso(max)}`;
+}
+
+function renderSingleCard(item) {
   const available = item.available !== false;
-  const image = imageOrPlaceholder(item.image_url, item.name);
   return `
-    <article class="menu-card ${available ? "" : "is-unavailable"}" data-category="${escapeHtml(item.category_id || "")}">
-      <div class="menu-card-media">${image}</div>
+    <article class="menu-card ${available ? "" : "is-unavailable"}">
+      <div class="menu-card-media">${imageOrPlaceholder(item.image_url, item.name)}</div>
       <div class="menu-card-body">
         <div class="menu-card-top">
           <h3>${escapeHtml(item.name)}</h3>
@@ -50,13 +99,44 @@ export function renderMenuCard(item, options = {}) {
         <p class="muted">${escapeHtml(item.description || "")}</p>
         <div class="menu-card-actions">
           <span class="pill ${available ? "pill-ok" : "pill-off"}">${available ? "Available" : "Unavailable"}</span>
-          <button
-            class="btn btn-small"
-            type="button"
-            data-add-item="${escapeHtml(item.id)}"
-            ${available ? "" : "disabled"}
-          >${options.addLabel || "Add to order"}</button>
+          <button class="btn btn-small" type="button" data-add-item="${escapeHtml(item.id)}" ${available ? "" : "disabled"}>Add to order</button>
         </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderGroupCard(group) {
+  const first = group.items[0];
+  const available = group.items.some((item) => item.available !== false);
+  const options = group.items
+    .map((item) => {
+      const canAdd = item.available !== false;
+      return `
+        <div class="flavor-row">
+          <div>
+            <strong>${escapeHtml(flavorLabel(item, group.key))}</strong>
+            <span>${formatPeso(item.price)}</span>
+          </div>
+          <button class="btn btn-small" type="button" data-add-item="${escapeHtml(item.id)}" ${canAdd ? "" : "disabled"}>${canAdd ? "Add" : "Unavailable"}</button>
+        </div>
+      `;
+    })
+    .join("");
+  return `
+    <article class="menu-card menu-card-group ${available ? "" : "is-unavailable"}">
+      <button class="flavor-toggle" type="button" data-flavor-toggle aria-expanded="false">
+        <div class="menu-card-media">${imageOrPlaceholder(first.image_url, group.key)}</div>
+        <div class="menu-card-body">
+          <div class="menu-card-top">
+            <h3>${escapeHtml(group.key)}</h3>
+            <p class="price">${priceLabel(group.items)}</p>
+          </div>
+          <p class="muted">${group.items.length} options. Tap to choose.</p>
+        </div>
+      </button>
+      <div class="flavor-panel" hidden>
+        ${options}
       </div>
     </article>
   `;
@@ -127,6 +207,7 @@ export async function initMenuPage(menuType) {
   }
 
   const paint = (categoryId = "all") => {
+    const categoriesToShow = categories.filter((cat) => categoryId === "all" || String(cat.id) === String(categoryId));
     const visible = result.items.filter((item) => categoryId === "all" || String(item.category_id) === String(categoryId));
     if (count) count.textContent = `${visible.length} item${visible.length === 1 ? "" : "s"}`;
     if (!grid) return;
@@ -137,7 +218,24 @@ export async function initMenuPage(menuType) {
       </div>`;
       return;
     }
-    grid.innerHTML = visible.map((item) => renderMenuCard(item)).join("");
+    grid.innerHTML = categoriesToShow
+      .map((cat) => {
+        const items = result.items.filter((item) => String(item.category_id) === String(cat.id));
+        if (!items.length) return "";
+        const cards = groupItems(items)
+          .map((group) => (group.type === "group" ? renderGroupCard(group) : renderSingleCard(group.item)))
+          .join("");
+        return `
+          <section class="menu-section" id="section-${escapeHtml(cat.slug || cat.id)}">
+            <div class="menu-section-head">
+              <h2>${escapeHtml(cat.name)}</h2>
+              <span>${items.length} item${items.length === 1 ? "" : "s"}</span>
+            </div>
+            <div class="menu-grid">${cards}</div>
+          </section>
+        `;
+      })
+      .join("");
     bindAddButtons(visible);
   };
 
@@ -148,6 +246,18 @@ export async function initMenuPage(menuType) {
     if (!button) return;
     filters.querySelectorAll(".chip").forEach((chip) => chip.classList.toggle("is-active", chip === button));
     paint(button.dataset.filter);
+    const section = grid.querySelector(".menu-section");
+    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  grid?.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-flavor-toggle]");
+    if (!toggle) return;
+    const panel = toggle.parentElement.querySelector(".flavor-panel");
+    if (!panel) return;
+    const open = panel.hidden;
+    panel.hidden = !open;
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
   });
 
   return result;
