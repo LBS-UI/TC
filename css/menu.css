@@ -1,4 +1,40 @@
-.modal-overlay {
+.menu-sections { display: block; }
+.menu-section { margin: 28px 0 36px; }
+.menu-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+.menu-section-head h2 { margin: 0; }
+.menu-section-head span { color: var(--muted); font-size: 0.85rem; }
+.flavor-toggle {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.flavor-panel { display: grid; gap: 8px; padding: 0 16px 16px; }
+.flavor-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f8f1e6;
+}
+.flavor-row div { display: grid; }
+.flavor-row span { color: var(--muted); font-size: 0.86rem; }
+
   position: fixed;
   inset: 0;
   background: rgba(36, 28, 23, 0.55);
