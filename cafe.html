@@ -12,6 +12,25 @@
   <link rel="stylesheet" href="css/cafe.css">
 </head>
 <body data-page="cafe">
+  <div class="modal-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="closeBtn" aria-label="Close">&times;</button>
+      <p class="kicker">Tambayan Cawag Cafe</p>
+      <h2 id="modalTitle">Cafe menu is under development</h2>
+      <div class="menu-notice-item">
+        <strong>Menu not final yet</strong>
+        <p>We are still confirming the drink names and prices from the menu board. Please ask the counter for the current cafe menu.</p>
+      </div>
+      <div class="menu-notice-item">
+        <strong>Cafe hours</strong>
+        <p>The cafe is open from 1:00 PM to 12:00 AM. The kitchen menu is separate and is on the Menu page.</p>
+      </div>
+      <div class="modal-actions">
+        <a class="btn btn-primary" href="contact.html">Contact</a>
+        <button class="btn btn-secondary" id="confirmBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
   <audio id="bgMusic" src="assets/music/tambayan-bg.mp3" loop preload="auto"></audio>
   <button type="button" class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Play background music">Music</button>
 
@@ -122,19 +141,55 @@
       var toggle = document.querySelector("[data-nav-toggle]");
       var panel = document.querySelector("[data-nav-panel]");
       if (toggle && panel) toggle.addEventListener("click", function () { panel.classList.toggle("is-open"); });
+
       var audio = document.getElementById("bgMusic");
       var button = document.getElementById("musicToggle");
-      if (!audio || !button) return;
-      audio.volume = 0.35;
-      function setState(on) {
-        button.classList.toggle("is-on", on);
-        button.setAttribute("aria-pressed", on ? "true" : "false");
-        button.textContent = on ? "Music on" : "Music";
-        localStorage.setItem("tc-music", on ? "on" : "off");
+      if (audio && button) {
+        audio.volume = 0.35;
+        function setState(on) {
+          button.classList.toggle("is-on", on);
+          button.setAttribute("aria-pressed", on ? "true" : "false");
+          button.textContent = on ? "Music on" : "Music";
+          localStorage.setItem("tc-music", on ? "on" : "off");
+        }
+        function play() {
+          var attempt = audio.play();
+          if (attempt && attempt.then) attempt.then(function () { setState(true); }).catch(function () { setState(false); });
+        }
+        button.addEventListener("click", function () {
+          if (audio.paused) play();
+          else { audio.pause(); setState(false); }
+        });
+        if (localStorage.getItem("tc-music") === "on") play();
       }
-      function play() { audio.play().then(function () { setState(true); }).catch(function () { setState(false); }); }
-      button.addEventListener("click", function () { if (audio.paused) play(); else { audio.pause(); setState(false); } });
-      if (localStorage.getItem("tc-music") === "on") play();
+
+      var overlay = document.getElementById("overlay");
+      var modal = overlay && overlay.querySelector(".modal");
+      if (!overlay || !modal) return;
+      var lastFocused = null;
+      function openModal() {
+        if (sessionStorage.getItem("tc-cafe-notice") === "seen") return;
+        lastFocused = document.activeElement;
+        overlay.classList.add("is-open");
+        document.body.classList.add("modal-open");
+        var closeBtn = modal.querySelector(".modal-close");
+        if (closeBtn) closeBtn.focus();
+      }
+      function closeModal() {
+        overlay.classList.remove("is-open");
+        document.body.classList.remove("modal-open");
+        sessionStorage.setItem("tc-cafe-notice", "seen");
+        if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+      }
+      document.addEventListener("DOMContentLoaded", openModal);
+      document.getElementById("closeBtn").addEventListener("click", closeModal);
+      document.getElementById("confirmBtn").addEventListener("click", closeModal);
+      overlay.addEventListener("click", function (event) {
+        if (event.target === overlay) closeModal();
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
+      });
     })();
   </script>
 </body>
