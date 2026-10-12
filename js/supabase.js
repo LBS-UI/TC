@@ -1,4 +1,4 @@
-import { CONFIG, isSupabaseConfigured } from "./config.js";
+import { CONFIG, SUPABASE_URL, SUPABASE_ANON_KEY } from "./config.js";
 
 let client = null;
 let initError = "";
@@ -10,6 +10,17 @@ function loadSupabaseSdk() {
   return null;
 }
 
+function readConfig() {
+  const url = String(CONFIG.supabaseUrl || SUPABASE_URL || "").trim();
+  const key = String(CONFIG.supabaseAnonKey || SUPABASE_ANON_KEY || "").trim();
+  return { url, key };
+}
+
+export function isSupabaseConfigured() {
+  const { url, key } = readConfig();
+  return url.startsWith("https://") && key.length > 20;
+}
+
 export function getSupabaseError() {
   return initError;
 }
@@ -17,8 +28,13 @@ export function getSupabaseError() {
 export function getSupabase() {
   if (client) return client;
 
-  if (!isSupabaseConfigured()) {
+  const { url, key } = readConfig();
+  if (!url || !key) {
     initError = "Supabase is not configured yet. Add your project URL and anon key in js/config.js.";
+    return null;
+  }
+  if (!url.startsWith("https://")) {
+    initError = "The Supabase URL is not valid. It must start with https://.";
     return null;
   }
 
@@ -29,7 +45,7 @@ export function getSupabase() {
   }
 
   try {
-    client = sdk.createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey, {
+    client = sdk.createClient(url, key, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
