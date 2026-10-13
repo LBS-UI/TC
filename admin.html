@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body class="admin-body" data-page="admin">
   <section data-admin-screen="login">
@@ -46,6 +46,8 @@
         <button type="button" data-nav-panel-btn="cafe">Cafe menu</button>
         <button type="button" data-nav-panel-btn="categories">Categories</button>
         <button type="button" data-nav-panel-btn="orders">Orders</button>
+        <button type="button" data-nav-panel-btn="notifications">Notifications</button>
+        <button type="button" data-nav-panel-btn="staff" data-staff-nav hidden>Staff</button>
         <button type="button" data-nav-panel-btn="schedule">Schedule</button>
         <button type="button" data-nav-panel-btn="settings">Settings</button>
         <button type="button" data-logout>Log out</button>
@@ -54,6 +56,7 @@
         <div class="admin-top">
           <div>
             <p class="muted small" data-admin-email></p>
+            <p class="live-status" data-live-status>Live updates off</p>
             <div data-admin-notice></div>
           </div>
           <a class="btn btn-ghost" href="index.html">View site</a>
@@ -125,7 +128,33 @@
           </div>
         </section>
 
-        <section data-panel="schedule" hidden>
+        <section data-panel="notifications" hidden>
+          <h1>Notifications</h1>
+          <p class="muted" data-push-status>Checking notification support...</p>
+          <p>New orders can notify this phone or computer when the dashboard is closed. Delivery depends on the browser, device settings, and network. iPhone and iPad need the site added to the Home Screen.</p>
+          <div class="hero-actions">
+            <button class="btn btn-terracotta" type="button" data-enable-push>Enable notifications</button>
+            <button class="btn btn-ghost" type="button" data-test-push>Send test</button>
+            <button class="btn btn-ghost" type="button" data-disable-push>Turn off this device</button>
+          </div>
+        </section>
+
+        <section data-panel="staff" hidden>
+          <h1>Staff accounts</h1>
+          <p class="muted">Owners can create staff accounts. Staff can manage orders and the menu. Only owners can create accounts.</p>
+          <form class="form-grid" data-staff-form>
+            <label>Name <input name="display_name"></label>
+            <label>Email <input name="email" type="email" required></label>
+            <label>Temporary password <input name="password" type="password" minlength="8" required></label>
+            <label>Role
+              <select name="role">
+                <option value="staff">Staff</option>
+                <option value="owner">Owner</option>
+              </select>
+            </label>
+            <button class="btn btn-terracotta" type="submit">Create staff account</button>
+          </form>
+        </section>
           <h1>Schedule</h1>
           <p class="muted">Use 24-hour time. Midnight closing is 24:00.</p>
           <form class="form-grid" data-hours-form>
