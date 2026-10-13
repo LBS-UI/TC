@@ -11,6 +11,9 @@ const state = {
   cafeItems: [],
   categories: [],
   orders: [],
+  ordersChannel: null,
+  refreshTimer: null,
+  seenOrderIds: new Set(),
 };
 
 function qs(sel) {
@@ -187,6 +190,120 @@ async function refreshAll() {
   fillSettingsForm();
 }
 
+async function refreshOrders() {
+  const client = await requireClient();
+
+  const { data, error } = await client
+    .from("orders")
+    .select("*, order_items(*)")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error("Could not refresh orders:", error);
+    return;
+  }
+
+  state.orders = data || [];
+  renderOrders();
+  renderDashboard();
+}
+
+function updatePushStatus() {
+  const node = qs("[data-push-status]");
+  if (!node) return;
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    node.textContent = "This browser does not support web push. Live orders in the open dashboard still work.";
+    return;
+  }
+  node.textContent = Notification.permission === "granted"
+    ? "Notifications are allowed on this device."
+    : "Notifications are not enabled yet.";
+}
+
+async function authHeader() {
+  const client = await requireClient();
+  const { data } = await client.auth.getSession();
+  return { authorization: `Bearer ${data.session?.access_token || ""}`, "content-type": "application/json" };
+}
+
+async function enablePush() {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    notice("error", "Push notifications are not supported in this browser.");
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") {
+    notice("error", "Notifications are blocked. Allow them in the browser settings, then try again.");
+    updatePushStatus();
+    return;
+  }
+  const config = await fetch("/api/push").then((res) => res.json());
+  if (!config.publicKey) {
+    notice("error", "Push is not configured on the server yet.");
+    return;
+  }
+  const registration = await navigator.serviceWorker.register("/sw.js");
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(config.publicKey),
+  });
+  const res = await fetch("/api/push", {
+    method: "POST",
+    headers: await authHeader(),
+    body: JSON.stringify({ action: "subscribe", subscription }),
+  });
+  if (!res.ok) throw new Error("Could not save this device.");
+  notice("success", "This device will receive new-order notifications.");
+  updatePushStatus();
+}
+
+function urlBase64ToUint8Array(value) {
+  const padding = "=".repeat((4 - (value.length % 4)) % 4);
+  const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map((char) => char.charCodeAt(0)));
+}
+
+function setLiveStatus(text, ok = true) {
+  const node = qs("[data-live-status]");
+  if (!node) return;
+  node.textContent = text;
+  node.dataset.ok = ok ? "yes" : "no";
+}
+
+function scheduleOrderRefresh() {
+  clearTimeout(state.refreshTimer);
+  state.refreshTimer = setTimeout(() => {
+    refreshOrders().catch((error) => {
+      console.error(error);
+      setLiveStatus("Live updates paused", false);
+    });
+  }, 400);
+}
+
+function stopOrdersRealtime() {
+  const client = getSupabase();
+  if (state.ordersChannel && client) client.removeChannel(state.ordersChannel);
+  state.ordersChannel = null;
+  setLiveStatus("Live updates off", false);
+}
+
+function startOrdersRealtime() {
+  if (state.ordersChannel) return;
+  const client = getSupabase();
+  if (!client || !state.admin) return;
+  state.ordersChannel = client
+    .channel("admin-orders")
+    .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, scheduleOrderRefresh)
+    .on("postgres_changes", { event: "*", schema: "public", table: "order_items" }, scheduleOrderRefresh)
+    .subscribe((status) => {
+      if (status === "SUBSCRIBED") setLiveStatus("Live orders connected");
+      else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") setLiveStatus("Reconnecting live orders…", false);
+      else if (status === "CLOSED") setLiveStatus("Live updates off", false);
+    });
+}
+
 function openItemModal(item) {
   const dialog = qs("#item-dialog");
   qs("#item_id").value = item?.id || "";
@@ -246,6 +363,7 @@ async function boot() {
 
     client.auth.onAuthStateChange((_event, session) => {
       if (!session) {
+        stopOrdersRealtime();
         state.session = null;
         state.admin = null;
         show("login");
@@ -270,8 +388,11 @@ async function enterSession(session) {
     }
     state.admin = admin;
     show("app");
-    showPanel("dashboard");
+    showPanel(location.hash === "#orders" ? "orders" : "dashboard");
+    qs("[data-staff-nav]")?.toggleAttribute("hidden", admin.role && admin.role !== "owner");
     await refreshAll();
+    startOrdersRealtime();
+    updatePushStatus();
   } catch (error) {
     show("unauthorized");
     qs("[data-unauth-extra]").textContent = error.message;
@@ -305,6 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   qs("[data-logout]")?.addEventListener("click", async () => {
+    stopOrdersRealtime();
     const client = getSupabase();
     if (client) await client.auth.signOut();
     state.session = null;
@@ -320,6 +442,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll("[data-nav-panel-btn]").forEach((btn) => {
     btn.addEventListener("click", () => showPanel(btn.dataset.navPanelBtn));
+  });
+
+  qs("[data-enable-push]")?.addEventListener("click", () => {
+    enablePush().catch((error) => notice("error", error.message));
+  });
+  qs("[data-test-push]")?.addEventListener("click", async () => {
+    try {
+      const res = await fetch("/api/push", { method: "POST", headers: await authHeader(), body: JSON.stringify({ action: "test" }) });
+      const data = await res.json().catch(() => ({}));
+      notice(res.ok ? "success" : "error", res.ok ? `Test sent to ${data.sent || 0} device(s).` : data.error || "Test failed.");
+    } catch (error) {
+      notice("error", error.message);
+    }
+  });
+  qs("[data-disable-push]")?.addEventListener("click", async () => {
+    try {
+      const registration = await navigator.serviceWorker?.getRegistration();
+      const subscription = await registration?.pushManager.getSubscription();
+      await fetch("/api/push", {
+        method: "POST",
+        headers: await authHeader(),
+        body: JSON.stringify({ action: "unsubscribe", endpoint: subscription?.endpoint || "" }),
+      });
+      await subscription?.unsubscribe();
+      notice("success", "Notifications turned off for this device.");
+      updatePushStatus();
+    } catch (error) {
+      notice("error", error.message);
+    }
+  });
+  qs("[data-staff-form]")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    try {
+      const res = await fetch("/api/staff", {
+        method: "POST",
+        headers: await authHeader(),
+        body: JSON.stringify({
+          display_name: form.display_name.value,
+          email: form.email.value,
+          password: form.password.value,
+          role: form.role.value,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Could not create the staff account.");
+      form.reset();
+      notice("success", `Staff account created for ${data.email}.`);
+    } catch (error) {
+      notice("error", error.message);
+    }
   });
 
   qs("[data-add-restaurant]")?.addEventListener("click", () => {
