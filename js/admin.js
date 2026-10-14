@@ -238,7 +238,12 @@ async function enablePush() {
     updatePushStatus();
     return;
   }
-  const config = await fetch("/api/push").then((res) => res.json());
+  const configRes = await fetch("/api/push");
+  if (!configRes.ok) {
+    notice("error", "Phone notifications are not set up on the server yet. Live orders in this dashboard still work.");
+    return;
+  }
+  const config = await configRes.json();
   if (!config.publicKey) {
     notice("error", "Push is not configured on the server yet.");
     return;
