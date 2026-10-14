@@ -3,6 +3,13 @@ main = "worker.js"
 compatibility_date = "2026-10-14"
 compatibility_flags = ["nodejs_compat"]
 
+# Public variables. These are safe to keep in the project.
+# Secrets are NOT listed here. Set those with wrangler secret put.
+[vars]
+SUPABASE_URL = "https://qyndceqcmnnzozjsqzrh.supabase.co"
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5bmRjZXFjbW5uem96anNxenJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTI5MjEsImV4cCI6MjEwNjE2ODkyMX0.wRTVcuURS8TBjZXa2ZfZd1b9txTg30gbOgCP01AOChI"
+ONESIGNAL_APP_ID = ""
+
 [assets]
 directory = "."
 binding = "ASSETS"
