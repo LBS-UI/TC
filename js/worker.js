@@ -66,13 +66,36 @@ async function handlePush(request, env) {
   return json({ ok: true });
 }
 
+async function handleNotify(request, env) {
+  if (request.method !== "POST") return json({ error: "Method not allowed." }, 405);
+  const body = await request.json().catch(() => ({}));
+  const orderId = String(body.orderId || "");
+  if (!env.ONESIGNAL_APP_ID || !env.ONESIGNAL_REST_API_KEY) {
+    return json({ ok: true, skipped: "onesignal-not-configured" });
+  }
+  const sent = await fetch("https://api.onesignal.com/notifications", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Key ${env.ONESIGNAL_REST_API_KEY}`,
+    },
+    body: JSON.stringify({
+      app_id: env.ONESIGNAL_APP_ID,
+      target_channel: "push",
+      filters: [{ field: "tag", key: "role", relation: "=", value: "staff" }],
+      headings: { en: "New Tambayan order" },
+      contents: { en: "A new order just came in. Open the staff dashboard to see it." },
+      url: `${new URL(request.url).origin}/admin.html#orders`,
+      data: { orderId },
+    }),
+  });
+  return json({ ok: sent.ok });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === "/api/push") return handlePush(request, env);
-    if (url.pathname === "/manifest.json" || url.pathname === "/sw.js") {
-      return env.ASSETS.fetch(request);
-    }
+    if (url.pathname === "/api/notify-order") return handleNotify(request, env);
     return env.ASSETS.fetch(request);
   },
 };

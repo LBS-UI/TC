@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS } from "./config.js";
+import { DEFAULT_SETTINGS, ONESIGNAL_APP_ID } from "./config.js";
 import { getSupabase, formatSupabaseError, getSupabaseError } from "./supabase.js";
 import { settingsFromRows, escapeHtml, setNotice } from "./app.js";
 import { formatPeso } from "./cart.js";
@@ -212,13 +212,17 @@ async function refreshOrders() {
 function updatePushStatus() {
   const node = qs("[data-push-status]");
   if (!node) return;
-  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-    node.textContent = "This browser does not support web push. Live orders in the open dashboard still work.";
+  if (!ONESIGNAL_APP_ID) {
+    node.textContent = "Add your OneSignal App ID in js/config.js, then refresh.";
+    return;
+  }
+  if (!("Notification" in window)) {
+    node.textContent = "This browser does not support notifications.";
     return;
   }
   node.textContent = Notification.permission === "granted"
-    ? "Notifications are allowed on this device."
-    : "Notifications are not enabled yet.";
+    ? "This device can receive order alerts even when the site is closed."
+    : "Notifications are not enabled on this device yet.";
 }
 
 async function authHeader() {
@@ -227,47 +231,27 @@ async function authHeader() {
   return { authorization: `Bearer ${data.session?.access_token || ""}`, "content-type": "application/json" };
 }
 
-async function enablePush() {
-  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-    notice("error", "Push notifications are not supported in this browser.");
-    return;
-  }
-  const permission = await Notification.requestPermission();
-  if (permission !== "granted") {
-    notice("error", "Notifications are blocked. Allow them in the browser settings, then try again.");
-    updatePushStatus();
-    return;
-  }
-  const configRes = await fetch("/api/push");
-  if (!configRes.ok) {
-    notice("error", "Phone notifications are not set up on the server yet. Live orders in this dashboard still work.");
-    return;
-  }
-  const config = await configRes.json();
-  if (!config.publicKey) {
-    notice("error", "Push is not configured on the server yet.");
-    return;
-  }
-  const registration = await navigator.serviceWorker.register("/sw.js");
-  const subscription = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(config.publicKey),
+function withOneSignal(callback) {
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  window.OneSignalDeferred.push(async function (OneSignal) {
+    if (!ONESIGNAL_APP_ID) return;
+    await OneSignal.init({ appId: ONESIGNAL_APP_ID });
+    await callback(OneSignal);
   });
-  const res = await fetch("/api/push", {
-    method: "POST",
-    headers: await authHeader(),
-    body: JSON.stringify({ action: "subscribe", subscription }),
-  });
-  if (!res.ok) throw new Error("Could not save this device.");
-  notice("success", "This device will receive new-order notifications.");
-  updatePushStatus();
 }
 
-function urlBase64ToUint8Array(value) {
-  const padding = "=".repeat((4 - (value.length % 4)) % 4);
-  const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/");
-  const raw = atob(base64);
-  return Uint8Array.from([...raw].map((char) => char.charCodeAt(0)));
+async function enablePush() {
+  if (!ONESIGNAL_APP_ID) {
+    notice("error", "Add your OneSignal App ID in js/config.js first.");
+    return;
+  }
+  withOneSignal(async (OneSignal) => {
+    await OneSignal.login(state.session?.user?.id || state.admin?.email || "staff");
+    await OneSignal.User.addTag("role", "staff");
+    await OneSignal.User.PushSubscription.optIn();
+    notice("success", "This device will get new-order alerts from OneSignal.");
+    updatePushStatus();
+  });
 }
 
 function setLiveStatus(text, ok = true) {
@@ -450,32 +434,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   qs("[data-enable-push]")?.addEventListener("click", () => {
-    enablePush().catch((error) => notice("error", error.message));
+    enablePush();
   });
-  qs("[data-test-push]")?.addEventListener("click", async () => {
-    try {
-      const res = await fetch("/api/push", { method: "POST", headers: await authHeader(), body: JSON.stringify({ action: "test" }) });
-      const data = await res.json().catch(() => ({}));
-      notice(res.ok ? "success" : "error", res.ok ? `Test sent to ${data.sent || 0} device(s).` : data.error || "Test failed.");
-    } catch (error) {
-      notice("error", error.message);
-    }
-  });
-  qs("[data-disable-push]")?.addEventListener("click", async () => {
-    try {
-      const registration = await navigator.serviceWorker?.getRegistration();
-      const subscription = await registration?.pushManager.getSubscription();
-      await fetch("/api/push", {
-        method: "POST",
-        headers: await authHeader(),
-        body: JSON.stringify({ action: "unsubscribe", endpoint: subscription?.endpoint || "" }),
-      });
-      await subscription?.unsubscribe();
+  qs("[data-disable-push]")?.addEventListener("click", () => {
+    withOneSignal(async (OneSignal) => {
+      await OneSignal.User.PushSubscription.optOut();
       notice("success", "Notifications turned off for this device.");
       updatePushStatus();
-    } catch (error) {
-      notice("error", error.message);
-    }
+    });
   });
   qs("[data-staff-form]")?.addEventListener("submit", async (event) => {
     event.preventDefault();
