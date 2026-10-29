@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe — Tambayan Cawag</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/cafe.css">
+</head>
+<body data-page="cafe">
+  <div class="modal-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="closeBtn" aria-label="Close">&times;</button>
+      <p class="kicker">Tambayan Cawag Cafe</p>
+      <h2 id="modalTitle">Cafe menu is under development</h2>
+      <div class="menu-notice-item">
+        <strong>Menu not final yet</strong>
+        <p>We are still confirming the drink names and prices from the menu board. Please ask the counter for the current cafe menu.</p>
+      </div>
+      <div class="menu-notice-item">
+        <strong>Cafe hours</strong>
+        <p>The cafe is open from 1:00 PM to 12:00 AM. The kitchen menu is separate and is on the Menu page.</p>
+      </div>
+      <div class="modal-actions">
+        <a class="btn btn-primary" href="contact.html">Contact</a>
+        <button class="btn btn-secondary" id="confirmBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+  <audio id="bgMusic" src="assets/music/tambayan-bg.mp3" loop preload="auto"></audio>
+  <button type="button" class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Play background music">Music</button>
+
+  <div class="config-banner" data-config-banner hidden></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/logo.png" alt="Tambayan Cawag logo" width="48" height="48" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+        <span class="brand-mark" hidden>T</span>
+        <span>Tambayan Cawag<small>Cafe</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="index.html" data-nav-link="home">Home</a>
+        <a href="menu.html" data-nav-link="menu">Menu</a>
+        <a href="cafe.html" data-nav-link="cafe">Cafe</a>
+        <a href="about.html" data-nav-link="about">About</a>
+        <a href="contact.html" data-nav-link="contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-terracotta order-btn" href="order.html">Order <span class="cart-count" data-cart-count hidden>0</span></a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu"><span></span></button>
+      </div>
+    </div>
+    <nav class="nav-panel" data-nav-panel>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cafe.html" data-nav-link="cafe">Cafe</a>
+      <a href="order.html">Order</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <img class="hero-photo" src="assets/images/hero-cafe.jpg" alt="Coffee at Tambayan Cawag Cafe">
+      <div class="hero-copy">
+        <p class="kicker">Tambayan Cawag Cafe</p>
+        <h1>A quieter table</h1>
+        <p>Coffee, matcha, milk tea, shakes, and fruit drinks. The cafe menu is separate from the kitchen.</p>
+        <p>Open <span data-hours-label="cafe">1:00 PM – 12:00 AM</span></p>
+        <span class="status-chip" data-status="cafe">Checking hours...</span>
+        <div class="hero-actions">
+          <a class="btn btn-terracotta" href="#cafe-menu">Cafe menu</a>
+          <a class="btn btn-ghost" href="contact.html" style="color:#fffaf4;border-color:rgba(255,250,244,.35)">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section" id="about">
+      <div class="cafe-note">
+        <p class="kicker">About the cafe</p>
+        <h2>Coffee after lunch</h2>
+        <p>The cafe opens at 1:00 PM in the same Tambayan Cawag house. Come for iced coffee, hot drinks, milk tea with pearls, shakes, and fruit drinks. Prices below are taken from the cafe menu board.</p>
+        <p><a class="btn btn-ghost" href="about.html">About Tambayan Cawag</a></p>
+      </div>
+    </section>
+
+    <section class="container section" id="cafe-menu">
+      <div class="cafe-note">
+        <p class="kicker">Cafe menu</p>
+        <h2>Under development</h2>
+        <p>The cafe menu is under development. We are still confirming the drink names and prices from the menu board, so the full list is not ready yet.</p>
+        <p>You can still visit the cafe from 1:00 PM to 12:00 AM. Please ask the counter for the current drinks and prices.</p>
+        <p><a class="btn btn-terracotta" href="contact.html">Contact</a></p>
+      </div>
+    </section>
+
+    <section class="container section" id="contact">
+      <div class="split-about">
+        <article class="info-card">
+          <p class="kicker">Hours</p>
+          <h2>Cafe hours</h2>
+          <p data-hours-label="cafe">1:00 PM – 12:00 AM</p>
+          <span class="status-chip" data-status="cafe">Checking hours...</span>
+        </article>
+        <article class="info-card">
+          <p class="kicker">Find us</p>
+          <h2>Contact</h2>
+          <p data-setting="address">Cawag, Subic, Zambales</p>
+          <a class="btn btn-terracotta" href="contact.html">Contact</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>Tambayan Cawag Cafe</strong>
+        <p>Coffee, drinks, and a place to slow down.</p>
+      </div>
+      <div>
+        <p><a href="index.html">Home</a><br><a href="menu.html">Restaurant menu</a><br><a href="cafe.html">Cafe</a><br><a href="order.html">Order</a></p>
+      </div>
+      <div>
+        <p><a href="about.html">About</a><br><a href="contact.html">Contact</a></p>
+        <p>Cafe: <span data-hours-label="cafe">1:00 PM – 12:00 AM</span></p>
+      </div>
+    </div>
+    <div class="container legal">Tambayan Cawag V2 · Cafe · <a href="admin.html">Staff</a></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/app.js"></script>
+  <script>
+    (function () {
+      var toggle = document.querySelector("[data-nav-toggle]");
+      var panel = document.querySelector("[data-nav-panel]");
+      if (toggle && panel) toggle.addEventListener("click", function () { panel.classList.toggle("is-open"); });
+
+      var audio = document.getElementById("bgMusic");
+      var button = document.getElementById("musicToggle");
+      if (audio && button) {
+        audio.volume = 0.35;
+        function setState(on) {
+          button.classList.toggle("is-on", on);
+          button.setAttribute("aria-pressed", on ? "true" : "false");
+          button.textContent = on ? "Music on" : "Music";
+          localStorage.setItem("tc-music", on ? "on" : "off");
+        }
+        function play() {
+          var attempt = audio.play();
+          if (attempt && attempt.then) attempt.then(function () { setState(true); }).catch(function () { setState(false); });
+        }
+        button.addEventListener("click", function () {
+          if (audio.paused) play();
+          else { audio.pause(); setState(false); }
+        });
+        if (localStorage.getItem("tc-music") === "on") play();
+      }
+
+      var overlay = document.getElementById("overlay");
+      var modal = overlay && overlay.querySelector(".modal");
+      if (!overlay || !modal) return;
+      var lastFocused = null;
+      function openModal() {
+        if (sessionStorage.getItem("tc-cafe-notice") === "seen") return;
+        lastFocused = document.activeElement;
+        overlay.classList.add("is-open");
+        document.body.classList.add("modal-open");
+        var closeBtn = modal.querySelector(".modal-close");
+        if (closeBtn) closeBtn.focus();
+      }
+      function closeModal() {
+        overlay.classList.remove("is-open");
+        document.body.classList.remove("modal-open");
+        sessionStorage.setItem("tc-cafe-notice", "seen");
+        if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+      }
+      document.addEventListener("DOMContentLoaded", openModal);
+      document.getElementById("closeBtn").addEventListener("click", closeModal);
+      document.getElementById("confirmBtn").addEventListener("click", closeModal);
+      overlay.addEventListener("click", function (event) {
+        if (event.target === overlay) closeModal();
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>

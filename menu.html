@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Tambayan Cawag</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+<body data-page="menu">
+  <div class="modal-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="closeBtn" aria-label="Close">&times;</button>
+      <p class="kicker">Before you order</p>
+      <h2 id="modalTitle">A quick note from the kitchen</h2>
+      <div class="menu-notice-item">
+        <strong>Ordering for a group?</strong>
+        <p>Ordering can take about 30 minutes or more. If you are dining with many people, please pre-order ahead so we can prepare your food and serve you better.</p>
+      </div>
+      <div class="menu-notice-item">
+        <strong>About the photos</strong>
+        <p>Images shown on the menu are examples only. They may not look exactly like the actual food or portion served.</p>
+      </div>
+      <div class="modal-actions">
+        <a class="btn btn-primary" href="order.html">Pre-order</a>
+        <button class="btn btn-secondary" id="confirmBtn" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+  <div class="config-banner" data-config-banner hidden></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/logo.png" alt="Tambayan Cawag logo" width="48" height="48" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+        <span class="brand-mark" hidden>T</span>
+        <span>Tambayan Cawag<small>Restaurant</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="index.html" data-nav-link="home">Home</a>
+        <a href="menu.html" data-nav-link="menu">Menu</a>
+        <a href="cafe.html" data-nav-link="cafe">Cafe</a>
+        <a href="about.html" data-nav-link="about">About</a>
+        <a href="contact.html" data-nav-link="contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-terracotta order-btn" href="order.html">Order <span class="cart-count" data-cart-count hidden>0</span></a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu"><span></span></button>
+      </div>
+    </div>
+    <nav class="nav-panel" data-nav-panel>
+      <a href="index.html">Home</a>
+      <a href="menu.html" data-nav-link="menu">Menu</a>
+      <a href="cafe.html">Cafe</a>
+      <a href="order.html">Order</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="menu-hero">
+      <p class="kicker">Restaurant</p>
+      <h1>Kitchen menu</h1>
+      <p>Go-To, Snacks, and Silog. Hours: <span data-hours-label="restaurant">10:00 AM – 12:00 AM</span></p>
+      <span class="status-chip" data-status="restaurant">Checking hours...</span>
+    </section>
+    <div data-menu-notice></div>
+    <div class="filters" data-menu-filters></div>
+    <p class="muted small" data-menu-count></p>
+    <section class="menu-sections" data-menu-grid>
+      <div class="state">Loading menu...</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container legal">Tambayan Cawag V2 · Restaurant menu · <a href="admin.html">Staff</a></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/menu.js"></script>
+  <script>
+    (function () {
+      var overlay = document.getElementById("overlay");
+      var modal = overlay && overlay.querySelector(".modal");
+      if (!overlay || !modal) return;
+      var lastFocused = null;
+
+      function openModal() {
+        if (sessionStorage.getItem("tc-menu-notice") === "seen") return;
+        lastFocused = document.activeElement;
+        overlay.classList.add("is-open");
+        document.body.classList.add("modal-open");
+        var closeBtn = modal.querySelector(".modal-close");
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function closeModal() {
+        overlay.classList.remove("is-open");
+        document.body.classList.remove("modal-open");
+        sessionStorage.setItem("tc-menu-notice", "seen");
+        if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+      }
+
+      document.addEventListener("DOMContentLoaded", openModal);
+      document.getElementById("closeBtn").addEventListener("click", closeModal);
+      document.getElementById("confirmBtn").addEventListener("click", closeModal);
+      overlay.addEventListener("click", function (event) {
+        if (event.target === overlay) closeModal();
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>
