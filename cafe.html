@@ -16,14 +16,14 @@
     <div class="modal">
       <button class="modal-close" id="closeBtn" aria-label="Close">&times;</button>
       <p class="kicker">Tambayan Cawag Cafe</p>
-      <h2 id="modalTitle">Cafe menu is under development</h2>
+      <h2 id="modalTitle">Before you order</h2>
       <div class="menu-notice-item">
-        <strong>Menu not final yet</strong>
-        <p>We are still confirming the drink names and prices from the menu board. Please ask the counter for the current cafe menu.</p>
+        <strong>Ordering for a group?</strong>
+        <p>Cafe drinks can take a little time when several people order together. Please pre-order ahead so we can prepare them.</p>
       </div>
       <div class="menu-notice-item">
-        <strong>Cafe hours</strong>
-        <p>The cafe is open from 1:00 PM to 12:00 AM. The kitchen menu is separate and is on the Menu page.</p>
+        <strong>About the photos</strong>
+        <p>Images shown on the menu are examples only. They may not look exactly like the drink served.</p>
       </div>
       <div class="modal-actions">
         <a class="btn btn-primary" href="contact.html">Contact</a>
@@ -90,13 +90,17 @@
     </section>
 
     <section class="container section" id="cafe-menu">
-      <div class="cafe-note">
+      <div class="section-head">
         <p class="kicker">Cafe menu</p>
-        <h2>Under development</h2>
-        <p>The cafe menu is under development. We are still confirming the drink names and prices from the menu board, so the full list is not ready yet.</p>
-        <p>You can still visit the cafe from 1:00 PM to 12:00 AM. Please ask the counter for the current drinks and prices.</p>
-        <p><a class="btn btn-terracotta" href="contact.html">Contact</a></p>
+        <h2>Drinks</h2>
+        <p>Iced coffee, matcha, milk tea, shakes, and fruit drinks.</p>
       </div>
+      <div data-menu-notice></div>
+      <div class="filters" data-menu-filters></div>
+      <p class="muted small" data-menu-count></p>
+      <section class="menu-sections" data-menu-grid>
+        <div class="state">Loading cafe menu...</div>
+      </section>
     </section>
 
     <section class="container section" id="contact">
@@ -136,6 +140,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/cafe.js"></script>
   <script>
     (function () {
       var toggle = document.querySelector("[data-nav-toggle]");
