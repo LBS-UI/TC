@@ -202,67 +202,51 @@ button.btn {
 
 .nav-panel { display: none; }
 
+/* ===== UPDATED HERO BANNER ===== */
 .hero {
   position: relative;
-  min-height: min(78vh, 720px);
+  width: 100%;
   border-radius: 32px;
   overflow: hidden;
-  color: #fffaf4;
-  display: grid;
-  align-items: end;
   margin: 12px auto 48px;
+  background: var(--bg-deep);
 }
 
 .hero img.hero-photo {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 2.35 / 1; /* Matches the wide banner */
   object-fit: cover;
+  object-position: center;
 }
 
-.hero::after {
-  content: "";
+.hero-actions-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(36,28,23,0.05), rgba(36,28,23,0.45));
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 
-.hero-copy {
-  position: relative;
-  z-index: 1;
-  padding: 36px 28px 40px;
-  max-width: 680px;
+/* Responsive adjustments for the banner */
+@media (max-width: 768px) {
+  .hero img.hero-photo {
+    aspect-ratio: auto;
+    min-height: 280px; /* Ensures the banner is tall enough on mobile */
+    object-position: center; /* Keeps the center text in view */
+  }
+  .hero-actions-overlay {
+    bottom: 16px;
+  }
 }
 
-.kicker {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.74rem;
-  font-weight: 600;
+@media (max-width: 640px) {
+  .hero { border-radius: 22px; }
+  .nav-cta .btn-ghost { display: none; }
 }
 
-.hero h1 { font-size: clamp(2.4rem, 7vw, 5rem); }
-
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-
-.status-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255,250,244,0.16);
-  font-size: 0.8rem;
-}
-.status-chip[data-status="open"] { background: #2f6f4e; }
-.status-chip[data-status="soon"] { background: #8a5a12; }
-.status-chip[data-status="closed"],
-.status-chip[data-status="unknown"] { background: rgba(0,0,0,0.45); }
-
+/* ===== REST OF SITE ===== */
 .section { padding: 28px 0 12px; }
 .section-head { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-bottom: 20px; }
 
@@ -305,72 +289,29 @@ button.btn {
 .site-footer a { color: #f6efe6; text-decoration: none; }
 .legal { opacity: 0.7; font-size: 0.85rem; margin-top: 24px; }
 
-.notice {
-  padding: 14px 16px;
-  border-radius: 16px;
-  margin: 12px 0;
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,250,244,0.16);
+  font-size: 0.8rem;
 }
-.notice-error { background: #f8e8e6; color: var(--danger); }
-.notice-success { background: var(--green-soft); color: var(--ok); }
-.notice-warn { background: #f8edd9; color: var(--warn); }
+.status-chip[data-status="open"] { background: #2f6f4e; }
+.status-chip[data-status="soon"] { background: #8a5a12; }
+.status-chip[data-status="closed"],
+.status-chip[data-status="unknown"] { background: rgba(0,0,0,0.45); }
 
-.state {
-  background: var(--surface);
-  border: 1px dashed var(--line);
-  border-radius: var(--radius);
-  padding: 36px 20px;
-  text-align: center;
-}
-.state-error { border-color: #e3b8b4; }
-
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--terracotta);
-  color: #fffaf4;
-  display: grid;
-  place-items: center;
-  font-family: var(--display);
+.kicker {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
   font-weight: 600;
 }
-
-.photo-fallback {
-  width: 100%;
-  height: 100%;
-  min-height: 160px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(160deg, #efe1d2, #c45c32);
-  color: #fffaf4;
-  font-family: var(--display);
-  font-size: 2rem;
-}
-
-.pill {
-  display: inline-flex;
-  padding: 4px 8px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-}
-.pill-ok { background: var(--green-soft); color: var(--ok); }
-.pill-off { background: #f3e3e1; color: var(--danger); }
-
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translate(-50%, 16px);
-  background: var(--ink);
-  color: #fffaf4;
-  padding: 10px 14px;
-  border-radius: 999px;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.2s ease;
-  z-index: 80;
-}
-.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
 .config-banner {
   background: #f8edd9;
@@ -380,43 +321,41 @@ button.btn {
   font-size: 0.88rem;
 }
 
-.form-grid { display: grid; gap: 12px; }
-label { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 600; }
-input, textarea, select {
-  font: inherit;
-  padding: 12px 12px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  background: #fff;
-  width: 100%;
+/* Homepage Notices */
+.tc-home-notices { display: grid; gap: 12px; margin: 0 0 18px; }
+.tc-notice {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 12px;
+  align-items: start; padding: 14px 16px; border-radius: 18px;
+  border: 1px solid #ead9c6; background: #fff8f1; color: #3d3128;
 }
-
-.text-btn {
-  border: 0;
-  background: none;
-  color: var(--terracotta-deep);
-  font: inherit;
-  cursor: pointer;
-  padding: 0;
+.tc-notice p { margin: 0 0 8px; font-size: 0.92rem; }
+.tc-notice-title { font-weight: 700; margin-bottom: 4px; }
+.tc-notice-fine { color: #6d5e52; font-size: 0.82rem; }
+.tc-notice-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #f3e4d4; color: #9b3f1d;
 }
-.text-btn.danger { color: var(--danger); }
+.tc-notice-order { background: #f8f1e6; }
+.tc-notice-order .tc-notice-icon { background: #efe0cc; color: #8a5a12; }
+.tc-notice-dismiss {
+  border: 0; background: transparent; color: #6d5e52;
+  font: inherit; font-size: 0.82rem; cursor: pointer; padding: 4px;
+}
+.tc-notice-restore { margin: -6px 0 16px; }
+.tc-notice-restore button {
+  border: 0; background: none; color: #9b3f1d;
+  font: inherit; text-decoration: underline; cursor: pointer; padding: 0;
+}
 
 @media (max-width: 900px) {
   .card-grid, .menu-grid, .hours-grid, .footer-grid { grid-template-columns: 1fr 1fr; }
   .nav-links { display: none; }
   .nav-toggle { display: block; }
   .nav-panel {
-    display: none;
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    top: calc(var(--header) + 6px);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 12px;
-    box-shadow: var(--shadow);
-    flex-direction: column;
+    display: none; position: absolute; left: 16px; right: 16px; top: calc(var(--header) + 6px);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+    padding: 12px; box-shadow: var(--shadow); flex-direction: column;
   }
   .nav-panel.is-open { display: flex; }
   .nav-panel a { padding: 12px; }
@@ -424,161 +363,40 @@ input, textarea, select {
 
 @media (max-width: 640px) {
   .card-grid, .menu-grid, .hours-grid, .footer-grid { grid-template-columns: 1fr; }
-  .hero { min-height: 72vh; border-radius: 22px; }
-  .nav-cta .btn-ghost { display: none; }
-}
-
-/* ===== HOMEPAGE STYLES ===== */
-.intro-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 24px;
-  align-items: center;
-}
-
-.cafe-promo {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 0;
-  overflow: hidden;
-  background: #22342f;
-  color: #f3efe6;
-}
-
-.cafe-promo .copy { padding: 32px; }
-.cafe-promo img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; }
-
-.split-about {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.tc-home-notices {
-  display: grid;
-  gap: 12px;
-  margin: 0 0 18px;
-}
-
-.tc-notice {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 12px;
-  align-items: start;
-  padding: 14px 16px;
-  border-radius: 18px;
-  border: 1px solid #ead9c6;
-  background: #fff8f1;
-  color: #3d3128;
-}
-
-.tc-notice p { margin: 0 0 8px; font-size: 0.92rem; }
-.tc-notice-title { font-weight: 700; margin-bottom: 4px; }
-.tc-notice-fine { color: #6d5e52; font-size: 0.82rem; }
-.tc-notice-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: #f3e4d4;
-  color: #9b3f1d;
-}
-.tc-notice-order { background: #f8f1e6; }
-.tc-notice-order .tc-notice-icon { background: #efe0cc; color: #8a5a12; }
-.tc-notice-dismiss {
-  border: 0;
-  background: transparent;
-  color: #6d5e52;
-  font: inherit;
-  font-size: 0.82rem;
-  cursor: pointer;
-  padding: 4px;
-}
-.tc-notice-restore { margin: -6px 0 16px; }
-.tc-notice-restore button {
-  border: 0;
-  background: none;
-  color: #9b3f1d;
-  font: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-}
-
-@media (max-width: 640px) {
   .tc-notice { grid-template-columns: auto 1fr; }
   .tc-notice-dismiss { grid-column: 2; justify-self: start; }
 }
 
-/* ============================================================
-   INTRO OVERLAY — Tambayan Cawag (cinematic)
-   ============================================================ */
+/* ===== INTRO OVERLAY (Cinematic) ===== */
 .intro{
   --ease: cubic-bezier(.22,.61,.36,1);
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
-  overflow: hidden;
-  background: var(--bg-deep);
-  color: var(--surface);
+  position: fixed; inset: 0; z-index: 9999; min-height: 100svh;
+  display: grid; place-items: center; isolation: isolate; overflow: hidden;
+  background: var(--bg-deep); color: var(--surface);
 }
+html.intro-lock, html.intro-lock body{ overflow: hidden; }
 
-html.intro-lock,
-html.intro-lock body{ overflow: hidden; }
-
-/* --- background photograph with slow push-in --- */
 .intro__bg{
-  position: absolute;
-  inset: -2%;
-  z-index: -3;
-  background: #2b211b url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2000&q=80") center/cover no-repeat;
-  animation: tc-kenburns 30s var(--ease) forwards;
-  will-change: transform;
+  position: absolute; inset: -2%; z-index: -3;
+  background: #2b211b url("assets/images/TCC Banner.jpg") center/cover no-repeat;
+  animation: tc-kenburns 30s var(--ease) forwards; will-change: transform;
 }
-@keyframes tc-kenburns{
-  from{ transform: scale(1.06) translate3d(0,0,0); }
-  to  { transform: scale(1.18) translate3d(-1.2%, -1%, 0); }
-}
+@keyframes tc-kenburns{ from{ transform: scale(1.06) translate3d(0,0,0); } to{ transform: scale(1.18) translate3d(-1.2%, -1%, 0); } }
 
-/* --- tonal wash --- */
 .intro__wash{
-  position: absolute;
-  inset: 0;
-  z-index: -2;
+  position: absolute; inset: 0; z-index: -2;
   background:
     radial-gradient(120% 90% at 50% 40%, rgba(36,28,23,.25) 0%, rgba(36,28,23,.72) 72%, rgba(36,28,23,.92) 100%),
     linear-gradient(180deg, rgba(36,28,23,.55) 0%, rgba(36,28,23,.10) 34%, rgba(36,28,23,.80) 100%);
 }
 
-/* --- film grain --- */
 .intro__grain{
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: .16;
-  mix-blend-mode: overlay;
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .16; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* --- content --- */
-.intro__content{
-  position: relative;
-  width: min(100% - 2.5rem, 760px);
-  text-align: center;
-  padding: 1rem;
-  will-change: transform, opacity;
-}
-
-.intro__content > *{
-  opacity: 0;
-  animation: tc-fadeUp 1.15s var(--ease) forwards;
-}
+.intro__content{ position: relative; width: min(100% - 2.5rem, 760px); text-align: center; padding: 1rem; will-change: transform, opacity; }
+.intro__content > *{ opacity: 0; animation: tc-fadeUp 1.15s var(--ease) forwards; }
 .intro__eyebrow{ animation-delay: .35s; }
 .intro__mark{ animation-delay: .50s; }
 .intro__name{ animation-delay: .65s; }
@@ -587,222 +405,68 @@ html.intro-lock body{ overflow: hidden; }
 .intro__enter{ animation-delay: 1.25s; }
 .intro__hint{ animation-delay: 1.45s; }
 
-@keyframes tc-fadeUp{
-  from{ opacity: 0; transform: translateY(22px); }
-  to  { opacity: 1; transform: translateY(0); }
-}
+@keyframes tc-fadeUp{ from{ opacity: 0; transform: translateY(22px); } to{ opacity: 1; transform: translateY(0); } }
 
 .intro__eyebrow{
-  display: inline-flex;
-  align-items: center;
-  gap: .85rem;
-  font-family: var(--font);
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 1.9rem;
+  display: inline-flex; align-items: center; gap: .85rem;
+  font-family: var(--font); font-size: .68rem; font-weight: 700;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.9rem;
 }
-.intro__eyebrow::before,
-.intro__eyebrow::after{
-  content: "";
-  width: clamp(22px, 5vw, 44px);
-  height: 1px;
-  background: currentColor;
-  opacity: .55;
-}
+.intro__eyebrow::before, .intro__eyebrow::after{ content: ""; width: clamp(22px, 5vw, 44px); height: 1px; background: currentColor; opacity: .55; }
 
 .intro__mark{ margin-bottom: 1.6rem; }
-.intro__mark svg{
-  width: 46px;
-  height: 46px;
-  margin-inline: auto;
-  color: var(--gold);
-  opacity: .9;
-}
+.intro__mark svg{ width: 46px; height: 46px; margin-inline: auto; color: var(--gold); opacity: .9; }
 
-.intro__name{
-  font-family: var(--display);
-  font-weight: 300;
-  font-size: clamp(2.6rem, 8.5vw, 5.6rem);
-  line-height: 1.02;
-  letter-spacing: -.03em;
-  color: #fff;
-  text-shadow: 0 2px 40px rgba(0,0,0,.35);
-  margin: 0;
-}
-.intro__name em{
-  font-style: italic;
-  color: var(--gold);
-  padding-inline: .06em;
-}
+.intro__name{ font-family: var(--display); font-weight: 300; font-size: clamp(2.6rem, 8.5vw, 5.6rem); line-height: 1.02; letter-spacing: -.03em; color: #fff; text-shadow: 0 2px 40px rgba(0,0,0,.35); margin: 0; }
+.intro__name em{ font-style: italic; color: var(--gold); padding-inline: .06em; }
 
-.intro__rule{
-  width: clamp(60px, 14vw, 120px);
-  height: 1px;
-  margin: 2rem auto 1.9rem;
-  background: linear-gradient(90deg, transparent, rgba(215,161,90,.85), transparent);
-}
+.intro__rule{ width: clamp(60px, 14vw, 120px); height: 1px; margin: 2rem auto 1.9rem; background: linear-gradient(90deg, transparent, rgba(215,161,90,.85), transparent); }
 
-.intro__line{
-  font-family: var(--font);
-  font-size: clamp(1rem, 1.9vw, 1.18rem);
-  line-height: 1.7;
-  color: rgba(255,250,244,.82);
-  max-width: 44ch;
-  margin-inline: auto;
-  margin-bottom: 2.6rem;
-}
+.intro__line{ font-family: var(--font); font-size: clamp(1rem, 1.9vw, 1.18rem); line-height: 1.7; color: rgba(255,250,244,.82); max-width: 44ch; margin-inline: auto; margin-bottom: 2.6rem; }
 
 .intro__enter{
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .9rem;
-  padding: 1.05rem 2.9rem;
-  border-radius: 100px;
-  background: transparent;
-  border: 1px solid rgba(255,250,244,.42);
-  color: var(--surface);
-  font-family: var(--font);
-  font-size: .78rem;
-  font-weight: 700;
-  letter-spacing: .26em;
-  text-transform: uppercase;
-  cursor: pointer;
-  overflow: hidden;
-  transition:
-    color .45s var(--ease),
-    border-color .45s var(--ease),
-    transform .45s var(--ease),
-    box-shadow .45s var(--ease);
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .9rem;
+  padding: 1.05rem 2.9rem; border-radius: 100px; background: transparent;
+  border: 1px solid rgba(255,250,244,.42); color: var(--surface);
+  font-family: var(--font); font-size: .78rem; font-weight: 700; letter-spacing: .26em; text-transform: uppercase;
+  cursor: pointer; overflow: hidden;
+  transition: color .45s var(--ease), border-color .45s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease);
 }
-.intro__enter::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--surface);
-  transform: translateY(101%);
-  transition: transform .55s var(--ease);
-}
-.intro__enter:hover,
-.intro__enter:focus-visible{
-  color: var(--ink);
-  border-color: var(--surface);
-  transform: translateY(-2px);
-  box-shadow: 0 18px 40px -18px rgba(0,0,0,.65);
-}
-.intro__enter:hover::before,
-.intro__enter:focus-visible::before{ transform: translateY(0); }
-.intro__enter:focus-visible{
-  outline: 2px solid var(--gold);
-  outline-offset: 5px;
-}
-.intro__enter svg{
-  width: 15px;
-  height: 15px;
-  transition: transform .45s var(--ease);
-}
+.intro__enter::before{ content: ""; position: absolute; inset: 0; z-index: -1; background: var(--surface); transform: translateY(101%); transition: transform .55s var(--ease); }
+.intro__enter:hover, .intro__enter:focus-visible{ color: var(--ink); border-color: var(--surface); transform: translateY(-2px); box-shadow: 0 18px 40px -18px rgba(0,0,0,.65); }
+.intro__enter:hover::before, .intro__enter:focus-visible::before{ transform: translateY(0); }
+.intro__enter:focus-visible{ outline: 2px solid var(--gold); outline-offset: 5px; }
+.intro__enter svg{ width: 15px; height: 15px; transition: transform .45s var(--ease); }
 .intro__enter:hover svg{ transform: translateX(4px); }
 
-.intro__hint{
-  display: block;
-  margin-top: 1.15rem;
-  font-family: var(--font);
-  font-size: .66rem;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: rgba(255,250,244,.42);
-}
+.intro__hint{ display: block; margin-top: 1.15rem; font-family: var(--font); font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,250,244,.42); }
 
 .intro__footer{
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(1.1rem, 3vw, 2.2rem);
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-inline: clamp(1.25rem, 4vw, 2.75rem);
-  font-family: var(--font);
-  font-size: .64rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255,250,244,.45);
-  opacity: 0;
-  animation: tc-fadeUp 1.15s var(--ease) 1.6s forwards;
+  position: absolute; left: 0; right: 0; bottom: clamp(1.1rem, 3vw, 2.2rem);
+  display: flex; justify-content: space-between; gap: 1rem; padding-inline: clamp(1.25rem, 4vw, 2.75rem);
+  font-family: var(--font); font-size: .64rem; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,250,244,.45); opacity: 0; animation: tc-fadeUp 1.15s var(--ease) 1.6s forwards;
 }
 
-/* --- exit: fade content only (background stays for curtain) --- */
-.intro.is-leaving .intro__content,
-.intro.is-leaving .intro__footer{
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity .45s ease, transform .45s ease;
-}
+.intro.is-leaving .intro__content, .intro.is-leaving .intro__footer{ opacity: 0; transform: translateY(-10px); transition: opacity .45s ease, transform .45s ease; }
 
-/* --- curtain --- */
-.curtain{
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: var(--terracotta);
-  transform: translateY(100%);
-  pointer-events: none;
-  will-change: transform;
-}
-.curtain.is-covering{
-  transform: translateY(0);
-  transition: transform .9s cubic-bezier(.76, 0, .24, 1);
-}
-.curtain.is-revealing{
-  transform: translateY(-100%);
-  transition: transform .9s cubic-bezier(.76, 0, .24, 1);
-}
+.curtain{ position: fixed; inset: 0; z-index: 10000; background: var(--terracotta); transform: translateY(100%); pointer-events: none; will-change: transform; }
+.curtain.is-covering{ transform: translateY(0); transition: transform .9s cubic-bezier(.76, 0, .24, 1); }
+.curtain.is-revealing{ transform: translateY(-100%); transition: transform .9s cubic-bezier(.76, 0, .24, 1); }
 
-@media (max-width: 520px){
-  .intro__footer{ justify-content: center; }
-  .intro__footer span:last-child{ display: none; }
-  .intro__enter{ padding: .95rem 2.1rem; letter-spacing: .2em; }
-}
+@media (max-width: 520px){ .intro__footer{ justify-content: center; } .intro__footer span:last-child{ display: none; } .intro__enter{ padding: .95rem 2.1rem; letter-spacing: .2em; } }
 
 @media (prefers-reduced-motion: reduce){
   .intro__bg{ animation: none; }
-  .intro__content > *,
-  .intro__footer{
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .intro__enter,
-  .intro__enter::before,
-  .curtain,
-  .intro.is-leaving .intro__content,
-  .intro.is-leaving .intro__footer{
-    transition-duration: .001ms !important;
-  }
+  .intro__content > *, .intro__footer{ animation: none !important; opacity: 1 !important; transform: none !important; }
+  .intro__enter, .intro__enter::before, .curtain, .intro.is-leaving .intro__content, .intro.is-leaving .intro__footer{ transition-duration: .001ms !important; }
 }
 
-/* ============================================================
-   MUSIC TOGGLE
-   ============================================================ */
 .music-toggle {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 50;
-  border: 1px solid rgba(36,28,23,.15);
-  background: #fffaf4;
-  color: #241c17;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 24px rgba(36,28,23,.12);
+  position: fixed; right: 16px; bottom: 16px; z-index: 50;
+  border: 1px solid rgba(36,28,23,.15); background: #fffaf4; color: #241c17;
+  border-radius: 999px; padding: 10px 14px; font: inherit; font-weight: 700;
+  cursor: pointer; box-shadow: 0 10px 24px rgba(36,28,23,.12);
 }
 .music-toggle.is-on { background: #3f6b4e; color: #fffaf4; }
   </style>
@@ -812,9 +476,7 @@ html.intro-lock body{ overflow: hidden; }
   <audio id="bgMusic" src="assets/music/tambayan-bg.mp3" loop preload="auto"></audio>
   <button type="button" class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Play background music">Music</button>
 
-  <!-- ============================================================
-       INTRO OVERLAY — Tambayan Cawag (cinematic)
-       ============================================================ -->
+  <!-- INTRO OVERLAY -->
   <div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Welcome to Tambayan Cawag">
     <div class="intro__bg" aria-hidden="true"></div>
     <div class="intro__wash" aria-hidden="true"></div>
@@ -824,8 +486,7 @@ html.intro-lock body{ overflow: hidden; }
       <span class="intro__eyebrow">Cawag, Subic, Zambales</span>
 
       <div class="intro__mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
-             stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 9h13v4a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6V9Z"/>
           <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/>
           <path d="M7 3c-.5 1.5.5 2 0 3.5"/>
@@ -838,14 +499,12 @@ html.intro-lock body{ overflow: hidden; }
       <div class="intro__rule" aria-hidden="true"></div>
 
       <p class="intro__line">
-        A neighborhood kitchen and café in Cawag — come for silog and snacks,
-        stay for coffee and a seat that feels like home.
+        A neighborhood kitchen and café in Cawag — come for silog and snacks, stay for coffee and a seat that feels like home.
       </p>
 
       <button class="intro__enter" id="ctaButton" type="button">
         Enter
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
         </svg>
       </button>
@@ -862,15 +521,10 @@ html.intro-lock body{ overflow: hidden; }
   <div class="curtain" id="curtain" aria-hidden="true"></div>
 
   <noscript>
-    <style>
-      .intro, .curtain { display: none !important; }
-      html.intro-lock, html.intro-lock body { overflow: auto !important; }
-    </style>
+    <style>.intro, .curtain { display: none !important; } html.intro-lock, html.intro-lock body { overflow: auto !important; }</style>
   </noscript>
 
-  <!-- ============================================================
-       YOUR EXISTING SITE CONTENT
-       ============================================================ -->
+  <!-- MAIN SITE CONTENT -->
   <div class="config-banner" data-config-banner hidden></div>
   <header class="site-header">
     <div class="container nav-wrap">
@@ -901,16 +555,11 @@ html.intro-lock body{ overflow: hidden; }
   </header>
 
   <main>
+    <!-- UPDATED HERO BANNER -->
     <section class="hero container">
       <img class="hero-photo" src="assets/images/TCC Banner.jpg" alt="Tambayan Cawag countryside restaurant banner">
-      <div class="hero-copy">
-        <p class="kicker">Cawag, Subic, Zambales</p>
-        <h1>Tambayan Cawag</h1>
-        <p data-setting="tagline">A place to hang out in Cawag.</p>
-        <p data-setting="short_description">Tambayan Cawag is a neighborhood restaurant and cafe in Cawag, Subic, Zambales. Come for silog, snacks, and a seat that feels like home.</p>
-        <div class="hero-actions">
-          <a class="btn btn-terracotta" href="menu.html">View menu</a>
-        </div>
+      <div class="hero-actions-overlay">
+        <a class="btn btn-terracotta" href="menu.html">View menu</a>
       </div>
     </section>
 
@@ -1110,9 +759,7 @@ html.intro-lock body{ overflow: hidden; }
       });
     })();
 
-    /* ============================================================
-       INTRO SCRIPT — Tambayan Cawag (cinematic)
-       ============================================================ */
+    /* INTRO SCRIPT */
     (function () {
       var intro   = document.getElementById("intro");
       var curtain = document.getElementById("curtain");
@@ -1121,18 +768,12 @@ html.intro-lock body{ overflow: hidden; }
 
       document.documentElement.classList.add("intro-lock");
 
-      /* Hide the underlying site from screen readers until intro exits */
-      var siteEls = document.querySelectorAll(
-        ".site-header, main, .site-footer, .music-toggle, .config-banner"
-      );
+      var siteEls = document.querySelectorAll(".site-header, main, .site-footer, .music-toggle, .config-banner");
       siteEls.forEach(function (el) { el.setAttribute("aria-hidden", "true"); });
-      function revealSiteToA11y() {
-        siteEls.forEach(function (el) { el.removeAttribute("aria-hidden"); });
-      }
+      function revealSiteToA11y() { siteEls.forEach(function (el) { el.removeAttribute("aria-hidden"); }); }
 
       var leaving = false;
-      var reduced = window.matchMedia &&
-                    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function enter() {
         if (leaving) return;
@@ -1141,7 +782,6 @@ html.intro-lock body{ overflow: hidden; }
         document.removeEventListener("keydown", onKey);
 
         if (reduced) {
-          /* Simple fade for reduced-motion users */
           intro.style.transition = "opacity .25s ease";
           intro.style.opacity = "0";
           document.documentElement.classList.remove("intro-lock");
@@ -1153,15 +793,8 @@ html.intro-lock body{ overflow: hidden; }
           return;
         }
 
-        /* 1) fade the content */
         intro.classList.add("is-leaving");
-
-        /* 2) slide curtain up to cover (after content fade) */
-        setTimeout(function () {
-          curtain.classList.add("is-covering");
-        }, 400);
-
-        /* 3) once fully covered: remove intro, slide curtain off the top */
+        setTimeout(function () { curtain.classList.add("is-covering"); }, 400);
         setTimeout(function () {
           document.documentElement.classList.remove("intro-lock");
           revealSiteToA11y();
@@ -1169,8 +802,6 @@ html.intro-lock body{ overflow: hidden; }
           curtain.classList.remove("is-covering");
           curtain.classList.add("is-revealing");
         }, 400 + 900);
-
-        /* 4) clean up the curtain */
         setTimeout(function () {
           if (curtain.parentNode) curtain.parentNode.removeChild(curtain);
         }, 400 + 900 + 900);
@@ -1179,7 +810,7 @@ html.intro-lock body{ overflow: hidden; }
       function onKey(e) {
         if (leaving) return;
         if (e.key === "Enter" || e.key === " ") {
-          if (document.activeElement === btn) return; // avoid double-fire
+          if (document.activeElement === btn) return;
           if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
           e.preventDefault();
           enter();
@@ -1188,16 +819,10 @@ html.intro-lock body{ overflow: hidden; }
 
       btn.addEventListener("click", enter);
       document.addEventListener("keydown", onKey);
-
-      /* focus the button for keyboard users */
-      setTimeout(function () {
-        if (btn && btn.parentNode) btn.focus({ preventScroll: true });
-      }, 1800);
+      setTimeout(function () { if (btn && btn.parentNode) btn.focus({ preventScroll: true }); }, 1800);
     })();
 
-    /* ============================================================
-       MUSIC TOGGLE
-       ============================================================ */
+    /* MUSIC TOGGLE */
     (function () {
       var audio = document.getElementById("bgMusic");
       var button = document.getElementById("musicToggle");
@@ -1209,16 +834,9 @@ html.intro-lock body{ overflow: hidden; }
         button.textContent = on ? "Music on" : "Music";
         localStorage.setItem("tc-music", on ? "on" : "off");
       }
-      function play() {
-        audio.play().then(function () { setState(true); }).catch(function () { setState(false); });
-      }
-      function pause() {
-        audio.pause();
-        setState(false);
-      }
-      button.addEventListener("click", function () {
-        if (audio.paused) play(); else pause();
-      });
+      function play() { audio.play().then(function () { setState(true); }).catch(function () { setState(false); }); }
+      function pause() { audio.pause(); setState(false); }
+      button.addEventListener("click", function () { if (audio.paused) play(); else pause(); });
       var enter = document.getElementById("ctaButton");
       if (enter && localStorage.getItem("tc-music") !== "off") {
         enter.addEventListener("click", function () { play(); }, { once: true });
