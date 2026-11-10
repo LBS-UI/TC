@@ -1,0 +1,52 @@
+/**
+ * Tambayan Cawag V2 — public configuration
+ *
+ * Paste your Supabase project URL and anon (public) key below.
+ * Never put the service-role key in this file.
+ */
+
+// Public Supabase configuration.
+// NEVER put the service-role/secret key here.
+
+export const SUPABASE_URL = "https://qyndceqcmnnzozjsqzrh.supabase.co";
+export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5bmRjZXFjbW5uem96anNxenJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTI5MjEsImV4cCI6MjEwNjE2ODkyMX0.wRTVcuURS8TBjZXa2ZfZd1b9txTg30gbOgCP01AOChI";
+
+export const CONFIG = {
+  supabaseUrl: SUPABASE_URL,
+  supabaseAnonKey: SUPABASE_ANON_KEY,
+  timezone: "Asia/Manila",
+  currency: "PHP",
+  restaurantName: "Tambayan Cawag",
+};
+
+export function isSupabaseConfigured() {
+  return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+}
+
+export const DEFAULT_SETTINGS = {
+  restaurant_name: "Tambayan Cawag",
+  tagline: "A place to hang out in Cawag.",
+  short_description:
+    "Tambayan Cawag is a neighborhood restaurant and cafe in Cawag, Subic, Zambales. Come for silog, snacks, and a seat that feels like home.",
+  about:
+    "Tambayan means hangout. Tambayan Cawag is a local spot in Cawag, Subic where you can eat, drink coffee, and stay a while. The kitchen serves go-to plates, snacks, and silog. In the afternoon the cafe opens for coffee and a quieter table.",
+  address: "Cawag, Subic, Zambales",
+  phone: "",
+  email: "",
+  facebook: "",
+  restaurant_hours: { open: "10:00", close: "24:00", label: "10:00 AM – 12:00 AM" },
+  cafe_hours: { open: "13:00", close: "24:00", label: "1:00 PM – 12:00 AM" },
+  timezone: "Asia/Manila",
+};
+
+export const DEFAULT_CATEGORIES = [
+  { id: "local-go-to", name: "Go-To", slug: "go-to", menu_type: "restaurant", sort_order: 10 },
+  { id: "local-snacks", name: "Snacks", slug: "snacks", menu_type: "restaurant", sort_order: 20 },
+  { id: "local-silog", name: "Silog", slug: "silog", menu_type: "restaurant", sort_order: 30 },
+  { id: "local-coffee", name: "Coffee", slug: "coffee", menu_type: "cafe", sort_order: 10 },
+  { id: "local-non-coffee", name: "Non-Coffee", slug: "non-coffee", menu_type: "cafe", sort_order: 20 },
+  { id: "local-refreshers", name: "Refreshers", slug: "refreshers", menu_type: "cafe", sort_order: 30 },
+  { id: "local-pastries", name: "Pastries", slug: "pastries", menu_type: "cafe", sort_order: 40 },
+  { id: "local-desserts", name: "Desserts", slug: "desserts", menu_type: "cafe", sort_order: 50 },
+  { id: "local-other", name: "Other", slug: "other", menu_type: "cafe", sort_order: 60 },
+];
