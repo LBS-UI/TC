@@ -1,7 +1,6 @@
-name = "tc"
+name = "tambayan-cawag"
 main = "worker.js"
 compatibility_date = "2026-10-14"
-compatibility_flags = ["nodejs_compat"]
 
 # Public variables. These are safe to keep in the project.
 # Secrets are NOT listed here. Set those with wrangler secret put.
