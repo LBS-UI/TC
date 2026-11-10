@@ -1,4 +1,4 @@
-name = "tambayan-cawag"
+name = "tc"
 main = "worker.js"
 compatibility_date = "2026-10-14"
 compatibility_flags = ["nodejs_compat"]
